@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="14F1509" minimumToolsVersion="Automatic">
+    <entity name="Animal" representedClassName="Animal" syncable="YES">
+        <attribute name="animal_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="atk" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="atkPeriod" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="atktype" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="attractFood" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="bornRegion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="chName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="enName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="life" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="loot" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="remark" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="runSpeed" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="walkingSpeed" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wit" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Characters" representedClassName="Characters" syncable="YES">
+        <attribute name="ability" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="atk" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="characters_id" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="hungry" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="intellect" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="introduction" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="life" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="motto" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nickname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="unlock" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlstr" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Characters" positionX="-63" positionY="-18" width="128" height="223"/>
+        <element name="Animal" positionX="-63" positionY="72" width="128" height="285"/>
+    </elements>
+</model>
