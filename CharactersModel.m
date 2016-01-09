@@ -13,7 +13,7 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
-        [self fetchResultController];
+        [self getFetchResultController];
         [self bindWithReactive];
         self.allCharacters = nil;
     }
@@ -69,9 +69,9 @@
 }
 
 
-- (NSFetchedResultsController *)fetchResultController{
-    if (_fetchResultController!=nil) {
-        return _fetchResultController;
+- (NSFetchedResultsController *)getFetchResultController{
+    if (self.fetchResultController!=nil) {
+        return self.fetchResultController;
     }
     NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Characters"];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"characters_id" ascending:YES];
@@ -81,14 +81,14 @@
     NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.manager.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     aFetchedResultsController.delegate = self;
     
-    _fetchResultController = aFetchedResultsController;
+    self.fetchResultController = aFetchedResultsController;
     
     NSError *error = nil;
     if (![self.fetchResultController performFetch:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    return _fetchResultController;
+    return self.fetchResultController;
 }
 
 - (void)downloadData{

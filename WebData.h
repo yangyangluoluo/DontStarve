@@ -17,10 +17,12 @@
 @property (strong,nonatomic) NSURLSessionConfiguration *configuration;
 @property (strong,nonatomic) __block NSArray  *allCharacters;
 @property (strong,nonatomic) __block NSArray  *allAnimal;
+@property (strong,nonatomic) __block NSArray  *allPlant;
 
 - (instancetype)init;
 + (WebData *)sharedManager;
-- (void)downLoadCharactersbyId:(NSNumber *)CharactersId;
-- (void)downloadAnimal:(NSNumber *)animalId;
+- (void )downLoadCharactersbyId:(NSNumber *)CharactersId;
+- (void )downloadAnimal:(NSNumber *)animalId;
+- (void )downloadAllPlant:(NSNumber *)plantId;
 
 @end

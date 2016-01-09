@@ -10,7 +10,7 @@
 
 @interface CharacterDetailModel : BaseModel<CellProtocol>
 
-@property (strong,nonatomic) NSFetchedResultsController *fetchResultController;
+//@property (strong,nonatomic) NSFetchedResultsController *fetchResultController;
 
 - (instancetype)initWithId:(NSNumber *)characterId;
 - (NSString *)getAtk:(NSUInteger)index;

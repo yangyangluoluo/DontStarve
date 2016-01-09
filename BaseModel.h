@@ -12,7 +12,9 @@
 @interface BaseModel : NSObject<NSFetchedResultsControllerDelegate>
 
 #define PREFIX  @"http://192.168.1.220/"
-
+@property (strong,nonatomic) NSArray *allData;
+@property (strong,nonatomic) NSNumber *reload;
+@property (strong,nonatomic) NSFetchedResultsController *fetchResultController;
 @property (strong,nonatomic) Manager *manager;
 @property (strong,nonatomic) WebData *webData;
 

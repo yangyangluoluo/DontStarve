@@ -36,28 +36,27 @@
 - (void)defineLayout{
     [self.image mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self).offset(5);
-        make.top.mas_equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(100, 100));
+        make.bottom.mas_equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(self.frame.size.height, self.frame.size.height));
     }];
     
     [self.line1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        CGFloat height = self.frame.size.height/3;
+        CGFloat height = self.frame.size.height/3*2;
         make.left.mas_equalTo(self.image.mas_right).offset(5);
         make.right.mas_equalTo(self).offset(-5);
-        make.top.mas_equalTo(self).offset(height);
+        make.bottom.mas_equalTo(self).offset(-height);
         make.height.mas_equalTo(0.5);
     }];
     
     [self.chName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(self.line1);
-        make.top.mas_equalTo(self);
         make.bottom.mas_equalTo(self.line1.mas_top);
     }];
     
     [self.line2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        CGFloat height = self.frame.size.height/3*2;
+        CGFloat height = self.frame.size.height/3;
         make.left.mas_equalTo(self.line1);
-        make.top.mas_equalTo(self).offset(height);
+        make.bottom.mas_equalTo(self).offset(-height);
         make.size.mas_equalTo(self.line1);
     }];
     
@@ -69,7 +68,7 @@
     
     [self.line3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.line1);
-        make.bottom.mas_equalTo(self).offset(-2);
+        make.bottom.mas_equalTo(self).offset(-0.5);
         make.size.mas_equalTo(self.line1);
     }];
     

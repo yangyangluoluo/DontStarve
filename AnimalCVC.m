@@ -13,6 +13,7 @@
 #import "CSStickyHeaderFlowLayout.h"
 #import "AnimalCell.h"
 #import "AnimalModel.h"
+#import "AnimalDetailCVC.h"
 #define HEIGHT 35
 @interface AnimalCVC ()
 
@@ -46,7 +47,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.view.backgroundColor = FlatWhite;
     self.collectionView.backgroundColor = FlatWhite;
     self.collectionView = nil;
-    self.title = @"饥荒动物";
+    self.title = @"动物列表";
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
     [self.view addSubview:[self segment]];
     [self.view addSubview:[self scrollView]];
@@ -58,8 +59,6 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.hostility registerClass:[AnimalCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.viewModel downloadData];
     [self bindWithReactive];
-    
-    
 }
 
 - (void)bindWithReactive{
@@ -77,17 +76,6 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }];
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -138,15 +126,15 @@ static NSString * const reuseIdentifier = @"Cell";
     if (self.segment.selectedSegmentIndex == 0) {
         cell.type.text = @"不会攻击";
         cell.type.textColor = FlatGreenDark;
-        cell.image.backgroundColor = FlatGreenDark;
+//        cell.image.backgroundColor = FlatGreenDark;
     }else if (self.segment.selectedSegmentIndex == 1){
         cell.type.text = @"挑衅攻击";
         cell.type.textColor = FlatYellowDark;
-        cell.image.backgroundColor = FlatYellowDark;
+//        cell.image.backgroundColor = FlatYellowDark;
     }else{
         cell.type.text = @"主动攻击";
         cell.type.textColor = FlatRedDark;
-        cell.image.backgroundColor = FlatRedDark;
+//        cell.image.backgroundColor = FlatRedDark;
     }
     return cell;
 }
@@ -272,33 +260,14 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark <UICollectionViewDelegate>
 
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    Animal *animal = [self.viewModel getAnimal:self.segment.selectedSegmentIndex row:indexPath.row];
+    CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+    AnimalDetailCVC *detail = [[AnimalDetailCVC alloc]initWithCollectionViewLayout:layout animal:animal];
+    UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:detail];
+    navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
+    [self presentViewController:navi animated:YES completion:nil];
+    
 
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
 }
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
-
 @end

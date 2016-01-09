@@ -2,7 +2,7 @@
 //  Animal+CoreDataProperties.h
 //  DontStarve
 //
-//  Created by 李建国 on 16/1/8.
+//  Created by 李建国 on 16/1/9.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -26,8 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *wit;
 @property (nullable, nonatomic, retain) NSString *walkingSpeed;
 @property (nullable, nonatomic, retain) NSString *runSpeed;
-@property (nullable, nonatomic, retain) NSNumber *loot;
-@property (nullable, nonatomic, retain) NSNumber *attractFood;
+@property (nullable, nonatomic, retain) NSString *loot;
+@property (nullable, nonatomic, retain) NSString *attractFood;
 @property (nullable, nonatomic, retain) NSString *bornRegion;
 @property (nullable, nonatomic, retain) NSString *remark;
 @property (nullable, nonatomic, retain) NSString *urlStr;

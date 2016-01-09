@@ -6,7 +6,7 @@
 //  Copyright © 2015年 李建国. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-
+#import <CoreData/CoreData.h>
 @protocol CellProtocol <NSObject>
 
 @required
@@ -25,6 +25,7 @@
 - (NSString *)getHungry:(NSUInteger)index;
 - (NSString *)getLife:(NSUInteger)index;
 - (NSString *)getSanity:(NSUInteger)index;
+- (NSFetchedResultsController *)getFetchResultController;
 
 
 

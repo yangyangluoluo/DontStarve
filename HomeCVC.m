@@ -17,6 +17,7 @@
 #import "CharactersCVC.h"
 #import "MyADTransition.h"
 #import "AnimalCVC.h"
+#import "PlantCVC.h"
 @interface HomeCVC ()
 @property (strong,nonatomic) HomeHeaderCell *homeHeaderCell;
 @property (strong,nonatomic) NSArray *describe;
@@ -146,7 +147,12 @@ static NSString * const reuseIdentifier = @"Cell";
         UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:animal];
         navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
         [self presentViewController:navi animated:YES completion:nil];
-        
+    }else if (indexPath.section==0 && indexPath.row ==2){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        PlantCVC *plant = [[PlantCVC alloc]initWithCollectionViewLayout:layout];
+        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:plant];
+        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
+        [self presentViewController:navi animated:YES completion:nil];
     }
 
 }

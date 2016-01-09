@@ -45,6 +45,7 @@
     [self.scroll addSubview:[self bgView]];
     [self GetData];
 }
+
 - (UIBarButtonItem *)leftItem{
     if (!_leftItem) {
         _leftItem = [[UIBarButtonItem alloc]init];

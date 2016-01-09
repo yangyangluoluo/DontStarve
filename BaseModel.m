@@ -17,8 +17,36 @@
     if (self) {
         self.manager = [Manager sharedManager];
         self.webData = [WebData sharedManager];
+        self.fetchResultController = nil;
     }
     return self;
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    switch(type) {
+        case NSFetchedResultsChangeInsert:{
+            self.reload = @1;
+            break;
+        }
+        case NSFetchedResultsChangeDelete:{
+            
+            break;
+        }
+        case NSFetchedResultsChangeUpdate: {
+            
+            break;
+        }
+        case NSFetchedResultsChangeMove:{
+            break;
+        }
+        default:{
+            break;
+        }
+    }
 }
 
 @end

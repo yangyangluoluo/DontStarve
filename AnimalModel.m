@@ -13,7 +13,7 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
-        [self fetchResultController];
+        [self getFetchResultController];
         [self bindWithReactive];
         self.allAnimal = nil;
     }
@@ -30,9 +30,9 @@
     }];
 }
 
-- (NSFetchedResultsController *)fetchResultController{
-    if (_fetchResultController!=nil) {
-        return _fetchResultController;
+- (NSFetchedResultsController *)getFetchResultController{
+    if (self.fetchResultController!=nil) {
+        return self.fetchResultController;
     }
     NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Animal"];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"animal_id" ascending:YES];
@@ -42,14 +42,14 @@
     NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.manager.managedObjectContext sectionNameKeyPath:@"type" cacheName:nil];
     aFetchedResultsController.delegate = self;
     
-    _fetchResultController = aFetchedResultsController;
+    self.fetchResultController = aFetchedResultsController;
     
     NSError *error = nil;
     if (![self.fetchResultController performFetch:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    return _fetchResultController;
+    return self.fetchResultController;
 }
 
 - (void)downloadData{
@@ -107,6 +107,11 @@
     return [NSString stringWithFormat:@"%@%@",PREFIX,animal.urlStr];
 }
 
+- (Animal *)getAnimal:(NSUInteger)section row:(NSUInteger)row{
+    NSIndexPath *index = [NSIndexPath indexPathForRow:row inSection:section];
+   return [self.fetchResultController objectAtIndexPath:index];
+}
+
 - (void)saveDataToCoreData{
     for (NSDictionary *dic in self.allAnimal) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"animal_id"] intValue]];
@@ -126,8 +131,8 @@
             animal.wit = [dic objectForKey:@"wit"];
             animal.walkingSpeed = [dic objectForKey:@"walkingSpeed"];
             animal.runSpeed = [dic objectForKey:@"runSpeed"];
-            animal.loot = [NSNumber numberWithInt:[[dic objectForKey:@"loot"]intValue]];
-            animal.attractFood = [NSNumber numberWithInt:[[dic objectForKey:@"attractFood"] intValue]];
+            animal.loot = [dic objectForKey:@"loot"];
+            animal.attractFood = [dic objectForKey:@"attractFood"];
             animal.bornRegion = [dic objectForKey:@"bornRegion"];
             animal.remark = [dic objectForKey:@"remark"];
             animal.urlStr = [dic objectForKey:@"urlStr"];

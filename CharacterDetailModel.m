@@ -19,7 +19,7 @@
     self = [super init];
     if (self) {
         self.characterId = characterId;
-        [self fetchResultController];
+        [self getFetchResultController];
     }
     return self;
 }
@@ -85,9 +85,9 @@
     return [NSString stringWithFormat:@"%@%@",PREFIX,chartacter.urlstr];
 }
 
-- (NSFetchedResultsController *)fetchResultController{
-    if (_fetchResultController!=nil) {
-        return _fetchResultController;
+- (NSFetchedResultsController *)getFetchResultController{
+    if (self.fetchResultController!=nil) {
+        return self.fetchResultController;
     }
     NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Characters"];
     request.predicate = [NSPredicate predicateWithFormat:@"characters_id=%@",self.characterId];
@@ -98,14 +98,14 @@
     NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.manager.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     aFetchedResultsController.delegate = self;
     
-    _fetchResultController = aFetchedResultsController;
+    self.fetchResultController = aFetchedResultsController;
     
     NSError *error = nil;
     if (![self.fetchResultController performFetch:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    return _fetchResultController;
+    return self.fetchResultController;
 }
 
 
