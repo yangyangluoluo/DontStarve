@@ -8,9 +8,10 @@
 
 #import "WebData.h"
 
-#define ALLCHARACTERS  @"http://192.168.1.220/DontStarve/allCharacters.php?characterId=%@"
-#define ALLANIMAL      @"http://192.168.1.220/DontStarve/allAnimal.php?animalId=%@"
-#define ALLPLANT       @"http://192.168.1.220/DontStarve/allPlant.php?plantId=%@"
+#define ALLCHARACTERS   @"http://192.168.1.220/DontStarve/allCharacters.php?characterId=%@"
+#define ALLANIMAL       @"http://192.168.1.220/DontStarve/allAnimal.php?animalId=%@"
+#define ALLPLANT        @"http://192.168.1.220/DontStarve/allPlant.php?plantId=%@"
+#define ALLCONSTRUCT    @"http://192.168.1.220/DontStarve/allConstruction.php?constructionId=%@"
 
 @implementation WebData
 
@@ -83,5 +84,21 @@
     [dataTask resume];
 }
 
+- (void )downloadConstruction:(NSNumber *)constructionId{
+    NSString *urlStr = [NSString stringWithFormat:ALLCONSTRUCT,constructionId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadConstruction ERROR: %@",error);
+        }else{
+            self.allConstruction = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
 
 @end

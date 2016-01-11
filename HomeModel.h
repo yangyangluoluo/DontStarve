@@ -12,4 +12,6 @@
 - (instancetype )init;
 
 - (NSString *)getTitle:(NSUInteger)section row:(NSUInteger)row;
+- (NSUInteger )getCount;
+- (NSUInteger )getSectionCount:(NSUInteger)section;
 @end

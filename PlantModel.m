@@ -81,12 +81,9 @@
             plant.name = [dic objectForKey:@"name"];
             plant.describe = [dic objectForKey:@"describe"];
             plant.produce =[dic objectForKey:@"produce"];
-            plant.urlStr = [dic objectForKey:@"urlStr"];
+            plant.urlStr = [NSString  stringWithFormat:@"%@%@",PREFIX,[dic objectForKey:@"urlStr"]];
         }
     }
     [self.manager saveContext];
 }
-
-
-
 @end

@@ -12,8 +12,7 @@
 @interface CharactersModel : BaseModel<CellProtocol>
 
 @property (strong,nonatomic) NSArray *allCharacters;
-@property (strong,nonatomic) NSFetchedResultsController *fetchResultController;
-@property (strong,nonatomic) NSNumber *reload;
+
 - (instancetype)init;
 - (void )downloadData;
 - (void )saveDataToCoreData;

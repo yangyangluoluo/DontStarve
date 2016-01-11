@@ -18,6 +18,22 @@
         <attribute name="walkingSpeed" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wit" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Boss" syncable="YES">
+        <attribute name="atk" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="atkPeriod" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="atkRange" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bornRegion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="boss_Id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="bossType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="chName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="enName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="life" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="loot" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="moveSpeed" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sanityEffect" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="specialAbility" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Characters" representedClassName="Characters" syncable="YES">
         <attribute name="ability" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="atk" optional="YES" attributeType="String" syncable="YES"/>
@@ -32,6 +48,13 @@
         <attribute name="unlock" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlstr" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Construction" representedClassName="Construction" syncable="YES">
+        <attribute name="construction_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="describe" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="produce" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Plant" representedClassName="Plant" syncable="YES">
         <attribute name="describe" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -43,5 +66,7 @@
         <element name="Animal" positionX="-63" positionY="72" width="128" height="285"/>
         <element name="Characters" positionX="-63" positionY="-18" width="128" height="223"/>
         <element name="Plant" positionX="-63" positionY="135" width="128" height="120"/>
+        <element name="Construction" positionX="-63" positionY="135" width="128" height="120"/>
+        <element name="Boss" positionX="-54" positionY="144" width="128" height="255"/>
     </elements>
 </model>

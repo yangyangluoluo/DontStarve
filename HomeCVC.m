@@ -18,6 +18,7 @@
 #import "MyADTransition.h"
 #import "AnimalCVC.h"
 #import "PlantCVC.h"
+#import "ConstructionCVC.h"
 @interface HomeCVC ()
 @property (strong,nonatomic) HomeHeaderCell *homeHeaderCell;
 @property (strong,nonatomic) NSArray *describe;
@@ -83,12 +84,12 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 3;
+    return [self.viewModel getCount];
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 4;
+    return [self.viewModel getSectionCount:section];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -151,6 +152,12 @@ static NSString * const reuseIdentifier = @"Cell";
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         PlantCVC *plant = [[PlantCVC alloc]initWithCollectionViewLayout:layout];
         UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:plant];
+        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
+        [self presentViewController:navi animated:YES completion:nil];
+    }else if (indexPath.section==0 && indexPath.row ==3){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        ConstructionCVC *construction = [[ConstructionCVC alloc]initWithCollectionViewLayout:layout];
+        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:construction];
         navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
         [self presentViewController:navi animated:YES completion:nil];
     }

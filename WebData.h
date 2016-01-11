@@ -18,11 +18,13 @@
 @property (strong,nonatomic) __block NSArray  *allCharacters;
 @property (strong,nonatomic) __block NSArray  *allAnimal;
 @property (strong,nonatomic) __block NSArray  *allPlant;
+@property (strong,nonatomic) __block NSArray   *allConstruction;
 
 - (instancetype)init;
 + (WebData *)sharedManager;
 - (void )downLoadCharactersbyId:(NSNumber *)CharactersId;
 - (void )downloadAnimal:(NSNumber *)animalId;
 - (void )downloadAllPlant:(NSNumber *)plantId;
+- (void )downloadConstruction:(NSNumber *)constructionId;
 
 @end

@@ -139,7 +139,7 @@
 - (UIImageView *)image{
     if (!_image) {
         _image = [[UIImageView alloc]init];
-        _image.backgroundColor = [UIColor yellowColor];
+        _image.backgroundColor = [UIColor whiteColor];
     }
     return _image;
 }

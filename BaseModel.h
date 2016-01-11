@@ -8,8 +8,8 @@
 #import "Manager.h"
 #import "WebData.h"
 #import <Foundation/Foundation.h>
-
-@interface BaseModel : NSObject<NSFetchedResultsControllerDelegate>
+#import "CellProtocol.h"
+@interface BaseModel : NSObject<NSFetchedResultsControllerDelegate,CellProtocol>
 
 #define PREFIX  @"http://192.168.1.220/"
 @property (strong,nonatomic) NSArray *allData;

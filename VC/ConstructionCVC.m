@@ -1,33 +1,34 @@
 //
-//  PlantCVC.m
+//  ConstructionCVC.m
 //  DontStarve
 //
-//  Created by 李建国 on 16/1/10.
+//  Created by 李建国 on 16/1/11.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 #import "UIImageView+WebCache.h"
 #import "Chameleon.h"
 #import "ReactiveCocoa.h"
-#import "PlantCVC.h"
 #import "MyADTransition.h"
-#import "PlantModel.h"
-#import "Plant+CoreDataProperties.h"
-#import "PlantCell.h"
-@interface PlantCVC ()
+#import "ConstructionCVC.h"
+#import "ConstructionCell.h"
+#import "ConstructionModel.h"
+#import "Construction+CoreDataProperties.h"
+
+@interface ConstructionCVC ()
 
 @property (strong,nonatomic) UIBarButtonItem *leftItem;
-@property (strong,nonatomic) PlantModel *viewModel;
+@property (strong,nonatomic) ConstructionModel *viewModel;
 
 @end
 
-@implementation PlantCVC
+@implementation ConstructionCVC
 
 static NSString * const reuseIdentifier = @"Cell";
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout{
     self = [super initWithCollectionViewLayout:layout];
     if (self) {
-        self.viewModel = [[PlantModel alloc]init];
+        self.viewModel = [[ConstructionModel alloc]init];
     }
     return self;
 }
@@ -37,13 +38,13 @@ static NSString * const reuseIdentifier = @"Cell";
     self.navigationItem.leftBarButtonItem = [self leftItem];
     self.view.backgroundColor = FlatWhite;
     self.collectionView.backgroundColor = FlatWhite;
-    self.title = @"植物列表";
+    self.title = @"建筑列表";
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self.viewModel downloadData];
     });
     [self bindWithReactive];
-    [self.collectionView registerClass:[PlantCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[ConstructionCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
 
 - (void)bindWithReactive{
@@ -85,10 +86,10 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    PlantCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    ConstructionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    Plant *plant = [self.viewModel getPlant:indexPath.row];
-    NSString *urlStr =plant.urlStr;
+    Construction *construction = [self.viewModel getConstruction:indexPath.row];
+    NSString *urlStr =construction.urlStr;
     UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlStr];
     if (image) {
         cell.image.image = image;
@@ -98,11 +99,11 @@ static NSString * const reuseIdentifier = @"Cell";
             cell.image.image = image;
         }];
     }
-    NSString *describe = [plant.describe stringByReplacingOccurrencesOfString:@";" withString:@"\n"];
-    NSString *produce = [plant.produce stringByReplacingOccurrencesOfString:@";" withString:@"\n"];
+    NSString *describe = [construction.describe stringByReplacingOccurrencesOfString:@";" withString:@"\n"];
+    NSString *produce = [construction.produce stringByReplacingOccurrencesOfString:@";" withString:@"\n"];
     cell.enName.text = describe;
     cell.type.text = produce;
-    cell.chName.text = plant.name;
+    cell.chName.text = construction.name;
     
     return cell;
 }
