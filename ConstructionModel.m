@@ -66,7 +66,6 @@
         [self.webData  downloadConstruction:@0];
     }else{
         Construction *construction = [constructions lastObject];
-        NSLog(@"%@",construction.construction_id);
         [self.webData downloadConstruction:construction.construction_id];
     }
 }

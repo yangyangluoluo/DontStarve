@@ -18,7 +18,9 @@
 @property (strong,nonatomic) __block NSArray  *allCharacters;
 @property (strong,nonatomic) __block NSArray  *allAnimal;
 @property (strong,nonatomic) __block NSArray  *allPlant;
-@property (strong,nonatomic) __block NSArray   *allConstruction;
+@property (strong,nonatomic) __block NSArray  *allConstruction;
+@property (strong,nonatomic) __block NSArray  *allBoss;
+@property (strong,nonatomic) __block NSArray  *bossTrait;
 
 - (instancetype)init;
 + (WebData *)sharedManager;
@@ -26,5 +28,6 @@
 - (void )downloadAnimal:(NSNumber *)animalId;
 - (void )downloadAllPlant:(NSNumber *)plantId;
 - (void )downloadConstruction:(NSNumber *)constructionId;
-
+- (void )downloadBoss:(NSNumber *)bossId;
+- (void )downloadBossTrait:(NSNumber *)bossId;
 @end

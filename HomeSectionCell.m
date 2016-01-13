@@ -11,13 +11,11 @@
 
 @implementation HomeSectionCell
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self){
         [self addViews];
         [self defineLayout];
-        self.backgroundColor = FlatLimeDark;
     }
     return self;
 }

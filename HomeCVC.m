@@ -19,6 +19,7 @@
 #import "AnimalCVC.h"
 #import "PlantCVC.h"
 #import "ConstructionCVC.h"
+#import "BossCVC.h"
 @interface HomeCVC ()
 @property (strong,nonatomic) HomeHeaderCell *homeHeaderCell;
 @property (strong,nonatomic) NSArray *describe;
@@ -117,6 +118,7 @@ static NSString * const reuseIdentifier = @"Cell";
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         HomeSectionCell *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SectionHeader"
                                                                           forIndexPath:indexPath];
+        cell.backgroundColor = FlatGrayDark;
         if (indexPath.section==0) {
             cell.title.text = @"饥荒生物";
         }
@@ -130,7 +132,6 @@ static NSString * const reuseIdentifier = @"Cell";
         _homeHeaderCell.imageScroll.delegate = self;
         _homeHeaderCell.imageScroll.tag = 1;
         return _homeHeaderCell;
-        
         }
     return nil;
 }
@@ -160,8 +161,13 @@ static NSString * const reuseIdentifier = @"Cell";
         UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:construction];
         navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
         [self presentViewController:navi animated:YES completion:nil];
+    }else if (indexPath.section==0 && indexPath.row == 4){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        BossCVC *boss = [[BossCVC alloc]initWithCollectionViewLayout:layout];
+        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:boss];
+        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
+        [self presentViewController:navi animated:YES completion:nil];
     }
-
 }
 
 #pragma mark scrollView

@@ -267,7 +267,5 @@ static NSString * const reuseIdentifier = @"Cell";
     UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:detail];
     navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
     [self presentViewController:navi animated:YES completion:nil];
-    
-
 }
 @end

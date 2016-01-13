@@ -18,7 +18,7 @@
         <attribute name="walkingSpeed" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wit" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Boss" syncable="YES">
+    <entity name="Boss" representedClassName="Boss" syncable="YES">
         <attribute name="atk" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="atkPeriod" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="atkRange" optional="YES" attributeType="String" syncable="YES"/>
@@ -33,6 +33,12 @@
         <attribute name="sanityEffect" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="specialAbility" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="BossTrait" representedClassName="BossTrait" syncable="YES">
+        <attribute name="boss_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="bossTrait_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="describe" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Characters" representedClassName="Characters" syncable="YES">
         <attribute name="ability" optional="YES" attributeType="String" syncable="YES"/>
@@ -64,9 +70,10 @@
     </entity>
     <elements>
         <element name="Animal" positionX="-63" positionY="72" width="128" height="285"/>
-        <element name="Characters" positionX="-63" positionY="-18" width="128" height="223"/>
-        <element name="Plant" positionX="-63" positionY="135" width="128" height="120"/>
-        <element name="Construction" positionX="-63" positionY="135" width="128" height="120"/>
         <element name="Boss" positionX="-54" positionY="144" width="128" height="255"/>
+        <element name="BossTrait" positionX="-54" positionY="135" width="128" height="105"/>
+        <element name="Characters" positionX="-63" positionY="-18" width="128" height="223"/>
+        <element name="Construction" positionX="-63" positionY="135" width="128" height="120"/>
+        <element name="Plant" positionX="-63" positionY="135" width="128" height="120"/>
     </elements>
 </model>

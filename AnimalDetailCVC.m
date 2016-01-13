@@ -57,7 +57,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.collectionView registerClass:[AnimalDetailCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView registerClass:[AnimalCell class] forSupplementaryViewOfKind:CSStickyHeaderParallaxHeader
                    withReuseIdentifier:@"header"];
-    
+
     [self reloadLayout];
 }
 

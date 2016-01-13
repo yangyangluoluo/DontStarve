@@ -12,6 +12,8 @@
 #define ALLANIMAL       @"http://192.168.1.220/DontStarve/allAnimal.php?animalId=%@"
 #define ALLPLANT        @"http://192.168.1.220/DontStarve/allPlant.php?plantId=%@"
 #define ALLCONSTRUCT    @"http://192.168.1.220/DontStarve/allConstruction.php?constructionId=%@"
+#define ALLBOSS         @"http://192.168.1.220/DontStarve/allBoss.php?bossId=%@"
+#define BOSSTRAIT       @"http://192.168.1.220/DontStarve/bossTrait.php?bossId=%@"
 
 @implementation WebData
 
@@ -99,6 +101,41 @@
         }
     }];
     [dataTask resume];
+}
+
+- (void )downloadBoss:(NSNumber *)bossId{
+    NSString *urlStr = [NSString stringWithFormat:ALLBOSS,bossId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadConstruction ERROR: %@",error);
+        }else{
+            self.allBoss = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadBossTrait:(NSNumber *)bossId{
+    NSString *urlStr = [NSString stringWithFormat:BOSSTRAIT,bossId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadConstruction ERROR: %@",error);
+        }else{
+            self.bossTrait = responseObject;
+        }
+    }];
+    [dataTask resume];
+    
 }
 
 @end
