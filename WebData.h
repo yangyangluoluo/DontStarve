@@ -21,6 +21,7 @@
 @property (strong,nonatomic) __block NSArray  *allConstruction;
 @property (strong,nonatomic) __block NSArray  *allBoss;
 @property (strong,nonatomic) __block NSArray  *bossTrait;
+@property (strong,nonatomic) __block NSArray  *allFoodRaw;
 
 - (instancetype)init;
 + (WebData *)sharedManager;
@@ -30,4 +31,5 @@
 - (void )downloadConstruction:(NSNumber *)constructionId;
 - (void )downloadBoss:(NSNumber *)bossId;
 - (void )downloadBossTrait:(NSNumber *)bossId;
+- (void )downloadAllFoodRaw:(NSNumber *)foodId;
 @end

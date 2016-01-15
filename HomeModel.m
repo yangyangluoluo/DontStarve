@@ -19,11 +19,12 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
-        NSArray *title = @[@"饥荒人物",@"饥荒动物",@"饥荒植物",@"饥荒建筑",@"饥荒BOSS"];
+        NSArray *title1 = @[@"饥荒人物",@"饥荒动物",@"饥荒植物",@"饥荒建筑",@"饥荒BOSS"];
+        NSArray *title2 =@[@"食谱",@"食材"];
         self.titles = [[NSMutableArray alloc]init];
-        [self.titles addObject:title];
-        [self.titles addObject:title];
-        [self.titles addObject:title];
+        [self.titles addObject:title1];
+        [self.titles addObject:title2];
+        [self.titles addObject:title1];
     }
     return self;
 }

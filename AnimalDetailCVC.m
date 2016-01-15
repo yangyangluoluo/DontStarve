@@ -64,8 +64,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)reloadLayout {
     CSStickyHeaderFlowLayout *layout = (id)self.collectionViewLayout;
     if ([layout isKindOfClass:[CSStickyHeaderFlowLayout class]]) {
-        layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width, 100);
-        layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width, 100);
+        layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width-20, 100);
+        layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width-20, 100);
         layout.parallaxHeaderAlwaysOnTop = NO;
         layout.disableStickyHeaders = YES;
     }
@@ -115,18 +115,18 @@ static NSString * const reuseIdentifier = @"Cell";
     else if(indexPath.row == 10) {
         width = self.view.frame.size.width;
         UIFont  *bornRegionFont = [UIFont systemFontOfSize:14];
-        CGFloat bornRegionWidth = self.view.frame.size.width - 10;
+        CGFloat bornRegionWidth = self.view.frame.size.width - 40;
         CGFloat bornRegionHeight = [self findHeightForText:self.animal.bornRegion havingMaximumWidth:bornRegionWidth andFont:bornRegionFont];
-        height += bornRegionHeight + 10;
+        height += bornRegionHeight + 5;
     }
     else if(indexPath.row == 11) {
         width = self.view.frame.size.width;
         UIFont  *remarkFont = [UIFont systemFontOfSize:14];
-        CGFloat remarkWidth = self.view.frame.size.width - 10;
-        CGFloat remarkHeight = [self findHeightForText:self.animal.bornRegion havingMaximumWidth:remarkWidth andFont:remarkFont];
-        height += remarkHeight + 20;
+        CGFloat remarkWidth = self.view.frame.size.width - 40;
+        CGFloat remarkHeight = [self findHeightForText:self.animal.remark havingMaximumWidth:remarkWidth andFont:remarkFont];
+        height += remarkHeight + 5;
     }else{
-        height += 30;
+        height += 20;
     }
     return CGSizeMake(width, height);
 }
@@ -150,7 +150,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AnimalDetailCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = FlatWhite;
     cell.title.text = self.titles[indexPath.row];
     if (indexPath.row<[self.describe count]) {
         cell.describe.text = self.describe[indexPath.row];
@@ -178,6 +178,9 @@ static NSString * const reuseIdentifier = @"Cell";
     if ([kind isEqualToString:CSStickyHeaderParallaxHeader]){
         _headerCell = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header"
                                                                     forIndexPath:indexPath];
+        CGRect frame = CGRectMake(10, 0, self.view.frame.size.width-20, 100);
+        _headerCell.frame = frame;
+        _headerCell.backgroundColor = [UIColor whiteColor];
         NSString *urlStr = [NSString stringWithFormat:@"%@%@",PREFIX,self.animal.urlStr];
         UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlStr];
         if (image) {
@@ -208,36 +211,4 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     return nil;
 }
-
-#pragma mark <UICollectionViewDelegate>
-
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
-
 @end

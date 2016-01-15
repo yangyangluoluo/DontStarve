@@ -45,7 +45,7 @@
 
 - (void)defineLayout{
     [self.image mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(20);
+        make.left.mas_equalTo(self);
         make.top.mas_equalTo(self);
         make.bottom.mas_equalTo(self);
         CGFloat width = self.frame.size.height * 0.75;
@@ -159,7 +159,7 @@
     if (!_nickname) {
         _nickname = [[UILabel alloc]init];
         _nickname.textAlignment = NSTextAlignmentCenter;
-        _nickname.font = [UIFont systemFontOfSize:15];
+        _nickname.font = [UIFont systemFontOfSize:13];
         _nickname.text = @"昵称   ";
     }
     return _nickname;

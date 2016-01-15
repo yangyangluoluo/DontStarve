@@ -16,7 +16,7 @@
     static ADTransitioningDelegate *transitionNextDelegate = nil;
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
-        transitionNext = [[ADSwipeFadeTransition alloc] initWithDuration:0.3f orientation:ADTransitionRightToLeft sourceRect:frame];
+        transitionNext = [[ADSwipeFadeTransition alloc] initWithDuration:0.25f orientation:ADTransitionRightToLeft sourceRect:frame];
         transitionNextDelegate = [[ADTransitioningDelegate alloc]initWithTransition:transitionNext];
     });
     return transitionNextDelegate;
@@ -27,7 +27,7 @@
     static ADTransitioningDelegate *transitionBlackDelegate = nil;
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
-        transitionBlack = [[ADSwipeFadeTransition alloc] initWithDuration:0.3f orientation:ADTransitionLeftToRight sourceRect:frame];
+        transitionBlack = [[ADSwipeFadeTransition alloc] initWithDuration:0.25f orientation:ADTransitionLeftToRight sourceRect:frame];
         transitionBlackDelegate = [[ADTransitioningDelegate alloc]initWithTransition:transitionBlack];
     });
     return transitionBlackDelegate;

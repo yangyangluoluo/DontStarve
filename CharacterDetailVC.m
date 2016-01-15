@@ -35,7 +35,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = FlatWhite;
     self.title = @"人物详情";
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
     self.navigationItem.leftBarButtonItem = [self leftItem];
@@ -65,7 +65,9 @@
 - (CharacterDetailView *)bgView{
     if (!_bgView) {
         CGRect frame = self.view.frame;
-        frame.size.height *= 1.1;
+        frame.size.width -=40;
+        frame.origin.x = 20;
+        frame.size.height = 140;
         _bgView = [[CharacterDetailView alloc]initWithFrame:frame];
         _bgView.backgroundColor = FlatWhiteDark;
     }
@@ -95,12 +97,11 @@
             self.bgView.header.image.image = image;
         }];
     }
-    
-    
- 
 }
 
-
+- (void)dealloc{
+    NSLog(@"CharacterDetailVC");
+}
 
 
 

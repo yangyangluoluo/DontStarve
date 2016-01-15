@@ -21,22 +21,28 @@
 }
 
 - (void)addViews{
+    CALayer *layer = [CALayer layer];
+    layer.backgroundColor = [UIColor whiteColor].CGColor;
+    layer.frame = CGRectMake(10, 10, self.frame.size.width-20, self.frame.size.height-10);
+    [self.layer addSublayer:layer];
     [self addSubview:[self title]];
     self.line1 = [self getLine];
     [self addSubview:[self line1]];
     [self addSubview:[self describe]];
     self.line2 = [self getLine];
     [self addSubview:[self line2]];
+
+    
 }
 
 - (void)defineLayout{
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self).offset(5);
+        make.top.mas_equalTo(self).offset(10);
         make.centerX.mas_equalTo(self);
     }];
     
     [self.line1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.title.mas_bottom).offset(5);
+        make.top.mas_equalTo(self.title.mas_bottom);
         make.centerX.mas_equalTo(self);
         CGFloat width = self.frame.size.width/2;
         make.height.mas_equalTo(0.5);
@@ -44,8 +50,8 @@
     }];
     
     [self.describe mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(2);
-        make.right.mas_equalTo(self).offset(-2);
+        make.left.mas_equalTo(self).offset(10);
+        make.right.mas_equalTo(self).offset(-10);
         make.top.mas_equalTo(self.line1.mas_bottom).offset(5);
     }];
     
@@ -53,7 +59,7 @@
         make.left.mas_equalTo(self).offset(1);
         make.right.mas_equalTo(self).offset(-1);
         make.bottom.mas_equalTo(self.mas_bottom).offset(-1);
-        make.height.mas_equalTo(1.5);
+        make.height.mas_equalTo(0);
     }];
 }
 
@@ -80,7 +86,7 @@
         _describe.textAlignment = NSTextAlignmentCenter;
         _describe.numberOfLines = 0;
         _describe.lineBreakMode = NSLineBreakByCharWrapping;
-        _describe.preferredMaxLayoutWidth = self.frame.size.width - 10;
+        _describe.preferredMaxLayoutWidth = self.frame.size.width - 40;
         _describe.textColor = FlatOrangeDark;
     }
     return _describe;

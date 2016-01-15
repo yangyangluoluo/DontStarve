@@ -90,27 +90,31 @@
     
     [self.life mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.line1);
-        make.centerY.mas_equalTo(self);
+        make.top.mas_equalTo(self.line2).offset(2);
+        make.height.mas_equalTo(self.frame.size.height * 0.1f);
+        make.right.mas_equalTo(self.line1.mas_centerX);
     }];
     
     [self.hungry mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.life.mas_right);
-        make.centerY.mas_equalTo(self);
+        make.centerY.mas_equalTo(self.life);
+        make.size.mas_equalTo(self.life);
     }];
     
     [self.sanity mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.hungry.mas_right);
-        make.centerY.mas_equalTo(self);
-
+        make.left.mas_equalTo(self.life);
+        make.top.mas_equalTo(self.life.mas_bottom).offset(2);
+        make.size.mas_equalTo(self.life);
     }];
     
     [self.atk mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.sanity.mas_right);
-        make.centerY.mas_equalTo(self);
+        make.centerY.mas_equalTo(self.sanity);
+        make.size.mas_equalTo(self.life);
     }];
     
     [self.line3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        CGFloat height = self.frame.size.height * 0.6f;
+        CGFloat height = self.frame.size.height * 0.6f+8;
         make.top.mas_equalTo(self).offset(height);
         make.left.mas_equalTo(self.line1);
         make.width.mas_equalTo(self.line1);
@@ -183,7 +187,7 @@
 }
 
 - (ImageLabel *)getImageLabel{
-    CGRect frame = CGRectMake(0, 0,self.frame.size.height * 0.75/4, self.frame.size.height * 0.2f);
+    CGRect frame = CGRectMake(0, 0,self.frame.size.height * 0.75/4, self.frame.size.height * 0.1f);
     ImageLabel *imageLabel = [[ImageLabel alloc]initWithFrame:frame];
     imageLabel.backgroundColor = [UIColor whiteColor];
     return imageLabel;

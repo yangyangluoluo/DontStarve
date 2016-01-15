@@ -35,9 +35,9 @@
 
 - (void)defineLayout{
     [self.image mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(5);
-        make.bottom.mas_equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(self.frame.size.height, self.frame.size.height));
+        make.left.mas_equalTo(self).offset(10);
+        make.centerY.mas_equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(70,70));
     }];
     
     [self.line1 mas_makeConstraints:^(MASConstraintMaker *make) {

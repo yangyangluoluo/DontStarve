@@ -61,7 +61,16 @@
     }
 }
 
+- (NSUInteger )getSectionCount{
+    return self.fetchResultController.sections.count;
+}
 
+- (NSString *)getDescribe:(NSUInteger)section andRow:(NSUInteger)row{
+    --section;
+    NSIndexPath *index = [NSIndexPath indexPathForRow:row inSection:section];
+    BossTrait *bossTrait = [self.fetchResultController objectAtIndexPath:index];
+    return bossTrait.describe;
+}
 
 
 - (NSFetchedResultsController *)getFetchResultController{
@@ -70,7 +79,7 @@
     }
     NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"BossTrait"];
     request.predicate = [NSPredicate predicateWithFormat:@"boss_id=%@",self.bossId];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"boss_id" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"bossTrait_id" ascending:YES];
     NSArray *sortDescriptors = @[sortDescriptor];
     request.sortDescriptors = sortDescriptors;
     

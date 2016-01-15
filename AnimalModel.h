@@ -12,8 +12,6 @@
 @interface AnimalModel : BaseModel<CellProtocol>
 
 @property (strong,nonatomic) NSArray *allAnimal;
-@property (strong,nonatomic) NSNumber *reload;
-@property (strong,nonatomic) NSFetchedResultsController *fetchResultController;
 
 - (NSUInteger )getFrinedlyCount;
 - (NSUInteger )getNeutrallyCount;

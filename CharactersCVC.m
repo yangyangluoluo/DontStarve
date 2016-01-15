@@ -48,13 +48,16 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)bindWithReactive{
+    @weakify(self);
     [RACObserve(self.viewModel, allCharacters) subscribeNext:^(NSArray *x) {
+        @strongify(self);
         if (x.count>0) {
             [self.viewModel saveDataToCoreData];
         }
     }];
     
     [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
+        @strongify(self);
         if (x) {
             [self.collectionView reloadData];
         }
@@ -70,9 +73,8 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat width = self.view.frame.size.width;
-    CGFloat height = width * 0.5;
-    return CGSizeMake(width, height);
+    CGFloat width = self.view.frame.size.width-40;
+    return CGSizeMake(width, 140);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
@@ -127,6 +129,10 @@ static NSString * const reuseIdentifier = @"Cell";
         }];
     }
     return _leftItem;
+}
+
+- (void)dealloc{
+    NSLog(@"CharactersCVC");
 }
 
 @end

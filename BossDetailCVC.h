@@ -12,4 +12,5 @@
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout boss:(Boss *)theBoss;
 
+
 @end

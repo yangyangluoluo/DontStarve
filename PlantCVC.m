@@ -47,13 +47,16 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)bindWithReactive{
+    @weakify(self)
     [RACObserve(self.viewModel, allData)  subscribeNext:^(NSArray *x) {
+        @strongify(self);
         if (x.count>0) {
             [self.viewModel saveDataToCoreData];
         }
     }];
     
     [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
+        @strongify(self);
         if (x.intValue==1) {
             [self.collectionView reloadData];
         }
@@ -73,7 +76,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(self.view.frame.size.width, 120);
+    return CGSizeMake(self.view.frame.size.width-40, 120);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
@@ -123,35 +126,8 @@ static NSString * const reuseIdentifier = @"Cell";
     return _leftItem;
 }
 
-#pragma mark <UICollectionViewDelegate>
-
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
+- (void )dealloc{
+    NSLog(@"PlantCVC");
 }
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
 
 @end

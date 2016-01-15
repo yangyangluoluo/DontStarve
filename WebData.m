@@ -14,6 +14,7 @@
 #define ALLCONSTRUCT    @"http://192.168.1.220/DontStarve/allConstruction.php?constructionId=%@"
 #define ALLBOSS         @"http://192.168.1.220/DontStarve/allBoss.php?bossId=%@"
 #define BOSSTRAIT       @"http://192.168.1.220/DontStarve/bossTrait.php?bossId=%@"
+#define ALLFOODRAW      @"http://192.168.1.220/DontStarve/allFoodRaw.php?foodRawId=%@"
 
 @implementation WebData
 
@@ -135,7 +136,23 @@
         }
     }];
     [dataTask resume];
-    
+}
+
+- (void )downloadAllFoodRaw:(NSNumber *)foodId{
+    NSString *urlStr = [NSString stringWithFormat:ALLFOODRAW,foodId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadConstruction ERROR: %@",error);
+        }else{
+            self.allFoodRaw = responseObject;
+        }
+    }];
+    [dataTask resume];
 }
 
 @end

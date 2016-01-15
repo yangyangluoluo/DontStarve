@@ -20,6 +20,7 @@
 #import "PlantCVC.h"
 #import "ConstructionCVC.h"
 #import "BossCVC.h"
+#import "FoodRawCVC.h"
 @interface HomeCVC ()
 @property (strong,nonatomic) HomeHeaderCell *homeHeaderCell;
 @property (strong,nonatomic) NSArray *describe;
@@ -48,17 +49,6 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.collectionView registerClass:[HomeSectionCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader"];
     [self.collectionView registerClass:[HomeHeaderCell class] forSupplementaryViewOfKind:CSStickyHeaderParallaxHeader withReuseIdentifier:@"header"];
     [self reloadLayout];
-    [self bindWithReactive];
-}
-
-- (void) bindWithReactive{
-//    @weakify(self);
-//    [RACObserve(self.viewModel,allSchool) subscribeNext:^(NSArray *x) {
-//        @strongify(self)
-//        if (x) {
-//            [self.collectionView reloadData];
-//        }
-//    }];
 }
 
 - (void)reloadLayout {
@@ -94,8 +84,8 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat width = self.view.frame.size.width/2;
-    CGFloat height = width * 0.5;
+    CGFloat width = self.view.frame.size.width/3;
+    CGFloat height = width ;
     return CGSizeMake(width, height);
 }
 
@@ -111,6 +101,7 @@ static NSString * const reuseIdentifier = @"Cell";
     HomeCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.title.text = [self.viewModel getTitle:indexPath.section row:indexPath.row];
 
+
     return cell;
 }
 
@@ -121,8 +112,9 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.backgroundColor = FlatGrayDark;
         if (indexPath.section==0) {
             cell.title.text = @"饥荒生物";
+        }else if (indexPath.section == 0){
+            cell.title.text = @"饥荒食物";
         }
-
         return cell;
     }
     if ([kind isEqualToString:CSStickyHeaderParallaxHeader]){
@@ -167,6 +159,12 @@ static NSString * const reuseIdentifier = @"Cell";
         UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:boss];
         navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
         [self presentViewController:navi animated:YES completion:nil];
+    }else if (indexPath.section==1 && indexPath.row == 1){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        FoodRawCVC *foodRaw = [[FoodRawCVC alloc]initWithCollectionViewLayout:layout];
+        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:foodRaw];
+        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
+        [self presentViewController:navi animated:YES completion:nil];
     }
 }
 
@@ -179,6 +177,4 @@ static NSString * const reuseIdentifier = @"Cell";
         _homeHeaderCell.pageControl.currentPage  = page;
     }
 }
-
-
 @end

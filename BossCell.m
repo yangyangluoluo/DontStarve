@@ -28,15 +28,15 @@
 
 - (void)defineLayout{
     [self.image mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self).offset(1);
-        make.left.offset(1);
-        make.right.offset(0);
-        make.bottom.mas_equalTo(self);
+        make.top.mas_equalTo(self).offset(10);
+        make.left.offset(10);
+        make.right.offset(-10);
+        make.bottom.mas_equalTo(self).offset(-10);
     }];
     
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(self.mas_right).offset(-4);
-        make.bottom.mas_equalTo(self).offset(-4);
+        make.right.mas_equalTo(self.mas_right).offset(-15);
+        make.bottom.mas_equalTo(self).offset(-15);
     }];
     
 }
@@ -55,7 +55,7 @@
         _name = [[UILabel alloc]init];
         _name.textAlignment = NSTextAlignmentRight;
         _name.text = @"名字";
-        _name.font = [UIFont systemFontOfSize:15];
+        _name.font = [UIFont boldSystemFontOfSize:15];
         _name.textColor = FlatOrangeDark;
     }
     return _name;

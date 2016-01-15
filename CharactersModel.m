@@ -21,7 +21,9 @@
 }
 
 - (void)bindWithReactive{
+    @weakify(self);
     [RACObserve(self.webData, allCharacters) subscribeNext:^(NSArray *x) {
+        @strongify(self);
         if (x) {
             self.allCharacters = x;
         }

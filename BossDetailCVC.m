@@ -15,6 +15,7 @@
 #import "BossDetailHeadCell.h"
 #import "BossDetailCell.h"
 #import "BossDetailModel.h"
+#import "BossDetailSectionHeaderCell.h"
 @interface BossDetailCVC ()
 
 @property (strong,nonatomic) UIBarButtonItem *leftItem;
@@ -23,6 +24,7 @@
 @property (strong,nonatomic) NSArray *titles;
 @property (strong,nonatomic) NSArray *describe;
 @property (strong,nonatomic) BossDetailModel *viewModel;
+@property (strong,nonatomic) NSArray *titleNum;
 
 @end
 
@@ -52,19 +54,23 @@ static NSString * const reuseIdentifier = @"Cell";
     });
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
     [self.collectionView registerClass:[BossDetailCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[BossDetailSectionHeaderCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader"];
     [self.collectionView registerClass:[BossDetailHeadCell class] forSupplementaryViewOfKind:CSStickyHeaderParallaxHeader
                    withReuseIdentifier:@"header"];
     [self reloadLayout];
 }
 
 - (void)bindWithReactive{
+    @weakify(self);
     [RACObserve(self.viewModel, allData)  subscribeNext:^(NSArray *x) {
+        @strongify(self);
         if (x.count>0) {
             [self.viewModel saveDataToCoreData];
         }
     }];
     
     [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
+        @strongify(self);
         if (x.intValue==1) {
             [self.collectionView reloadData];
         }
@@ -74,8 +80,9 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)reloadLayout {
     CSStickyHeaderFlowLayout *layout = (id)self.collectionViewLayout;
     if ([layout isKindOfClass:[CSStickyHeaderFlowLayout class]]) {
-        layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width/2+10);
-        layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width/2+10);
+        layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width-40, 40.0f);
+        layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width/2);
+        layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width/2);
         layout.parallaxHeaderAlwaysOnTop = NO;
         layout.disableStickyHeaders = YES;
     }
@@ -83,42 +90,43 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)setDataForArray{
     self.titles = @[@"攻击力",@"攻击间隔和范围",@"移动速度",@"散值影响",@"特殊能力",@"掉落物品",@"出生区域"];
+    self.titleNum = @[@"一",@"二",@"三",@"四",@"五",@"六",@"七",@"八",@"九",@"十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六"];
     NSString *add = [NSString stringWithFormat:@"攻击距离%@|攻击范围 %@",self.theBoss.atkPeriod,self.theBoss.atkRange];
     self.describe = @[self.theBoss.atk,add,self.theBoss.moveSpeed,self.theBoss.sanityEffect,self.theBoss.specialAbility,self.theBoss.loot,self.theBoss.bornRegion];
 }
 
-
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+    return 1+[self.viewModel getSectionCount];
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.titles.count+[self.viewModel getCount];
+    if (section==0) {
+        return self.titles.count;
+    }else if (section==1){
+        return [self.viewModel getType0Count];
+    }else{
+        return [self.viewModel getType1Count];
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     UIFont *font = [UIFont systemFontOfSize:13];
     CGFloat width = self.view.frame.size.width - 60;
-
-    
-    if (indexPath.row<self.titles.count) {
+    if (indexPath.section == 0) {
         NSArray *num = [self.describe[indexPath.row] componentsSeparatedByString:@"|"];
         CGFloat height1 = (num.count-1) * 16.513672;
         CGFloat height = [self findHeightForText:self.describe[indexPath.row] havingMaximumWidth:width andFont:font];
         return CGSizeMake(self.view.frame.size.width-40, 30+height+height1);
-    }else if(indexPath.row<(self.titles.count + [self.viewModel getType0Count])){
-        return CGSizeMake(self.view.frame.size.width-40, 130);
     }else{
-       return CGSizeMake(self.view.frame.size.width-40, 160);
+        NSString *temp = [self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
+        CGFloat height = [self findHeightForText:temp havingMaximumWidth:width andFont:font];
+        return CGSizeMake(self.view.frame.size.width-40, 30+height);
     }
-    
-    
-    
-    
 }
+
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
     return 10;
@@ -140,18 +148,17 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BossDetailCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    cell.layer.cornerRadius = 5;
-    cell.layer.masksToBounds = YES;
-    if (indexPath.row<self.titles.count) {
+    if (indexPath.section==0) {
         cell.title.text = self.titles[indexPath.row];
         cell.describe.text = [self.describe[indexPath.row] stringByReplacingOccurrencesOfString:@"|" withString:@"\n"];
-    }else if(indexPath.row<(self.titles.count + [self.viewModel getType0Count])){
-        cell.title.text = [NSString stringWithFormat:@"击杀方案(%ld)",indexPath.row-self.titles.count];
-    }else{
-        cell.title.text = [NSString stringWithFormat:@"注意事项(%ld)",indexPath.row-self.titles.count-[self.viewModel getType0Count]];
+    }else if(indexPath.section==1){
+        cell.title.text = [NSString stringWithFormat:@"方 案(%@)",self.titleNum[indexPath.row]];
+        cell.describe.text = [self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
     }
-
-    
+    else{
+        cell.title.text = [NSString stringWithFormat:@"小 结(%@)",self.titleNum[indexPath.row]];
+        cell.describe.text = [self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
+    }
     return cell;
 }
 
@@ -175,54 +182,41 @@ static NSString * const reuseIdentifier = @"Cell";
         }
         return _headerCell;
     }
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        BossDetailSectionHeaderCell *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SectionHeader"
+                                                                          forIndexPath:indexPath];
+        cell.backgroundColor = FlatWhite;
+        if (indexPath.section==0) {
+            cell.title.text = @"基本特征";
+        }else if (indexPath.section==1){
+            cell.title.text = @"击杀方案";
+        }else{
+            cell.title.text = @"个人小结";
+        }
+        return cell;
+    }
     return nil;
 }
 
 - (UIBarButtonItem *)leftItem{
     if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
         UIImage *bgImage = [UIImage imageNamed:@"back"];
+        _leftItem = [[UIBarButtonItem alloc]init];
         [_leftItem setImage:bgImage];
         @weakify(self);
         _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
-            self.navigationController.transitioningDelegate = [MyADTransition blackTransitionWithFrame:self.view.frame];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                self.navigationController.transitioningDelegate = [MyADTransition blackTransitionWithFrame:self.view.frame];
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
             return [RACSignal empty];
         }];
     }
     return _leftItem;
 }
 
-#pragma mark <UICollectionViewDelegate>
 
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
 
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
 
 @end

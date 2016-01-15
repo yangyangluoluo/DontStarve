@@ -32,7 +32,7 @@
     self.type.lineBreakMode = NSLineBreakByCharWrapping;
     
     [self.image mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(5);
+        make.left.mas_equalTo(self);
         make.centerY.mas_equalTo(self);
         make.size.mas_equalTo(CGSizeMake(80, 80));
     }];
@@ -45,8 +45,8 @@
     }];
     
     [self.line1 mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.image.mas_right).offset(10);
-        make.right.mas_equalTo(self).offset(-10);
+        make.left.mas_equalTo(self.image.mas_right).offset(15);
+        make.right.mas_equalTo(self);
         make.top.mas_equalTo(self.chName.mas_bottom);
         make.height.mas_equalTo(0.5);
     }];

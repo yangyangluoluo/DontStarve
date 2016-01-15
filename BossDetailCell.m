@@ -52,7 +52,7 @@
     if (!_title) {
         _title = [[UILabel alloc]init];
         _title.textColor = FlatLimeDark;
-        _title.font = [UIFont boldSystemFontOfSize:15];
+        _title.font = [UIFont systemFontOfSize:15];
         _title.textAlignment = NSTextAlignmentCenter;
         _title.text = @"标题";
     }
@@ -75,7 +75,7 @@
         _describe.numberOfLines = 0;
         _describe.preferredMaxLayoutWidth = self.frame.size.width - 20;
         _describe.text = @"描述";
-        _describe.textColor = FlatRedDark;
+        _describe.textColor = FlatBlackDark;
         _describe.textAlignment = NSTextAlignmentCenter;
     }
     return _describe;

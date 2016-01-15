@@ -62,13 +62,16 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)bindWithReactive{
+    @weakify(self);
     [RACObserve(self.viewModel, allAnimal)  subscribeNext:^(NSArray *x) {
+        @strongify(self);
         if (x.count>0) {
             [self.viewModel saveDataToCoreData];
         }
     }];
     
     [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
+        @strongify(self);
         if (x.intValue==1) {
             [self.friendly reloadData];
             [self.neutrally reloadData];
@@ -95,7 +98,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(self.view.frame.size.width, 100);
+    return CGSizeMake(self.view.frame.size.width-40, 100);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
@@ -162,7 +165,7 @@ static NSString * const reuseIdentifier = @"Cell";
         CGRect rectNav = self.navigationController.navigationBar.frame;
         CGRect rectStatus = [[UIApplication sharedApplication] statusBarFrame];
         CGFloat height = rectNav.size.height + rectStatus.size.height;
-        CGRect frame = CGRectMake(0, height, self.view.frame.size.width, HEIGHT);
+        CGRect frame = CGRectMake(20, height, self.view.frame.size.width-40, HEIGHT);
         _segment = [[UISegmentedControl alloc]initWithItems:@[@"被动生物", @"中立生物" ,@"敌对生物"]];
         _segment.frame = frame;
         _segment.selectedSegmentIndex = 0;
@@ -267,5 +270,9 @@ static NSString * const reuseIdentifier = @"Cell";
     UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:detail];
     navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
     [self presentViewController:navi animated:YES completion:nil];
+}
+
+- (void)dealloc{
+    NSLog(@"AnimalCVC");
 }
 @end

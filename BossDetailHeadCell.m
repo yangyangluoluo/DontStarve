@@ -40,15 +40,15 @@
 
 - (void)defineLayout{
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        CGFloat height = self.frame.size.height - 10;
+        CGFloat height = self.frame.size.height;
         make.left.mas_equalTo(self).offset(20);
         make.right.mas_equalTo(self).offset(-20);
-        make.bottom.mas_equalTo(self).offset(-10);
+        make.bottom.mas_equalTo(self);
         make.height.mas_equalTo(height);
     }];
     
     [self.image mas_makeConstraints:^(MASConstraintMaker *make) {
-        CGFloat height = self.frame.size.height - 10;
+        CGFloat height = self.frame.size.height;
         make.left.mas_equalTo(self.bgView);
         make.bottom.mas_equalTo(self.bgView);
         make.size.mas_equalTo(CGSizeMake(height, height));

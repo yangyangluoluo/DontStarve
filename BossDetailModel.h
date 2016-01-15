@@ -14,5 +14,8 @@
 
 - (NSUInteger )getType0Count;
 - (NSUInteger )getType1Count;
+- (NSUInteger )getSectionCount;
+- (NSString *)getDescribe:(NSUInteger)section andRow:(NSUInteger)row;
+
 
 @end
