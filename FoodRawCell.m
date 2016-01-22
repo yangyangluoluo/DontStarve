@@ -6,8 +6,7 @@
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 
-#import "Chameleon.h"
-#import "Masonry.h"
+
 #import "FoodRawCell.h"
 
 @implementation FoodRawCell
@@ -34,10 +33,8 @@
     self.sanity.image.image = [UIImage imageNamed:@"sanity.jpg"];
     [self addSubview:[self sanity]];
     self.badCycle = [self getImageLabel];
-    self.badCycle.image.image = [UIImage imageNamed:@"atk.png"];
+    self.badCycle.image.image = [UIImage imageNamed:@"Rot.png"];
     [self addSubview:[self badCycle]];
-    
-
 }
 
 - (void)defineLayout{
@@ -88,8 +85,6 @@
     
 }
 
-
-
 - (UIImageView *)image{
     if (!_image) {
         _image = [[UIImageView alloc]init];
@@ -131,7 +126,4 @@
     imageLabel.layer.borderWidth = 0.5;
     return imageLabel;
 }
-
-
-
 @end

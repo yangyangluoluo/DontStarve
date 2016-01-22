@@ -117,8 +117,6 @@
     if (!_bgView) {
         _bgView = [[UIView alloc]init];
         _bgView.backgroundColor = [UIColor whiteColor];
-        _bgView.layer.cornerRadius = 5;
-        _bgView.layer.masksToBounds = YES;
     }
     return _bgView;
 }
@@ -128,8 +126,6 @@
         _image = [[UIImageView alloc]init];
         _image.contentMode = UIViewContentModeScaleToFill;
         _image.backgroundColor = FlatGreenDark;
-        _image.layer.cornerRadius = 5;
-        _image.layer.masksToBounds = YES;
     }
     return _image;
 }

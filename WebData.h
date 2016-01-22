@@ -22,6 +22,9 @@
 @property (strong,nonatomic) __block NSArray  *allBoss;
 @property (strong,nonatomic) __block NSArray  *bossTrait;
 @property (strong,nonatomic) __block NSArray  *allFoodRaw;
+@property (strong,nonatomic) __block NSArray  *allRecipe;
+@property (strong,nonatomic) __block NSArray  *recipeRaw;
+@property (strong,nonatomic) __block NSArray  *recipeDetail;
 
 - (instancetype)init;
 + (WebData *)sharedManager;
@@ -32,4 +35,8 @@
 - (void )downloadBoss:(NSNumber *)bossId;
 - (void )downloadBossTrait:(NSNumber *)bossId;
 - (void )downloadAllFoodRaw:(NSNumber *)foodId;
+- (void )downloadAllRecipe:(NSNumber *)recipeId;
+- (void )downloadRecipeRaw:(NSNumber *)recipeId;
+- (void )downloadRecipeDetail:(NSString *)recipeName;
+
 @end

@@ -58,7 +58,6 @@
     if (!_imageScroll) {
         _imageScroll = [[UIScrollView alloc]init];
         _imageScroll.contentSize = CGSizeMake(self.frame.size.width*self.num, self.frame.size.height);
-        _imageScroll.backgroundColor = [UIColor yellowColor];
         _imageScroll.pagingEnabled = YES;
         _imageScroll.showsVerticalScrollIndicator = NO;
         _imageScroll.showsHorizontalScrollIndicator = NO;
@@ -71,8 +70,8 @@
         _pageControl = [[UIPageControl alloc]init];
         _pageControl.numberOfPages = self.num;
         _pageControl.currentPage = 0;
-        _pageControl.pageIndicatorTintColor = FlatYellowDark;
-        _pageControl.currentPageIndicatorTintColor = FlatGreenDark;
+        _pageControl.pageIndicatorTintColor = FlatWhiteDark;
+        _pageControl.currentPageIndicatorTintColor = FlatRedDark;
         _imageScroll.tag = 1;
     }
     return _pageControl;

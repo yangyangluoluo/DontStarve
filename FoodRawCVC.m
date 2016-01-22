@@ -16,7 +16,6 @@
 #import "FoodRaw+CoreDataProperties.h"
 @interface FoodRawCVC ()
 
-@property (strong,nonatomic) UIBarButtonItem *leftItem;
 @property (strong,nonatomic) FoodRawModel *viewModel;
 
 @end
@@ -36,10 +35,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [self leftItem];
-    self.view.backgroundColor = FlatWhite;
-    self.collectionView.backgroundColor = FlatWhite;
     self.title = @"食材列表";
-    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self.viewModel downloadData];
     });
@@ -121,56 +117,11 @@ static NSString * const reuseIdentifier = @"Cell";
     }else{
         cell.badCycle.label.text = [NSString stringWithFormat:@"不腐烂"];
     }
- 
-    
     return cell;
 }
 
-- (UIBarButtonItem *)leftItem{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
-        UIImage *bgImage = [UIImage imageNamed:@"back"];
-        [_leftItem setImage:bgImage];
-        @weakify(self);
-        _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
-            @strongify(self);
-            self.navigationController.transitioningDelegate = [MyADTransition blackTransitionWithFrame:self.view.frame];
-            [self dismissViewControllerAnimated:YES completion:nil];
-            return [RACSignal empty];
-        }];
-    }
-    return _leftItem;
+- (void)dealloc{
+    NSLog(@"FoodRawCVC");
 }
-
-#pragma mark <UICollectionViewDelegate>
-
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
 
 @end

@@ -47,11 +47,9 @@ static NSString * const reuseIdentifier = @"Cell";
     self.view.backgroundColor = FlatWhite;
     self.collectionView.backgroundColor = FlatWhite;
     self.title = self.theBoss.chName;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self setDataForArray];
-        [self bindWithReactive];
-        [self.viewModel downloadData];
-    });
+    [self setDataForArray];
+    [self bindWithReactive];
+    [self.viewModel downloadData];
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
     [self.collectionView registerClass:[BossDetailCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView registerClass:[BossDetailSectionHeaderCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader"];
@@ -200,23 +198,17 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UIBarButtonItem *)leftItem{
     if (!_leftItem) {
-        UIImage *bgImage = [UIImage imageNamed:@"back"];
         _leftItem = [[UIBarButtonItem alloc]init];
+        UIImage *bgImage = [UIImage imageNamed:@"back"];
         [_leftItem setImage:bgImage];
         @weakify(self);
         _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                self.navigationController.transitioningDelegate = [MyADTransition blackTransitionWithFrame:self.view.frame];
-                [self dismissViewControllerAnimated:YES completion:nil];
-            });
+            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1]animated:YES];
             return [RACSignal empty];
         }];
     }
     return _leftItem;
 }
-
-
-
 
 @end

@@ -11,7 +11,16 @@
 
 @implementation ImageLabel
 
-- (instancetype)initWithFrame:(CGRect)frame{
+- (instancetype )init{
+    self = [super init];
+    if (self) {
+        [self addViews];
+        [self defineLayout];
+    }
+    return self;
+    
+}
+- (instancetype )initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
         [self addViews];

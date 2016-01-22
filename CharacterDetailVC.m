@@ -54,8 +54,7 @@
         @weakify(self);
         _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
-            self.navigationController.transitioningDelegate = [MyADTransition blackTransitionWithFrame:self.view.frame];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1]animated:YES];
             return [RACSignal empty];
         }];
     }
@@ -102,15 +101,4 @@
 - (void)dealloc{
     NSLog(@"CharacterDetailVC");
 }
-
-
-
-
-
-
-
-
-
-
-
 @end

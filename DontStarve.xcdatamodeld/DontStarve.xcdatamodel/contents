@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="14F1509" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="14F1605" minimumToolsVersion="Automatic">
     <entity name="Animal" representedClassName="Animal" syncable="YES">
         <attribute name="animal_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="atk" optional="YES" attributeType="String" syncable="YES"/>
@@ -79,13 +79,48 @@
         <attribute name="produce" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Recipe" representedClassName="Recipe" syncable="YES">
+        <attribute name="badCycle" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="chName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cookTime" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="enName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hunger" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="life" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="priority" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="recipe_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sanity" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="theRaw" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RecipeRaw" syncable="YES"/>
+    </entity>
+    <entity name="RecipeDetail" representedClassName="RecipeDetail" syncable="YES">
+        <attribute name="raw1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="raw1UrlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="raw2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="raw2UrlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="raw3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="raw3UrlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="raw4" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="raw4UrlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recipeDetail_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="recipeName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="RecipeRaw" representedClassName="RecipeRaw" syncable="YES">
+        <attribute name="needNum" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
+        <attribute name="needtype" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="recipe_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="recipeRaw_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Animal" positionX="-63" positionY="72" width="128" height="285"/>
-        <element name="Boss" positionX="-54" positionY="144" width="128" height="255"/>
-        <element name="BossTrait" positionX="-54" positionY="135" width="128" height="105"/>
-        <element name="Characters" positionX="-63" positionY="-18" width="128" height="223"/>
-        <element name="Construction" positionX="-63" positionY="135" width="128" height="120"/>
-        <element name="Plant" positionX="-63" positionY="135" width="128" height="120"/>
-        <element name="FoodRaw" positionX="-54" positionY="135" width="128" height="180"/>
+        <element name="Animal" positionX="-26001" positionY="-8277" width="128" height="285"/>
+        <element name="Boss" positionX="-25659" positionY="-8118" width="128" height="255"/>
+        <element name="BossTrait" positionX="-26165" positionY="-8001" width="128" height="105"/>
+        <element name="Characters" positionX="-26163" positionY="-8271" width="128" height="223"/>
+        <element name="Construction" positionX="-25677" positionY="-8271" width="128" height="120"/>
+        <element name="FoodRaw" positionX="-25821" positionY="-8055" width="128" height="180"/>
+        <element name="Plant" positionX="-25938" positionY="-7929" width="128" height="120"/>
+        <element name="Recipe" positionX="-26064" positionY="-7740" width="117" height="193"/>
+        <element name="RecipeRaw" positionX="-25812" positionY="-7662" width="128" height="118"/>
+        <element name="RecipeDetail" positionX="-25965" positionY="-8136" width="128" height="195"/>
     </elements>
 </model>

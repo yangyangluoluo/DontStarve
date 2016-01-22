@@ -20,6 +20,7 @@
 #import "PlantCVC.h"
 #import "ConstructionCVC.h"
 #import "BossCVC.h"
+#import "RecipeCVC.h"
 #import "FoodRawCVC.h"
 @interface HomeCVC ()
 @property (strong,nonatomic) HomeHeaderCell *homeHeaderCell;
@@ -100,8 +101,6 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     HomeCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.title.text = [self.viewModel getTitle:indexPath.section row:indexPath.row];
-
-
     return cell;
 }
 
@@ -132,39 +131,31 @@ static NSString * const reuseIdentifier = @"Cell";
     if (indexPath.section==0 && indexPath.row==0) {
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         CharactersCVC *character = [[CharactersCVC alloc]initWithCollectionViewLayout:layout];
-        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:character];
-        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
-        [self presentViewController:navi animated:YES completion:nil];
+        [self.navigationController pushViewController:character animated:YES];
     }else if (indexPath.section==0 && indexPath.row==1){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         AnimalCVC *animal = [[AnimalCVC alloc]initWithCollectionViewLayout:layout];
-        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:animal];
-        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
-        [self presentViewController:navi animated:YES completion:nil];
+        [self.navigationController pushViewController:animal animated:YES];
     }else if (indexPath.section==0 && indexPath.row ==2){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         PlantCVC *plant = [[PlantCVC alloc]initWithCollectionViewLayout:layout];
-        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:plant];
-        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
-        [self presentViewController:navi animated:YES completion:nil];
+      [self.navigationController pushViewController:plant animated:YES];
     }else if (indexPath.section==0 && indexPath.row ==3){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         ConstructionCVC *construction = [[ConstructionCVC alloc]initWithCollectionViewLayout:layout];
-        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:construction];
-        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
-        [self presentViewController:navi animated:YES completion:nil];
+       [self.navigationController pushViewController:construction animated:YES];
     }else if (indexPath.section==0 && indexPath.row == 4){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         BossCVC *boss = [[BossCVC alloc]initWithCollectionViewLayout:layout];
-        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:boss];
-        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
-        [self presentViewController:navi animated:YES completion:nil];
+       [self.navigationController pushViewController:boss animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 0){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        RecipeCVC *recipe = [[RecipeCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:recipe animated:YES];
     }else if (indexPath.section==1 && indexPath.row == 1){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         FoodRawCVC *foodRaw = [[FoodRawCVC alloc]initWithCollectionViewLayout:layout];
-        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:foodRaw];
-        navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
-        [self presentViewController:navi animated:YES completion:nil];
+        [self.navigationController pushViewController:foodRaw animated:YES];
     }
 }
 

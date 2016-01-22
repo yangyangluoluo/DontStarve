@@ -5,6 +5,7 @@
 //  Created by 李建国 on 16/1/8.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
+#import "Masonry.h"
 #import "CSStickyHeaderFlowLayout.h"
 #import "Chameleon.h"
 #import "ReactiveCocoa.h"
@@ -53,7 +54,8 @@ static NSString * const reuseIdentifier = @"Cell";
     self.navigationItem.leftBarButtonItem = [self leftItem];
     self.view.backgroundColor = FlatWhite;
     self.collectionView.backgroundColor = FlatWhite;
-
+    self.title = self.animal.chName;
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
     [self.collectionView registerClass:[AnimalDetailCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView registerClass:[AnimalCell class] forSupplementaryViewOfKind:CSStickyHeaderParallaxHeader
                    withReuseIdentifier:@"header"];
@@ -79,8 +81,7 @@ static NSString * const reuseIdentifier = @"Cell";
         @weakify(self);
         _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
-            self.navigationController.transitioningDelegate = [MyADTransition blackTransitionWithFrame:self.view.frame];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1]animated:YES];
             return [RACSignal empty];
         }];
     }

@@ -110,9 +110,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSNumber *theId = [self.viewModel getId:indexPath.row];
     CharacterDetailVC *detail = [[CharacterDetailVC alloc]initWithId:theId];
-    UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:detail];
-    navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
-    [self presentViewController:navi animated:YES completion:nil];
+    [self.navigationController pushViewController:detail animated:YES];
 }
 
 - (UIBarButtonItem *)leftItem{
@@ -123,16 +121,10 @@ static NSString * const reuseIdentifier = @"Cell";
         @weakify(self);
         _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
-            self.navigationController.transitioningDelegate = [MyADTransition blackTransitionWithFrame:self.view.frame];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:0]animated:YES];
             return [RACSignal empty];
         }];
     }
     return _leftItem;
 }
-
-- (void)dealloc{
-    NSLog(@"CharactersCVC");
-}
-
 @end

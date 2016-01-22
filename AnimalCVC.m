@@ -129,15 +129,12 @@ static NSString * const reuseIdentifier = @"Cell";
     if (self.segment.selectedSegmentIndex == 0) {
         cell.type.text = @"不会攻击";
         cell.type.textColor = FlatGreenDark;
-//        cell.image.backgroundColor = FlatGreenDark;
     }else if (self.segment.selectedSegmentIndex == 1){
         cell.type.text = @"挑衅攻击";
         cell.type.textColor = FlatYellowDark;
-//        cell.image.backgroundColor = FlatYellowDark;
     }else{
         cell.type.text = @"主动攻击";
         cell.type.textColor = FlatRedDark;
-//        cell.image.backgroundColor = FlatRedDark;
     }
     return cell;
 }
@@ -152,8 +149,7 @@ static NSString * const reuseIdentifier = @"Cell";
         @weakify(self);
         _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
-            self.navigationController.transitioningDelegate = [MyADTransition blackTransitionWithFrame:self.view.frame];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:0]animated:YES];
             return [RACSignal empty];
         }];
     }
@@ -267,9 +263,8 @@ static NSString * const reuseIdentifier = @"Cell";
     Animal *animal = [self.viewModel getAnimal:self.segment.selectedSegmentIndex row:indexPath.row];
     CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
     AnimalDetailCVC *detail = [[AnimalDetailCVC alloc]initWithCollectionViewLayout:layout animal:animal];
-    UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:detail];
-    navi.transitioningDelegate = [MyADTransition nextTransitionWithFrame:self.view.frame];
-    [self presentViewController:navi animated:YES completion:nil];
+    [self.navigationController pushViewController:detail animated:YES];
+
 }
 
 - (void)dealloc{

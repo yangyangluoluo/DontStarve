@@ -15,6 +15,9 @@
 #define ALLBOSS         @"http://192.168.1.220/DontStarve/allBoss.php?bossId=%@"
 #define BOSSTRAIT       @"http://192.168.1.220/DontStarve/bossTrait.php?bossId=%@"
 #define ALLFOODRAW      @"http://192.168.1.220/DontStarve/allFoodRaw.php?foodRawId=%@"
+#define ALLRECIPE       @"http://192.168.1.220/DontStarve/allRecipe.php?recipeId=%@"
+#define RECIPERAW       @"http://192.168.1.220/DontStarve/recipeRaw.php?recipeId=%@"
+#define RECIPEDETAIL    @"http://192.168.1.220/DontStarve/recipeDetail.php?recipeName=%@"
 
 @implementation WebData
 
@@ -154,5 +157,57 @@
     }];
     [dataTask resume];
 }
+
+- (void )downloadAllRecipe:(NSNumber *)recipeId{
+    NSString *urlStr = [NSString stringWithFormat:ALLRECIPE,recipeId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadConstruction ERROR: %@",error);
+        }else{
+            self.allRecipe = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadRecipeRaw:(NSNumber *)recipeId{
+    NSString *urlStr = [NSString stringWithFormat:RECIPERAW,recipeId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadRecipeRaw ERROR: %@",error);
+        }else{
+            self.recipeRaw = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadRecipeDetail:(NSString *)recipeName{
+    NSString *urlStr = [NSString stringWithFormat:RECIPEDETAIL,recipeName];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadRecipeRaw ERROR: %@",error);
+        }else{
+            self.recipeDetail = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
 
 @end
