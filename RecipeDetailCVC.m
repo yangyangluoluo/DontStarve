@@ -73,7 +73,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)reloadLayout {
     CSStickyHeaderFlowLayout *layout = (id)self.collectionViewLayout;
     if ([layout isKindOfClass:[CSStickyHeaderFlowLayout class]]) {
-        layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width-40, 40.0f);
+        layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width-20, 40.0f);
         layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width,160);
         layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width, 160);
         layout.parallaxHeaderAlwaysOnTop = NO;
@@ -92,7 +92,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat width = self.view.frame.size.width-40;
+    CGFloat width = self.view.frame.size.width-20;
     return CGSizeMake(width, width/4+20);
 }
 
@@ -211,7 +211,7 @@ static NSString * const reuseIdentifier = @"Cell";
         BossDetailSectionHeaderCell *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SectionHeader"
                                                                                       forIndexPath:indexPath];
         cell.backgroundColor = FlatWhite;
-        cell.title.text = @"详细配方";
+        cell.title.text = @"配方示例";
         return cell;
     }
     return nil;

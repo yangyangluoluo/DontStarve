@@ -18,6 +18,12 @@
 #define ALLRECIPE       @"http://192.168.1.220/DontStarve/allRecipe.php?recipeId=%@"
 #define RECIPERAW       @"http://192.168.1.220/DontStarve/recipeRaw.php?recipeId=%@"
 #define RECIPEDETAIL    @"http://192.168.1.220/DontStarve/recipeDetail.php?recipeName=%@"
+#define ALLTOOL         @"http://192.168.1.220/DontStarve/allTool.php?toolId=%@"
+#define ALLFIRE         @"http://192.168.1.220/DontStarve/allFire.php?fireId=%@"
+#define ALLPRODUCE      @"http://192.168.1.220/DontStarve/allProduce.php?produceId=%@"
+
+
+
 
 @implementation WebData
 
@@ -201,9 +207,60 @@
     NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         @strongify(self);
         if (error) {
-            NSLog(@"downloadRecipeRaw ERROR: %@",error);
+            NSLog(@"downloadRecipeDetail ERROR: %@",error);
         }else{
             self.recipeDetail = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllTool:(NSNumber *)toolId{
+    NSString *urlStr = [NSString stringWithFormat:ALLTOOL,toolId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllTool ERROR: %@",error);
+        }else{
+            self.allTool = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllFire:(NSNumber *)fireId{
+    NSString *urlStr = [NSString stringWithFormat:ALLFIRE,fireId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllFire ERROR: %@",error);
+        }else{
+            self.allFire = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllProduce:(NSNumber *)produceId{
+    NSString *urlStr = [NSString stringWithFormat:ALLPRODUCE,produceId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllFire ERROR: %@",error);
+        }else{
+            self.allProduce = responseObject;
         }
     }];
     [dataTask resume];

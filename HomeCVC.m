@@ -5,6 +5,7 @@
 //  Created by 李建国 on 15/12/28.
 //  Copyright © 2015年 李建国. All rights reserved.
 //
+#import "HomeDescribe.h"
 #import "Chameleon.h"
 #import "ReactiveCocoa.h"
 #import "CSStickyHeaderFlowLayout.h"
@@ -22,6 +23,8 @@
 #import "BossCVC.h"
 #import "RecipeCVC.h"
 #import "FoodRawCVC.h"
+#import "ToolCVC.h"
+#import "FireCVC.h"
 @interface HomeCVC ()
 @property (strong,nonatomic) HomeHeaderCell *homeHeaderCell;
 @property (strong,nonatomic) NSArray *describe;
@@ -55,7 +58,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)reloadLayout {
     CSStickyHeaderFlowLayout *layout = (id)self.collectionViewLayout;
     if ([layout isKindOfClass:[CSStickyHeaderFlowLayout class]]) {
-        layout.headerReferenceSize = CGSizeMake(self.collectionView.bounds.size.width, 30.0f);  //设置head大小
+        layout.headerReferenceSize = CGSizeMake(self.collectionView.bounds.size.width, 25.0f);  //设置head大小
         CGFloat height = self.view.frame.size.width*0.4;
         layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width, height);
         layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width, height);
@@ -85,9 +88,9 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat width = self.view.frame.size.width/3;
+    CGFloat width = self.view.frame.size.width/4;
     CGFloat height = width ;
-    return CGSizeMake(width, height);
+    return CGSizeMake(width, height+20);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
@@ -100,7 +103,10 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     HomeCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    cell.title.text = [self.viewModel getTitle:indexPath.section row:indexPath.row];
+    HomeDescribe *describe = [self.viewModel getDescribe:indexPath.section row:indexPath.row];
+    cell.chName.text = describe.chName;
+    cell.enName.text = describe.enName;
+    cell.image.image = [UIImage imageNamed:describe.icon];
     return cell;
 }
 
@@ -108,11 +114,12 @@ static NSString * const reuseIdentifier = @"Cell";
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         HomeSectionCell *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SectionHeader"
                                                                           forIndexPath:indexPath];
-        cell.backgroundColor = FlatGrayDark;
+        cell.backgroundColor = FlatGreenDark;
+        cell.title.font = [UIFont systemFontOfSize:18];
         if (indexPath.section==0) {
-            cell.title.text = @"饥荒生物";
-        }else if (indexPath.section == 0){
-            cell.title.text = @"饥荒食物";
+            cell.title.text = @"游戏大全";
+        }else if (indexPath.section == 1){
+            cell.title.text = @"游戏资料";
         }
         return cell;
     }
@@ -148,14 +155,22 @@ static NSString * const reuseIdentifier = @"Cell";
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         BossCVC *boss = [[BossCVC alloc]initWithCollectionViewLayout:layout];
        [self.navigationController pushViewController:boss animated:YES];
-    }else if (indexPath.section==1 && indexPath.row == 0){
+    }else if (indexPath.section==0 && indexPath.row == 5){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         RecipeCVC *recipe = [[RecipeCVC alloc]initWithCollectionViewLayout:layout];
         [self.navigationController pushViewController:recipe animated:YES];
-    }else if (indexPath.section==1 && indexPath.row == 1){
+    }else if (indexPath.section==0 && indexPath.row == 6){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         FoodRawCVC *foodRaw = [[FoodRawCVC alloc]initWithCollectionViewLayout:layout];
         [self.navigationController pushViewController:foodRaw animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 0){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        ToolCVC *cvc = [[ToolCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 1){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        FireCVC *cvc = [[FireCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
     }
 }
 

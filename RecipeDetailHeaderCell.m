@@ -22,6 +22,8 @@
 }
 
 - (void)addViewRecipeCell{
+    self.image.layer.borderColor = FlatGreenDark.CGColor;
+    self.image.layer.borderWidth = 0.5;
     self.bgView = [[UIView alloc]init];
     self.bgView.backgroundColor = [UIColor whiteColor];
     [self addSubview:[self bgView]];
@@ -32,8 +34,8 @@
 
 - (void)redefineLayoutRecipeCell{
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(20);
-        make.right.mas_equalTo(self).offset(-20);
+        make.left.mas_equalTo(self).offset(10);
+        make.right.mas_equalTo(self).offset(-10);
         make.top.mas_equalTo(self);
         make.height.mas_equalTo(160);
     }];
@@ -45,14 +47,14 @@
     }];
     
     [self.chName mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.image.mas_right).offset(5);
-        make.right.mas_equalTo(self.bgView.mas_right).offset(-5);
+        make.left.mas_equalTo(self.bgView).offset(5);
+        make.right.mas_equalTo(self.bgView).offset(-5);
         make.top.mas_equalTo(self);
         make.height.mas_equalTo(25);
     }];
     
     [self.life mas_remakeConstraints:^(MASConstraintMaker *make) {
-        CGFloat width = (self.frame.size.width - 85-40)/3;
+        CGFloat width = (self.frame.size.width - 85-20)/3;
         make.left.mas_equalTo(self.image.mas_right).offset(5);
         make.top.mas_equalTo(self.chName.mas_bottom);
         make.height.mas_equalTo(30);
@@ -107,7 +109,8 @@
 - (UILabel *)needRaw{
     if (!_needRaw) {
         _needRaw = [[UILabel alloc]init];
-        _needRaw.backgroundColor = FlatGreenDark;
+        _needRaw.layer.borderColor = FlatGreenDark.CGColor;
+        _needRaw.layer.borderWidth = 1.5;
         _needRaw.text = @"需要材料";
         _needRaw.textAlignment = NSTextAlignmentCenter;
         _needRaw.font = [UIFont systemFontOfSize:14];
@@ -118,7 +121,8 @@
 - (UILabel *)needNotRaw{
     if (!_needNotRaw) {
         _needNotRaw = [[UILabel alloc]init];
-        _needNotRaw.layer.backgroundColor = FlatRedDark.CGColor;
+        _needNotRaw.layer.borderColor = FlatRedDark.CGColor;
+        _needNotRaw.layer.borderWidth = 1.5;
         _needNotRaw.text = @"禁止材料";
         _needNotRaw.textAlignment = NSTextAlignmentCenter;
         _needNotRaw.font = [UIFont systemFontOfSize:14];
@@ -132,7 +136,8 @@
         for (int index=0; index<num; index++) {
             ImageLabel *temp = [self getImageLabel1];
             temp.label.font = [UIFont boldSystemFontOfSize:12];
-            temp.layer.backgroundColor = FlatGreenDark.CGColor;
+            temp.layer.borderColor = FlatGreenDark.CGColor;
+            temp.layer.borderWidth = 1.5;
             [self.needRawArray addObject:temp];
             [self addSubview:temp];
         }
@@ -145,7 +150,8 @@
         for (int index=0; index<num; index++) {
             ImageLabel *temp = [self getImageLabel1];
             temp.label.font = [UIFont boldSystemFontOfSize:12];
-            temp.layer.backgroundColor = FlatRed.CGColor;
+            temp.layer.borderColor = FlatRed.CGColor;
+            temp.layer.borderWidth = 1.5;
             [self.needNotRawArray addObject:temp];
             [self addSubview:temp];
         }
@@ -158,7 +164,7 @@
         [temp mas_makeConstraints:^(MASConstraintMaker *make) {
             make.size.mas_equalTo(self.needRaw);
             make.top.mas_equalTo(self.needRaw);
-            CGFloat width = ((self.frame.size.width - 85-40)/3+5)*(index+1);
+            CGFloat width = ((self.frame.size.width - 85-20)/3+5)*(index+1);
             make.left.mas_equalTo(self.bgView).offset(width);
         }];
     }
@@ -168,7 +174,7 @@
         [temp mas_makeConstraints:^(MASConstraintMaker *make) {
             make.size.mas_equalTo(self.needRaw);
             make.top.mas_equalTo(self.needNotRaw);
-            CGFloat width = ((self.frame.size.width - 85-40)/3+5)*(index+1);
+            CGFloat width = ((self.frame.size.width - 85-20)/3+5)*(index+1);
             make.left.mas_equalTo(self.bgView).offset(width);
         }];
     }

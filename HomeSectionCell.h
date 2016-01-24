@@ -11,6 +11,5 @@
 @interface HomeSectionCell : UICollectionReusableView
 
 @property (strong,nonatomic) UILabel *title;
-@property (strong,nonatomic) UIButton *gotoNext;
 
 @end

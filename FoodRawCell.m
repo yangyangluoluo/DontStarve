@@ -39,34 +39,32 @@
 
 - (void)defineLayout{
     [self.image mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(20);
+        make.left.mas_equalTo(self);
         make.centerY.mas_equalTo(self);
         make.size.mas_equalTo(CGSizeMake(65.0f, 65.0f));
     }];
     
     [self.chName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.image.mas_right).offset(20);
+        make.centerX.mas_equalTo(self).offset(32.5);
         make.top.mas_equalTo(self);
-        CGFloat width = (self.frame.size.width - 125)/2;
-        make.width.mas_equalTo(width);
         make.height.mas_equalTo(30);
     }];
     
     [self.edibleMethod mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.chName);
-        make.left.mas_equalTo(self.chName.mas_right);
-        make.size.mas_equalTo(self.chName);
+        make.bottom.mas_equalTo(self.chName);
+        make.right.mas_equalTo(self.hunger.mas_right);
     }];
     
     [self.life mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(self.chName.mas_right);
+        make.right.mas_equalTo(self.mas_centerX).offset(32.5);
         make.top.mas_equalTo(self.chName.mas_bottom).offset(2);
-        make.width.mas_equalTo(70);
+        CGFloat width = (self.frame.size.width - 100)/2;
+        make.width.mas_equalTo(width);
         make.height.mas_equalTo(20);
     }];
     
     [self.hunger mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.chName.mas_right).offset(2);
+        make.left.mas_equalTo(self.mas_centerX).offset(34.5);
         make.top.mas_equalTo(self.life);
         make.size.mas_equalTo(self.life);
     }];

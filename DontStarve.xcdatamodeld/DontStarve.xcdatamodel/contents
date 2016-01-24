@@ -61,6 +61,16 @@
         <attribute name="produce" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Fire" representedClassName="Fire" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fire_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="maxTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="technology" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="time" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MixNeed" syncable="YES"/>
+    </entity>
     <entity name="FoodRaw" representedClassName="FoodRaw" syncable="YES">
         <attribute name="badCycle" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="chName" optional="YES" attributeType="String" syncable="YES"/>
@@ -70,6 +80,12 @@
         <attribute name="hunger" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="life" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sanity" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="MixNeed" representedClassName="MixNeed" syncable="YES">
+        <attribute name="mixNeed_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="num" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Plant" representedClassName="Plant" syncable="YES">
@@ -90,7 +106,6 @@
         <attribute name="recipe_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sanity" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="theRaw" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RecipeRaw" syncable="YES"/>
     </entity>
     <entity name="RecipeDetail" representedClassName="RecipeDetail" syncable="YES">
         <attribute name="raw1" optional="YES" attributeType="String" syncable="YES"/>
@@ -111,6 +126,16 @@
         <attribute name="recipeRaw_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Tools" representedClassName="Tools" syncable="YES">
+        <attribute name="atk" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="during" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="mixCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="technology" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tools_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MixNeed" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Animal" positionX="-26001" positionY="-8277" width="128" height="285"/>
         <element name="Boss" positionX="-25659" positionY="-8118" width="128" height="255"/>
@@ -118,9 +143,12 @@
         <element name="Characters" positionX="-26163" positionY="-8271" width="128" height="223"/>
         <element name="Construction" positionX="-25677" positionY="-8271" width="128" height="120"/>
         <element name="FoodRaw" positionX="-25821" positionY="-8055" width="128" height="180"/>
+        <element name="MixNeed" positionX="-25317" positionY="-7785" width="128" height="103"/>
         <element name="Plant" positionX="-25938" positionY="-7929" width="128" height="120"/>
         <element name="Recipe" positionX="-26064" positionY="-7740" width="117" height="193"/>
-        <element name="RecipeRaw" positionX="-25812" positionY="-7662" width="128" height="118"/>
         <element name="RecipeDetail" positionX="-25965" positionY="-8136" width="128" height="195"/>
+        <element name="RecipeRaw" positionX="-25920" positionY="-7740" width="128" height="118"/>
+        <element name="Tools" positionX="-25560" positionY="-7785" width="128" height="163"/>
+        <element name="Fire" positionX="-25317" positionY="-7650" width="128" height="163"/>
     </elements>
 </model>

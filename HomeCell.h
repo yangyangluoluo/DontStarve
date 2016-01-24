@@ -10,9 +10,10 @@
 
 @interface HomeCell : UICollectionViewCell
 
-@property (strong,nonatomic) UILabel *title;
+@property (strong,nonatomic) UILabel *chName;
+@property (strong,nonatomic) UILabel *enName;
 @property (strong,nonatomic) UIImageView *image;
-
-
+@property (strong,nonatomic) UIView *line1;
+@property (strong,nonatomic) UIView *line2;
 
 @end

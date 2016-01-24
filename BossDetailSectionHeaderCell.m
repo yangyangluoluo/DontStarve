@@ -27,8 +27,8 @@
 
 - (void)defineLayout{
     [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(20);
-        make.right.mas_equalTo(self).offset(-20);
+        make.left.mas_equalTo(self).offset(10);
+        make.right.mas_equalTo(self).offset(-10);
         make.top.mas_equalTo(self).offset(10);
         make.bottom.mas_equalTo(self);
     }];

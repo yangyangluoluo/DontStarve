@@ -23,45 +23,84 @@
 
 - (void)addViews{
     [self addSubview:[self image]];
-    [self addSubview:[self title]];
+    [self addSubview:[self chName]];
+    [self addSubview:[self enName]];
+    self.line1 = [self getLine];
+    [self addSubview:self.line1];
+    self.line2 = [self getLine];
+    [self addSubview:self.line2];
 }
 
 - (void)defineLayout{
-    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(1);
-        make.right.mas_equalTo(self).offset(-1);
-        make.bottom.mas_equalTo(self);
-    }];
     
     [self.image mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(1);
-        make.right.mas_equalTo(self).offset(-1);
-        make.top.mas_equalTo(self).offset(1);
-        make.bottom.mas_equalTo(self.title).offset(-1);
+        make.top.mas_equalTo(self).offset(5);
+        make.centerX.mas_equalTo(self);
+        make.size.mas_equalTo(CGSizeMake(36, 51));
     }];
+    
+    [self.chName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self);
+        make.right.mas_equalTo(self);
+        make.top.mas_equalTo(self.image.mas_bottom);
+    }];
+    
+    [self.enName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self);
+        make.right.mas_equalTo(self);
+        make.top.mas_equalTo(self.chName.mas_bottom);
+    }];
+    
+    [self.line1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self);
+        make.right.mas_equalTo(self);
+        make.bottom.mas_equalTo(self);
+        make.height.mas_equalTo(1);
+    }];
+    
+    [self.line2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self);
+        make.top.mas_equalTo(self);
+        make.bottom.mas_equalTo(self);
+        make.width.mas_equalTo(1);
+    }];
+
 }
 
-- (UILabel *)title{
-    if (!_title) {
-        _title = [[UILabel alloc]init];
-        _title.text = @"标题";
-        _title.backgroundColor = [UIColor clearColor];
-        _title.textAlignment = NSTextAlignmentCenter;
-        _title.textColor = [UIColor whiteColor];
-        _title.font = [UIFont systemFontOfSize:12];
+- (UILabel *)chName{
+    if (!_chName) {
+        _chName = [[UILabel alloc]init];
+        _chName.text = @"标题";
+        _chName.textAlignment = NSTextAlignmentCenter;
+        _chName.font = [UIFont systemFontOfSize:14];
+        _chName.textColor = FlatGreenDark;
     }
-    return _title;
+    return _chName;
+}
+
+- (UILabel *)enName{
+    if (!_enName) {
+        _enName = [[UILabel alloc]init];
+        _enName.text = @"标题";
+        _enName.textAlignment = NSTextAlignmentCenter;
+        _enName.font = [UIFont systemFontOfSize:14];
+    }
+    return _enName;
 }
 
 - (UIImageView *)image{
     if (!_image) {
         _image = [[UIImageView alloc]init];
-        _image.image = [UIImage imageNamed:@"1.jpg"];
         _image.contentMode = UIViewContentModeScaleToFill;
     }
     return _image;
 }
 
+- (UIView *)getLine{
+    UIView *line = [[UIView alloc]init];
+    line.layer.backgroundColor = FlatGreenDark.CGColor;
+    return line;
+}
 
 
 @end

@@ -78,7 +78,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)reloadLayout {
     CSStickyHeaderFlowLayout *layout = (id)self.collectionViewLayout;
     if ([layout isKindOfClass:[CSStickyHeaderFlowLayout class]]) {
-        layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width-40, 40.0f);
+        layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width-20, 40.0f);
         layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width/2);
         layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width/2);
         layout.parallaxHeaderAlwaysOnTop = NO;
@@ -117,11 +117,11 @@ static NSString * const reuseIdentifier = @"Cell";
         NSArray *num = [self.describe[indexPath.row] componentsSeparatedByString:@"|"];
         CGFloat height1 = (num.count-1) * 16.513672;
         CGFloat height = [self findHeightForText:self.describe[indexPath.row] havingMaximumWidth:width andFont:font];
-        return CGSizeMake(self.view.frame.size.width-40, 30+height+height1);
+        return CGSizeMake(self.view.frame.size.width-20, 30+height+height1);
     }else{
         NSString *temp = [self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
         CGFloat height = [self findHeightForText:temp havingMaximumWidth:width andFont:font];
-        return CGSizeMake(self.view.frame.size.width-40, 30+height);
+        return CGSizeMake(self.view.frame.size.width-20, 30+height);
     }
 }
 

@@ -25,6 +25,9 @@
 @property (strong,nonatomic) __block NSArray  *allRecipe;
 @property (strong,nonatomic) __block NSArray  *recipeRaw;
 @property (strong,nonatomic) __block NSArray  *recipeDetail;
+@property (strong,nonatomic) __block NSArray  *allTool;
+@property (strong,nonatomic) __block NSArray  *allFire;
+@property (strong,nonatomic) __block NSArray  *allProduce;
 
 - (instancetype)init;
 + (WebData *)sharedManager;
@@ -38,5 +41,8 @@
 - (void )downloadAllRecipe:(NSNumber *)recipeId;
 - (void )downloadRecipeRaw:(NSNumber *)recipeId;
 - (void )downloadRecipeDetail:(NSString *)recipeName;
+- (void )downloadAllTool:(NSNumber *)toolId;
+- (void )downloadAllFire:(NSNumber *)fireId;
+- (void )downloadAllProduce:(NSNumber *)produceId;
 
 @end
