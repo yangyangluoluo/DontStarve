@@ -28,15 +28,15 @@
 
 - (void)defineLayout{
     [self.image mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self).offset(10);
-        make.left.offset(10);
-        make.right.offset(-10);
-        make.bottom.mas_equalTo(self).offset(-10);
+        make.centerY.mas_equalTo(self);
+        make.centerX.mas_equalTo(self);
+        CGFloat width = self.frame.size.width/3*2;
+        make.size.mas_equalTo(CGSizeMake(width, width));
     }];
     
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(self.mas_right).offset(-15);
-        make.bottom.mas_equalTo(self).offset(-15);
+        make.bottom.mas_equalTo(self).offset(-2);
+        make.centerX.mas_equalTo(self);
     }];
     
 }
@@ -45,7 +45,6 @@
     if (!_image) {
         _image = [[UIImageView alloc]init];
         _image.contentMode = UIViewContentModeScaleToFill;
-        _image.backgroundColor = FlatGreenDark;
     }
     return _image;
 }

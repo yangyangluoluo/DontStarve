@@ -28,6 +28,12 @@
 @property (strong,nonatomic) __block NSArray  *allTool;
 @property (strong,nonatomic) __block NSArray  *allFire;
 @property (strong,nonatomic) __block NSArray  *allProduce;
+@property (strong,nonatomic) __block NSArray  *allScience;
+@property (strong,nonatomic) __block NSArray  *allBuild;
+@property (strong,nonatomic) __block NSArray  *allRefine;
+@property (strong,nonatomic) __block NSArray  *allMagic;
+@property (strong,nonatomic) __block NSArray  *allAncient;
+@property (strong,nonatomic) __block NSArray  *allBook;
 
 - (instancetype)init;
 + (WebData *)sharedManager;
@@ -44,5 +50,10 @@
 - (void )downloadAllTool:(NSNumber *)toolId;
 - (void )downloadAllFire:(NSNumber *)fireId;
 - (void )downloadAllProduce:(NSNumber *)produceId;
-
+- (void )downloadAllScience:(NSNumber *)sicenceId;
+- (void )downloadAllBuild:(NSNumber *)BuildId;
+- (void )downloadAllRefine:(NSNumber *)refineId;
+- (void )downloadAllMagic:(NSNumber *)magicId;
+- (void )downloadAllAncient:(NSNumber *)ancientId;
+- (void )downloadAllBook:(NSNumber *)bookId;
 @end

@@ -57,8 +57,6 @@
             addOneCoreData.urlStr = [NSString  stringWithFormat:@"%@%@",PREFIX,[dic objectForKey:@"urlStr"]];
             addOneCoreData.urlStr = [addOneCoreData.urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
             
-            NSMutableSet *needSet = [[NSMutableSet alloc]init];
-            NSUInteger index = 0;
             for (NSDictionary *dic2 in (NSArray *)[dic objectForKey:@"mixNeed"]) {
                 MixNeed *need = [NSEntityDescription insertNewObjectForEntityForName:@"MixNeed" inManagedObjectContext:self.manager.managedObjectContext];
                 need.mixNeed_id = @([[dic2 objectForKey:@"mixNeed_id"] intValue]);
@@ -66,14 +64,11 @@
                 need.name = [dic2 objectForKey:@"name"];
                 need.urlStr = [NSString  stringWithFormat:@"%@%@",PREFIX,[dic2 objectForKey:@"urlStr"]];
                 need.urlStr = [need.urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
-                [needSet addObject:need];
-                index++;
+                need.relationship1 = addOneCoreData;
             }
-            [addOneCoreData addRelationship:needSet];
         }
     }
     [self.manager saveContext];
-    
 }
 
 

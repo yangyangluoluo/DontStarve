@@ -25,6 +25,13 @@
 #import "FoodRawCVC.h"
 #import "ToolCVC.h"
 #import "FireCVC.h"
+#import "ProduceCVC.h"
+#import "ScienceCVC.h"
+#import "BuildCVC.h"
+#import "RefineCVC.h"
+#import "MagicCVC.h"
+#import "AncientCVC.h"
+#import "BookCVC.h"
 @interface HomeCVC ()
 @property (strong,nonatomic) HomeHeaderCell *homeHeaderCell;
 @property (strong,nonatomic) NSArray *describe;
@@ -170,6 +177,34 @@ static NSString * const reuseIdentifier = @"Cell";
     }else if (indexPath.section==1 && indexPath.row == 1){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         FireCVC *cvc = [[FireCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 3){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        ProduceCVC *cvc = [[ProduceCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 4){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        ScienceCVC *cvc = [[ScienceCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 6){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        BuildCVC *cvc = [[BuildCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 7){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        RefineCVC *cvc = [[RefineCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 8){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        MagicCVC *cvc = [[MagicCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 10){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        BookCVC *cvc = [[BookCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 11){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        AncientCVC *cvc = [[AncientCVC alloc]initWithCollectionViewLayout:layout];
         [self.navigationController pushViewController:cvc animated:YES];
     }
 }

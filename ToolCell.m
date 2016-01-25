@@ -6,8 +6,7 @@
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 
-#import "Chameleon.h"
-#import "Masonry.h"
+
 #import "ToolCell.h"
 
 @implementation ToolCell
@@ -172,8 +171,6 @@
         make.top.mas_equalTo(temp);
         make.bottom.mas_equalTo(temp);
     }];
-    temp.layer.borderColor = FlatGreenDark.CGColor;
-    temp.layer.borderWidth = 0.5;
     temp.label.textAlignment = NSTextAlignmentLeft;
     return temp;
 }

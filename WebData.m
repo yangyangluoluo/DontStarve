@@ -7,22 +7,26 @@
 //
 
 #import "WebData.h"
-
-#define ALLCHARACTERS   @"http://192.168.1.220/DontStarve/allCharacters.php?characterId=%@"
-#define ALLANIMAL       @"http://192.168.1.220/DontStarve/allAnimal.php?animalId=%@"
-#define ALLPLANT        @"http://192.168.1.220/DontStarve/allPlant.php?plantId=%@"
-#define ALLCONSTRUCT    @"http://192.168.1.220/DontStarve/allConstruction.php?constructionId=%@"
-#define ALLBOSS         @"http://192.168.1.220/DontStarve/allBoss.php?bossId=%@"
-#define BOSSTRAIT       @"http://192.168.1.220/DontStarve/bossTrait.php?bossId=%@"
-#define ALLFOODRAW      @"http://192.168.1.220/DontStarve/allFoodRaw.php?foodRawId=%@"
-#define ALLRECIPE       @"http://192.168.1.220/DontStarve/allRecipe.php?recipeId=%@"
-#define RECIPERAW       @"http://192.168.1.220/DontStarve/recipeRaw.php?recipeId=%@"
-#define RECIPEDETAIL    @"http://192.168.1.220/DontStarve/recipeDetail.php?recipeName=%@"
-#define ALLTOOL         @"http://192.168.1.220/DontStarve/allTool.php?toolId=%@"
-#define ALLFIRE         @"http://192.168.1.220/DontStarve/allFire.php?fireId=%@"
-#define ALLPRODUCE      @"http://192.168.1.220/DontStarve/allProduce.php?produceId=%@"
-
-
+#define PREFIX          @"http://192.168.1.220/"
+#define ALLCHARACTERS   @"%@DontStarve/allCharacters.php?characterId=%@"
+#define ALLANIMAL       @"%@DontStarve/allAnimal.php?animalId=%@"
+#define ALLPLANT        @"%@DontStarve/allPlant.php?plantId=%@"
+#define ALLCONSTRUCT    @"%@DontStarve/allConstruction.php?constructionId=%@"
+#define ALLBOSS         @"%@DontStarve/allBoss.php?bossId=%@"
+#define BOSSTRAIT       @"%@DontStarve/bossTrait.php?bossId=%@"
+#define ALLFOODRAW      @"%@DontStarve/allFoodRaw.php?foodRawId=%@"
+#define ALLRECIPE       @"%@DontStarve/allRecipe.php?recipeId=%@"
+#define RECIPERAW       @"%@DontStarve/recipeRaw.php?recipeId=%@"
+#define RECIPEDETAIL    @"%@DontStarve/recipeDetail.php?recipeName=%@"
+#define ALLTOOL         @"%@DontStarve/allTool.php?toolId=%@"
+#define ALLFIRE         @"%@DontStarve/allFire.php?fireId=%@"
+#define ALLPRODUCE      @"%@DontStarve/allProduce.php?produceId=%@"
+#define ALLSCIENCE      @"%@DontStarve/allScience.php?scienceId=%@"
+#define ALLBUILD        @"%@DontStarve/allBuild.php?buildId=%@"
+#define ALLREFINE       @"%@DontStarve/allRefine.php?refineId=%@"
+#define ALLMAGIC        @"%@DontStarve/allMagic.php?magicId=%@"
+#define ALLANCIENT      @"%@DontStarve/allAncient.php?ancientId=%@"
+#define ALLBOOK         @"%@DontStarve/allBook.php?bookId=%@"
 
 
 @implementation WebData
@@ -46,7 +50,7 @@
 }
 
 - (void)downLoadCharactersbyId:(NSNumber *)CharactersId{
-    NSString *urlStr = [NSString stringWithFormat:ALLCHARACTERS,CharactersId];
+    NSString *urlStr = [NSString stringWithFormat:ALLCHARACTERS,PREFIX,CharactersId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -63,7 +67,7 @@
 }
 
 - (void)downloadAnimal:(NSNumber *)animalId{
-    NSString *urlStr = [NSString stringWithFormat:ALLANIMAL,animalId];
+    NSString *urlStr = [NSString stringWithFormat:ALLANIMAL,PREFIX,animalId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -80,7 +84,7 @@
 }
 
 - (void )downloadAllPlant:(NSNumber *)plantId{
-    NSString *urlStr = [NSString stringWithFormat:ALLPLANT,plantId];
+    NSString *urlStr = [NSString stringWithFormat:ALLPLANT,PREFIX,plantId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -97,7 +101,7 @@
 }
 
 - (void )downloadConstruction:(NSNumber *)constructionId{
-    NSString *urlStr = [NSString stringWithFormat:ALLCONSTRUCT,constructionId];
+    NSString *urlStr = [NSString stringWithFormat:ALLCONSTRUCT,PREFIX,constructionId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -114,7 +118,7 @@
 }
 
 - (void )downloadBoss:(NSNumber *)bossId{
-    NSString *urlStr = [NSString stringWithFormat:ALLBOSS,bossId];
+    NSString *urlStr = [NSString stringWithFormat:ALLBOSS,PREFIX,bossId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -131,7 +135,7 @@
 }
 
 - (void )downloadBossTrait:(NSNumber *)bossId{
-    NSString *urlStr = [NSString stringWithFormat:BOSSTRAIT,bossId];
+    NSString *urlStr = [NSString stringWithFormat:BOSSTRAIT,PREFIX,bossId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -148,7 +152,7 @@
 }
 
 - (void )downloadAllFoodRaw:(NSNumber *)foodId{
-    NSString *urlStr = [NSString stringWithFormat:ALLFOODRAW,foodId];
+    NSString *urlStr = [NSString stringWithFormat:ALLFOODRAW,PREFIX,foodId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -165,7 +169,7 @@
 }
 
 - (void )downloadAllRecipe:(NSNumber *)recipeId{
-    NSString *urlStr = [NSString stringWithFormat:ALLRECIPE,recipeId];
+    NSString *urlStr = [NSString stringWithFormat:ALLRECIPE,PREFIX,recipeId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -182,7 +186,7 @@
 }
 
 - (void )downloadRecipeRaw:(NSNumber *)recipeId{
-    NSString *urlStr = [NSString stringWithFormat:RECIPERAW,recipeId];
+    NSString *urlStr = [NSString stringWithFormat:RECIPERAW,PREFIX,recipeId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -199,7 +203,7 @@
 }
 
 - (void )downloadRecipeDetail:(NSString *)recipeName{
-    NSString *urlStr = [NSString stringWithFormat:RECIPEDETAIL,recipeName];
+    NSString *urlStr = [NSString stringWithFormat:RECIPEDETAIL,PREFIX,recipeName];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -216,7 +220,7 @@
 }
 
 - (void )downloadAllTool:(NSNumber *)toolId{
-    NSString *urlStr = [NSString stringWithFormat:ALLTOOL,toolId];
+    NSString *urlStr = [NSString stringWithFormat:ALLTOOL,PREFIX,toolId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -233,7 +237,7 @@
 }
 
 - (void )downloadAllFire:(NSNumber *)fireId{
-    NSString *urlStr = [NSString stringWithFormat:ALLFIRE,fireId];
+    NSString *urlStr = [NSString stringWithFormat:ALLFIRE,PREFIX,fireId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -250,7 +254,7 @@
 }
 
 - (void )downloadAllProduce:(NSNumber *)produceId{
-    NSString *urlStr = [NSString stringWithFormat:ALLPRODUCE,produceId];
+    NSString *urlStr = [NSString stringWithFormat:ALLPRODUCE,PREFIX,produceId];
     urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
     _manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -258,7 +262,7 @@
     NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         @strongify(self);
         if (error) {
-            NSLog(@"downloadAllFire ERROR: %@",error);
+            NSLog(@"downloadAllProduce ERROR: %@",error);
         }else{
             self.allProduce = responseObject;
         }
@@ -266,5 +270,106 @@
     [dataTask resume];
 }
 
+- (void )downloadAllScience:(NSNumber *)sicenceId{
+    NSString *urlStr = [NSString stringWithFormat:ALLSCIENCE,PREFIX,sicenceId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllScience ERROR: %@",error);
+        }else{
+            self.allProduce = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllBuild:(NSNumber *)BuildId{
+    NSString *urlStr = [NSString stringWithFormat:ALLBUILD,PREFIX,BuildId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllBuild ERROR: %@",error);
+        }else{
+            self.allBuild = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllRefine:(NSNumber *)refineId{
+    NSString *urlStr = [NSString stringWithFormat:ALLREFINE,PREFIX,refineId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllRefine ERROR: %@",error);
+        }else{
+            self.allRefine = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllMagic:(NSNumber *)magicId{
+    NSString *urlStr = [NSString stringWithFormat:ALLMAGIC,PREFIX,magicId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllMagic ERROR: %@",error);
+        }else{
+            self.allMagic = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllAncient:(NSNumber *)ancientId{
+    NSString *urlStr = [NSString stringWithFormat:ALLANCIENT,PREFIX,ancientId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllAncient ERROR: %@",error);
+        }else{
+            self.allAncient = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllBook:(NSNumber *)bookId{
+    NSString *urlStr = [NSString stringWithFormat:ALLBOOK,PREFIX,bookId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllAncient ERROR: %@",error);
+        }else{
+            self.allBook = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
 
 @end

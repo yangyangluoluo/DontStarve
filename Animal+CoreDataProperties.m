@@ -2,7 +2,7 @@
 //  Animal+CoreDataProperties.m
 //  DontStarve
 //
-//  Created by 李建国 on 16/1/9.
+//  Created by 李建国 on 16/1/25.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,20 +14,20 @@
 @implementation Animal (CoreDataProperties)
 
 @dynamic animal_id;
-@dynamic chName;
-@dynamic enName;
-@dynamic type;
-@dynamic atktype;
-@dynamic life;
 @dynamic atk;
 @dynamic atkPeriod;
-@dynamic wit;
-@dynamic walkingSpeed;
-@dynamic runSpeed;
-@dynamic loot;
+@dynamic atktype;
 @dynamic attractFood;
 @dynamic bornRegion;
+@dynamic chName;
+@dynamic enName;
+@dynamic life;
+@dynamic loot;
 @dynamic remark;
+@dynamic runSpeed;
+@dynamic type;
 @dynamic urlStr;
+@dynamic walkingSpeed;
+@dynamic wit;
 
 @end

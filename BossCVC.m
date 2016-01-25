@@ -82,7 +82,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(self.view.frame.size.width/2, self.view.frame.size.width/2);
+    return CGSizeMake(self.view.frame.size.width/3, self.view.frame.size.width/3);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
@@ -96,6 +96,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BossCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
+    cell.layer.borderColor = FlatGreenDark.CGColor;
+    cell.layer.borderWidth = 1;
     Boss *boss = [self.viewModel getBoss:indexPath.row];
     UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:boss.urlStr];
     if (image) {

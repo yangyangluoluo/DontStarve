@@ -72,6 +72,7 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.three.text = [NSString stringWithFormat:@"%@",tool.during];
     }
     cell.four.text = tool.mixCode;
+    
     NSUInteger index = 0;
     for (MixNeed *mixNeed in tool.relationship) {
         ImageLabel *temp = cell.raws[index];
