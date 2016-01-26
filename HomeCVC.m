@@ -32,6 +32,9 @@
 #import "MagicCVC.h"
 #import "AncientCVC.h"
 #import "BookCVC.h"
+#import "SurvivalCVC.h"
+#import "FightCVC.h"
+#import "DressCVC.h"
 @interface HomeCVC ()
 @property (strong,nonatomic) HomeHeaderCell *homeHeaderCell;
 @property (strong,nonatomic) NSArray *describe;
@@ -178,6 +181,10 @@ static NSString * const reuseIdentifier = @"Cell";
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         FireCVC *cvc = [[FireCVC alloc]initWithCollectionViewLayout:layout];
         [self.navigationController pushViewController:cvc animated:YES];
+    }else if (indexPath.section==1 && indexPath.row == 2){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        SurvivalCVC *cvc = [[SurvivalCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
     }else if (indexPath.section==1 && indexPath.row == 3){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         ProduceCVC *cvc = [[ProduceCVC alloc]initWithCollectionViewLayout:layout];
@@ -186,7 +193,12 @@ static NSString * const reuseIdentifier = @"Cell";
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         ScienceCVC *cvc = [[ScienceCVC alloc]initWithCollectionViewLayout:layout];
         [self.navigationController pushViewController:cvc animated:YES];
-    }else if (indexPath.section==1 && indexPath.row == 6){
+    }else if (indexPath.section==1 && indexPath.row == 5){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        FightCVC *cvc = [[FightCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }
+    else if (indexPath.section==1 && indexPath.row == 6){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         BuildCVC *cvc = [[BuildCVC alloc]initWithCollectionViewLayout:layout];
         [self.navigationController pushViewController:cvc animated:YES];
@@ -198,7 +210,12 @@ static NSString * const reuseIdentifier = @"Cell";
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         MagicCVC *cvc = [[MagicCVC alloc]initWithCollectionViewLayout:layout];
         [self.navigationController pushViewController:cvc animated:YES];
-    }else if (indexPath.section==1 && indexPath.row == 10){
+    }else if (indexPath.section==1 && indexPath.row == 9){
+        CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
+        DressCVC *cvc = [[DressCVC alloc]initWithCollectionViewLayout:layout];
+        [self.navigationController pushViewController:cvc animated:YES];
+    }
+    else if (indexPath.section==1 && indexPath.row == 10){
         CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
         BookCVC *cvc = [[BookCVC alloc]initWithCollectionViewLayout:layout];
         [self.navigationController pushViewController:cvc animated:YES];

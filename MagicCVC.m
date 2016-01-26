@@ -30,7 +30,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"生产列表";
+    self.title = @"魔法列表";
     self.leftItem = [self leftItem];
     [self bindWithReactive];
     [self.viewModel downloadData];
@@ -76,15 +76,6 @@ static NSString * const reuseIdentifier = @"Cell";
         [self setImageView:temp.image urlStr:mixNeed.urlStr];
         index++;
     }
-    for (NSUInteger index1 = 0;index1<cell.raws.count; index1++) {
-        ImageLabel *temp = cell.raws[index1];
-        if (index1<index) {
-            temp.hidden = NO;
-        }else{
-            temp.hidden = YES;
-        }
-    }
-    
     [self setImageView:cell.image urlStr:magic.urlStr];
     
     return cell;

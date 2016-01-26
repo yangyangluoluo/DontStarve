@@ -1,40 +1,40 @@
 //
-//  ScienceCVC.m
+//  FightCVC.m
 //  DontStarve
 //
-//  Created by 李建国 on 16/1/25.
+//  Created by 李建国 on 16/1/26.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 
-#import "ScienceCVC.h"
-#import "Science+CoreDataProperties.h"
-#import "MixNeed+CoreDataProperties.m"
-#import "ScienceCell.h"
-#import "ScienceModel.h"
+#import "FightCVC.h"
+#import "FightCell.h"
+#import "FightModel.h"
+#import "Fight+CoreDataProperties.h"
+#import "MixNeed+CoreDataProperties.h"
 
-@interface ScienceCVC ()
+@interface FightCVC ()
 
 @end
 
-@implementation ScienceCVC
+@implementation FightCVC
 
 static NSString * const reuseIdentifier = @"Cell";
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout{
     self = [super initWithCollectionViewLayout:layout];
     if (self) {
-        self.viewModel = [[ScienceModel alloc]init];
+        self.viewModel = [[FightModel alloc]init];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"科学列表";
+    self.title = @"战斗列表";
     self.leftItem = [self leftItem];
     [self bindWithReactive];
     [self.viewModel downloadData];
-    [self.collectionView registerClass:[ProduceCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[FightCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -46,7 +46,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(self.view.frame.size.width-20, 90);
+    return CGSizeMake(self.view.frame.size.width-20, 120);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
@@ -58,25 +58,27 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ScienceCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    FightCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
     cell.layer.borderColor = FlatGreenDark.CGColor;
     cell.layer.borderWidth = 1.0;
     
-    Science *science = [self.viewModel getObject:indexPath.row];
-    cell.name.text = science.name;
-    cell.one.text = science.technology;
-    cell.two.text = science.function;
-    cell.three.text = science.code;
+    Fight *fight = [self.viewModel getObject:indexPath.row];
+    cell.name.text = fight.name;
+    cell.one.text = fight.technology;
+    cell.two.text = fight.atk;
+    cell.three.text = fight.during;
+    cell.four.text = fight.code;
+    cell.five.text = fight.special;
     
     NSUInteger index = 0;
-    for (MixNeed *mixNeed in science.relationship) {
+    for (MixNeed *mixNeed in fight.relationship) {
         ImageLabel *temp = cell.raws[index];
-        temp.label.text = [NSString stringWithFormat:@"%@×%@",mixNeed.name,mixNeed.num];
+        temp.label.text = [NSString stringWithFormat:@"%@×%@ 个",mixNeed.name,mixNeed.num];
         [self setImageView:temp.image urlStr:mixNeed.urlStr];
         index++;
     }
-    [self setImageView:cell.image urlStr:science.urlStr];
+    [self setImageView:cell.image urlStr:fight.urlStr];
     
     return cell;
 }

@@ -18,5 +18,8 @@
 #import "Magic+CoreDataProperties.h"
 #import "Ancient+CoreDataProperties.h"
 #import "Book+CoreDataProperties.h"
+#import "Dress+CoreDataProperties.h"
+#import "Survival+CoreDataProperties.h"
+#import "Fight+CoreDataProperties.h"
 
 #endif /* CoreDataHeader_h */

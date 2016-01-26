@@ -27,6 +27,9 @@
 #define ALLMAGIC        @"%@DontStarve/allMagic.php?magicId=%@"
 #define ALLANCIENT      @"%@DontStarve/allAncient.php?ancientId=%@"
 #define ALLBOOK         @"%@DontStarve/allBook.php?bookId=%@"
+#define ALLSURVIVAL     @"%@DontStarve/allSurvival.php?survivalId=%@"
+#define ALLFIGHT        @"%@DontStarve/allFight.php?fightId=%@"
+#define ALLDRESS        @"%@DontStarve/allDress.php?dressId=%@"
 
 
 @implementation WebData
@@ -367,6 +370,57 @@
             NSLog(@"downloadAllAncient ERROR: %@",error);
         }else{
             self.allBook = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllSurvival:(NSNumber *)survivalId{
+    NSString *urlStr = [NSString stringWithFormat:ALLSURVIVAL,PREFIX,survivalId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllAncient ERROR: %@",error);
+        }else{
+            self.allSurvival = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllFight:(NSNumber *)fightId{
+    NSString *urlStr = [NSString stringWithFormat:ALLFIGHT,PREFIX,fightId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllAncient ERROR: %@",error);
+        }else{
+            self.allFight = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadAllDress:(NSNumber *)dressId{
+    NSString *urlStr = [NSString stringWithFormat:ALLDRESS,PREFIX,dressId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllDress ERROR: %@",error);
+        }else{
+            self.allDress = responseObject;
         }
     }];
     [dataTask resume];

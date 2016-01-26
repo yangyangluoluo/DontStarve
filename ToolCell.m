@@ -172,6 +172,8 @@
         make.bottom.mas_equalTo(temp);
     }];
     temp.label.textAlignment = NSTextAlignmentLeft;
+    temp.label.numberOfLines = 0;
+    temp.label.lineBreakMode = NSLineBreakByWordWrapping;
     return temp;
 }
 

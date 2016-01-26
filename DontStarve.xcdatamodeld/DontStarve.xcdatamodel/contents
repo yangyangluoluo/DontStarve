@@ -86,6 +86,27 @@
         <attribute name="produce" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Dress" representedClassName="Dress" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dress_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="during" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="function" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="technology" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MixNeed" inverseName="relationship9" inverseEntity="MixNeed" syncable="YES"/>
+    </entity>
+    <entity name="Fight" representedClassName="Fight" syncable="YES">
+        <attribute name="atk" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="during" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fight_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="special" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="technology" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MixNeed" inverseName="relationship10" inverseEntity="MixNeed" syncable="YES"/>
+    </entity>
     <entity name="Fire" representedClassName="Fire" syncable="YES">
         <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fire_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -130,6 +151,9 @@
         <relationship name="relationship6" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tools" inverseName="relationship" inverseEntity="Tools" syncable="YES"/>
         <relationship name="relationship7" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ancient" inverseName="relationship" inverseEntity="Ancient" syncable="YES"/>
         <relationship name="relationship8" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="relationship" inverseEntity="Book" syncable="YES"/>
+        <relationship name="relationship9" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dress" inverseName="relationship" inverseEntity="Dress" syncable="YES"/>
+        <relationship name="relationship10" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Fight" inverseName="relationship" inverseEntity="Fight" syncable="YES"/>
+        <relationship name="relationship11" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Survival" inverseName="relationship" inverseEntity="Survival" syncable="YES"/>
     </entity>
     <entity name="Plant" representedClassName="Plant" syncable="YES">
         <attribute name="describe" optional="YES" attributeType="String" syncable="YES"/>
@@ -196,6 +220,17 @@
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MixNeed" inverseName="relationship2" inverseEntity="MixNeed" syncable="YES"/>
     </entity>
+    <entity name="Survival" representedClassName="Survival" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="function" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stackNum" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="survival_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="technology" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="useNum" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MixNeed" inverseName="relationship11" inverseEntity="MixNeed" syncable="YES"/>
+    </entity>
     <entity name="Tools" representedClassName="Tools" syncable="YES">
         <attribute name="atk" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="during" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -215,7 +250,7 @@
         <element name="Construction" positionX="-25677" positionY="-8271" width="128" height="120"/>
         <element name="Fire" positionX="-25317" positionY="-7650" width="128" height="163"/>
         <element name="FoodRaw" positionX="-25821" positionY="-8055" width="128" height="180"/>
-        <element name="MixNeed" positionX="-25317" positionY="-7785" width="128" height="240"/>
+        <element name="MixNeed" positionX="-25317" positionY="-7785" width="128" height="285"/>
         <element name="Plant" positionX="-25938" positionY="-7929" width="128" height="120"/>
         <element name="Produce" positionX="-25956" positionY="-8127" width="128" height="148"/>
         <element name="Recipe" positionX="-26064" positionY="-7740" width="117" height="193"/>
@@ -227,5 +262,8 @@
         <element name="Magic" positionX="-25965" positionY="-8136" width="128" height="150"/>
         <element name="Ancient" positionX="-25956" positionY="-8127" width="128" height="150"/>
         <element name="Book" positionX="-25947" positionY="-8118" width="128" height="120"/>
+        <element name="Dress" positionX="-25938" positionY="-8109" width="128" height="165"/>
+        <element name="Fight" positionX="-25929" positionY="-8100" width="128" height="180"/>
+        <element name="Survival" positionX="-25920" positionY="-8091" width="128" height="180"/>
     </elements>
 </model>

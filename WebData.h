@@ -34,6 +34,10 @@
 @property (strong,nonatomic) __block NSArray  *allMagic;
 @property (strong,nonatomic) __block NSArray  *allAncient;
 @property (strong,nonatomic) __block NSArray  *allBook;
+@property (strong,nonatomic) __block NSArray  *allSurvival;
+@property (strong,nonatomic) __block NSArray  *allFight;
+@property (strong,nonatomic) __block NSArray  *allDress;
+
 
 - (instancetype)init;
 + (WebData *)sharedManager;
@@ -56,4 +60,7 @@
 - (void )downloadAllMagic:(NSNumber *)magicId;
 - (void )downloadAllAncient:(NSNumber *)ancientId;
 - (void )downloadAllBook:(NSNumber *)bookId;
+- (void )downloadAllSurvival:(NSNumber *)survivalId;
+- (void )downloadAllFight:(NSNumber *)fightId;
+- (void )downloadAllDress:(NSNumber *)dressId;
 @end

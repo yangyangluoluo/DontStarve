@@ -26,5 +26,8 @@
 @dynamic relationship;
 @dynamic relationship7;
 @dynamic relationship8;
+@dynamic relationship9;
+@dynamic relationship10;
+@dynamic relationship11;
 
 @end

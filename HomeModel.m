@@ -40,7 +40,7 @@
         HomeDescribe *d38 = [[HomeDescribe alloc]initWitchName:@"精制" enName:@"Refine" icon:@"Icon_Refine.png"];
         HomeDescribe *d39 = [[HomeDescribe alloc]initWitchName:@"魔法" enName:@"Magic" icon:@"Icon_Magic.png"];
         HomeDescribe *d310 = [[HomeDescribe alloc]initWitchName:@"服装" enName:@"Dress" icon:@"Icon_Dress.png"];
-        HomeDescribe *d311 = [[HomeDescribe alloc]initWitchName:@"书本" enName:@"Book" icon:@"Icon_Book.png"];
+        HomeDescribe *d311 = [[HomeDescribe alloc]initWitchName:@"书籍" enName:@"Book" icon:@"Icon_Book.png"];
         HomeDescribe *d312 = [[HomeDescribe alloc]initWitchName:@"远古" enName:@"Acient" icon:@"Icon_Acient.png"];
         NSArray *title2 =@[d31,d32,d33,d34,d35,d36,d37,d38,d39,d310,d311,d312];
         [self.titles addObject:title2];

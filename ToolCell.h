@@ -27,4 +27,7 @@
 @property (strong,nonatomic) UILabel *four;
 @property (strong,nonatomic) NSArray *raws;
 
+- (UILabel *)getLabel;
+- (UILabel *)getDescribLabel;
+
 @end

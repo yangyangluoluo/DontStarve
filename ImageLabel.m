@@ -51,7 +51,6 @@
 - (UIImageView *)image{
     if (!_image) {
         _image = [[UIImageView alloc]init];
-        _image.image = [UIImage imageNamed:@"life.jpg"];
     }
     return _image;
 }
@@ -61,7 +60,6 @@
         _label = [[UILabel alloc]init];
         _label.textAlignment = NSTextAlignmentCenter;
         _label.font = [UIFont systemFontOfSize:12];
-        _label.text = @"生命值";
     }
     return _label;
 }

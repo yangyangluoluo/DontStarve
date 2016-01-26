@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) Magic *relationship;
 @property (nullable, nonatomic, retain) Ancient *relationship7;
 @property (nullable, nonatomic, retain) Book *relationship8;
+@property (nullable, nonatomic, retain) Dress *relationship9;
+@property (nullable, nonatomic, retain) Fight *relationship10;
+@property (nullable, nonatomic, retain) Survival *relationship11;
 
 @end
 
