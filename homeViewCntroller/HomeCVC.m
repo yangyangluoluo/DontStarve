@@ -225,7 +225,17 @@ static NSString * const reuseIdentifier = @"Cell";
         [self.navigationController pushViewController:cvc animated:YES];
     }
 }
+- (void)collectionView:(UICollectionView *)colView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell* cell = [colView cellForItemAtIndexPath:indexPath];
+    [cell setBackgroundColor:[UIColor lightGrayColor]];
+}
 
+- (void)collectionView:(UICollectionView *)colView  didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell* cell = [colView cellForItemAtIndexPath:indexPath];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [cell setBackgroundColor:[UIColor whiteColor]];
+    });
+}
 #pragma mark scrollView
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender {

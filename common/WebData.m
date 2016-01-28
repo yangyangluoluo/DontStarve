@@ -31,6 +31,14 @@
 #define ALLFIGHT        @"%@DontStarve/allFight.php?fightId=%@"
 #define ALLDRESS        @"%@DontStarve/allDress.php?dressId=%@"
 
+#define REGISTER        @"%@DontStarve/register.php"
+#define LOGIN           @"%@DontStarve/login.php"
+#define ADDQUESTION     @"%@DontStarve/addQuestion.php"
+#define ALLQUESTION     @"%@DontStarve/allQuestion.php?theDate=%@&direction=%@"
+#define COMMENTQUESTION @"%@DontStarve/saveQuestionComment.php"
+#define QUESTIONCOMMENT @"%@DontStarve/getQuestionComment.php?questionId=%@&date=%@"
+#define QUESTIONREPLY   @"%@DontStarve/questionReply.php?questionId=%@"
+
 
 @implementation WebData
 
@@ -48,6 +56,10 @@
     if (self) {
         _configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         _manager = [[AFURLSessionManager alloc]initWithSessionConfiguration:_configuration];
+        
+        _jsonManager = [AFHTTPRequestOperationManager manager];
+        _jsonManager.requestSerializer = [AFJSONRequestSerializer serializer];
+        _jsonManager.responseSerializer = [AFJSONResponseSerializer serializer];
     }
     return self;
 }
@@ -425,5 +437,112 @@
     }];
     [dataTask resume];
 }
+
+- (void )userRegister:(NSDictionary *)userInformation{
+    NSString *urlStr = [NSString stringWithFormat:REGISTER,PREFIX];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    @weakify(self);
+    [_jsonManager POST:urlStr parameters:userInformation success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        @strongify(self);
+        self.registerState = responseObject;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"registerUser%@",error);
+    }];
+}
+
+- (void )userLogin:(NSDictionary *)userInformation{
+    NSString *urlStr = [NSString stringWithFormat:LOGIN,PREFIX];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    @weakify(self);
+    [_jsonManager POST:urlStr parameters:userInformation success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        @strongify(self);
+        self.loginState = responseObject;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"registerUser%@",error);
+    }];
+}
+
+- (void )addQuestion:(NSDictionary *)questionInformation{
+    NSString *urlStr = [NSString stringWithFormat:ADDQUESTION,PREFIX];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    @weakify(self);
+    [_jsonManager POST:urlStr parameters:questionInformation success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        @strongify(self);
+        self.addQuestionState = responseObject;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"addQuestion%@",error);
+    }];
+}
+
+- (void )downloadAllQuestion:(NSNumber *)date direction:(NSNumber *)direction{
+    NSString *urlStr = [NSString stringWithFormat:ALLQUESTION,PREFIX,date,direction];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadAllDress ERROR: %@",error);
+        }else{
+            self.allQuestion = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )commentQuestion:(NSDictionary *)information{
+    NSString *urlStr = [NSString stringWithFormat:COMMENTQUESTION,PREFIX];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    @weakify(self);
+    [_jsonManager POST:urlStr parameters:information success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        @strongify(self);
+        self.commentQuestion = responseObject;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"addQuestion%@",error);
+    }];
+}
+
+- (void )downloadQuestionComment:(NSNumber *)questionId date:(NSNumber *)date{
+    NSString *urlStr = [NSString stringWithFormat:QUESTIONCOMMENT,PREFIX,questionId,date];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadQuestionComment ERROR: %@",error);
+        }else{
+            self.questionComment = responseObject;
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void )downloadQuestionReply:(NSNumber *)questionId{
+    NSString *urlStr = [NSString stringWithFormat:QUESTIONREPLY,PREFIX,questionId];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    @weakify(self);
+    NSURLSessionDataTask *dataTask = [_manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        @strongify(self);
+        if (error) {
+            NSLog(@"downloadQuestionComment ERROR: %@",error);
+        }else{
+            self.questionReply = responseObject;
+        }
+    }];
+    [dataTask resume];
+    
+}
+
+
+
+
+
+
+
 
 @end

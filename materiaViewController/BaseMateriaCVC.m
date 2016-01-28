@@ -56,7 +56,6 @@
     }];
 }
 
-
 - (void )setImageView:(UIImageView *)view urlStr:(NSString *)urlStr{
     UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlStr];
     if (image) {
@@ -67,7 +66,8 @@
             view.image = image;
         }];
     }
-    
 }
+
+
 
 @end

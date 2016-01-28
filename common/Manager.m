@@ -76,11 +76,23 @@
     return _persistentStoreCoordinator;
 }
 
-- (void)deleteSqlite{
+- (void )deleteSqlite{
     NSFileManager *manager = [NSFileManager defaultManager];
     NSArray *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
     NSString *documents = [path objectAtIndex:0];
     [manager removeItemAtPath:documents error:nil];
+}
+
+- (void )deleteCache{
+//    NSFileManager *manager = [NSFileManager defaultManager];
+//    NSString *homePath = NSHomeDirectory();
+//    NSError *theError;
+//    [manager removeItemAtPath:homePath error:&theError];
+//    if (theError) {
+//        NSLog(@"错误%@",theError);
+//    }
+//    [self managedObjectContext];
+//    [self managedObjectModel];
 }
 
 

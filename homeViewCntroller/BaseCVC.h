@@ -5,6 +5,10 @@
 //  Created by 李建国 on 16/1/17.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
+
+#import "MBProgressHUD.h"
+#import "MJRefresh.h"
+#import "MJRefreshAutoNormalFooter.h"
 #import "CSStickyHeaderFlowLayout.h"
 #import "UIImageView+WebCache.h"
 #import "Chameleon.h"
@@ -19,5 +23,6 @@
 
 
 - (UIBarButtonItem *)leftItem;
+- (UIBarButtonItem *)rightItem;
 
 @end

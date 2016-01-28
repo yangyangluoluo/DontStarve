@@ -15,7 +15,6 @@
 
 @interface BaseMateriaCVC : UICollectionViewController
 
-
 @property (strong,nonatomic) UIBarButtonItem *leftItem;
 @property (strong,nonatomic) UIBarButtonItem *rightItem;
 @property (strong,nonatomic) BaseMateriaModel *viewModel;

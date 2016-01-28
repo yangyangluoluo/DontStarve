@@ -18,5 +18,7 @@
 + (Manager *)sharedManager;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+- (void )deleteCache;
+- (void )deleteSqlite;
 
 @end

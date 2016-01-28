@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "HomeCVC.h"
 #import "CSStickyHeaderFlowLayout.h"
+#import "SettingCVC.h"
+#import "QuestionCVC.h"
 @interface AppDelegate ()
 
 @end
@@ -28,10 +30,20 @@
     home.tabBarItem.title = @"主页";
     home.tabBarItem.image = [UIImage imageNamed:@"home"];
     
+    CSStickyHeaderFlowLayout *layout1 = [[CSStickyHeaderFlowLayout alloc]init];
+    SettingCVC *setting = [[SettingCVC alloc]initWithCollectionViewLayout:layout1];
+    UINavigationController *setNavi = [[UINavigationController alloc]initWithRootViewController:setting];
+    setNavi.tabBarItem.title = @"设置";
+    setNavi.tabBarItem.image = [UIImage imageNamed:@"set"];
     
+    CSStickyHeaderFlowLayout *layout3 = [[CSStickyHeaderFlowLayout alloc]init];
+    QuestionCVC *question = [[QuestionCVC alloc]initWithCollectionViewLayout:layout3];
+    UINavigationController *questionNavi = [[UINavigationController alloc]initWithRootViewController:question];
+    questionNavi.tabBarItem.title = @"提问";
+    questionNavi.tabBarItem.image = [UIImage imageNamed:@"question"];
     
-    
-    tb.viewControllers = @[homeNavi];
+
+    tb.viewControllers = @[homeNavi,questionNavi,setNavi];
     self.window.rootViewController=tb;
     return YES;
 }

@@ -25,6 +25,7 @@
     [self addSubview:[self chName]];
     [self addSubview:[self edibleMethod]];
     self.life = [self getImageLabel];
+    self.life.image.image = [UIImage imageNamed:@"life.jpg"];
     [self addSubview:[self life]];
     self.hunger = [self getImageLabel];
     self.hunger.image.image = [UIImage imageNamed:@"hungry.jpg"];

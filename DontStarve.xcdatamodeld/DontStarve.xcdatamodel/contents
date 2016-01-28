@@ -171,6 +171,25 @@
         <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MixNeed" inverseName="relationship4" inverseEntity="MixNeed" syncable="YES"/>
     </entity>
+    <entity name="Question" representedClassName="Question" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="dateStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="question_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="replys" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="theDescribe" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="QuestionComment" representedClassName="QuestionComment" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="dateStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="question_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="questionComment_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="theDescribe" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Recipe" representedClassName="Recipe" syncable="YES">
         <attribute name="badCycle" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="chName" optional="YES" attributeType="String" syncable="YES"/>
@@ -242,28 +261,30 @@
         <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MixNeed" inverseName="relationship6" inverseEntity="MixNeed" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Ancient" positionX="-25956" positionY="-8127" width="128" height="150"/>
         <element name="Animal" positionX="-26001" positionY="-8277" width="128" height="285"/>
+        <element name="Book" positionX="-25947" positionY="-8118" width="128" height="120"/>
         <element name="Boss" positionX="-25659" positionY="-8118" width="128" height="255"/>
         <element name="BossTrait" positionX="-26165" positionY="-8001" width="128" height="105"/>
         <element name="Build" positionX="-25839" positionY="-8136" width="128" height="148"/>
         <element name="Characters" positionX="-26163" positionY="-8271" width="128" height="223"/>
         <element name="Construction" positionX="-25677" positionY="-8271" width="128" height="120"/>
+        <element name="Dress" positionX="-25938" positionY="-8109" width="128" height="165"/>
+        <element name="Fight" positionX="-25929" positionY="-8100" width="128" height="180"/>
         <element name="Fire" positionX="-25317" positionY="-7650" width="128" height="163"/>
         <element name="FoodRaw" positionX="-25821" positionY="-8055" width="128" height="180"/>
+        <element name="Magic" positionX="-25965" positionY="-8136" width="128" height="150"/>
         <element name="MixNeed" positionX="-25317" positionY="-7785" width="128" height="285"/>
         <element name="Plant" positionX="-25938" positionY="-7929" width="128" height="120"/>
         <element name="Produce" positionX="-25956" positionY="-8127" width="128" height="148"/>
+        <element name="Question" positionX="-25956" positionY="-8127" width="128" height="165"/>
         <element name="Recipe" positionX="-26064" positionY="-7740" width="117" height="193"/>
         <element name="RecipeDetail" positionX="-25965" positionY="-8136" width="128" height="195"/>
         <element name="RecipeRaw" positionX="-25920" positionY="-7740" width="128" height="118"/>
         <element name="Refine" positionX="-25929" positionY="-8100" width="128" height="150"/>
         <element name="Science" positionX="-25677" positionY="-7614" width="128" height="148"/>
-        <element name="Tools" positionX="-25560" positionY="-7785" width="128" height="165"/>
-        <element name="Magic" positionX="-25965" positionY="-8136" width="128" height="150"/>
-        <element name="Ancient" positionX="-25956" positionY="-8127" width="128" height="150"/>
-        <element name="Book" positionX="-25947" positionY="-8118" width="128" height="120"/>
-        <element name="Dress" positionX="-25938" positionY="-8109" width="128" height="165"/>
-        <element name="Fight" positionX="-25929" positionY="-8100" width="128" height="180"/>
         <element name="Survival" positionX="-25920" positionY="-8091" width="128" height="180"/>
+        <element name="Tools" positionX="-25560" positionY="-7785" width="128" height="165"/>
+        <element name="QuestionComment" positionX="-25965" positionY="-8136" width="128" height="150"/>
     </elements>
 </model>

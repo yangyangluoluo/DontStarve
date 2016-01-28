@@ -13,6 +13,7 @@
 @interface WebData : NSObject
 
 @property (strong,nonatomic) AFURLSessionManager *manager;
+@property (strong,nonatomic) AFHTTPRequestOperationManager *jsonManager;
 @property (strong,nonatomic) AFHTTPRequestOperationManager *filemanager;
 @property (strong,nonatomic) NSURLSessionConfiguration *configuration;
 
@@ -41,6 +42,13 @@
 @property (strong,nonatomic) __block NSArray  *homeData1;
 @property (strong,nonatomic) __block NSArray  *homeData2;
 @property (strong,nonatomic) __block NSArray  *homeData3;
+@property (strong,nonatomic) __block NSDictionary  *registerState;
+@property (strong,nonatomic) __block NSDictionary  *loginState;
+@property (strong,nonatomic) __block NSDictionary  *addQuestionState;
+@property (strong,nonatomic) __block NSArray  *allQuestion;
+@property (strong,nonatomic) __block NSDictionary *commentQuestion;
+@property (strong,nonatomic) __block NSArray *questionComment;
+@property (strong,nonatomic) __block NSDictionary *questionReply;
 
 
 - (instancetype)init;
@@ -67,4 +75,15 @@
 - (void )downloadAllSurvival:(NSNumber *)survivalId;
 - (void )downloadAllFight:(NSNumber *)fightId;
 - (void )downloadAllDress:(NSNumber *)dressId;
+
+- (void )userRegister:(NSDictionary *)userInformation;
+- (void )userLogin:(NSDictionary *)userInformation;
+- (void )addQuestion:(NSDictionary *)questionInformation;
+- (void )downloadAllQuestion:(NSNumber *)date direction:(NSNumber *)direction;
+- (void )commentQuestion:(NSDictionary *)information;
+- (void )downloadQuestionComment:(NSNumber *)questionId date:(NSNumber *)date;
+- (void )downloadQuestionReply:(NSNumber *)questionId;
+
+
+
 @end
