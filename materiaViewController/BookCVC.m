@@ -11,6 +11,7 @@
 #import "MixNeed+CoreDataProperties.h"
 #import "BookCell.h"
 #import "BookModel.h"
+
 @interface BookCVC ()
 
 @end
@@ -30,7 +31,6 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"书籍列表";
-    self.leftItem = [self leftItem];
     [self bindWithReactive];
     [self.viewModel downloadData];
     [self.collectionView registerClass:[BookCell class] forCellWithReuseIdentifier:reuseIdentifier];

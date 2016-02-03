@@ -22,35 +22,16 @@
     if (self) {
         self.recipeId = recipeId;
         self.recipeName =recipeName;
-        [self bindWithReactive];
-        self.allData = nil;
+        self.data = nil;
+        self.data1 = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData2) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.recipeRaw = x;
-        }
-    }];
-    
-    [RACObserve(self.webData, homeData3) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
-
-- (NSFetchedResultsController *)getFetchRecipeRaw{
+- (void )initFetchRecipeRaw{
     if (self.fetchRecipeRaw!=nil) {
-        return self.fetchRecipeRaw;
+        return;
     }
-    
     NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"RecipeRaw"];
     request.predicate = [NSPredicate predicateWithFormat:@"recipe_id =%@",self.recipeId];
     NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc]initWithKey:@"needtype" ascending:NO];
@@ -67,12 +48,11 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    return self.fetchRecipeRaw;
 }
-//
-- (NSFetchedResultsController *)getFetchResultController{
-    if (self.fetchResultController!=nil) {
-        return self.fetchResultController;
+
+- (void )initFetchRecipeDetail{
+    if (self.fetchRecipeDetail!=nil) {
+        return;
     }
     NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"RecipeDetail"];
     request.predicate = [NSPredicate predicateWithFormat:@"recipeName = %@",self.recipeName];
@@ -83,34 +63,36 @@
     NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.manager.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     aFetchedResultsController.delegate = self;
     
-    self.fetchResultController = aFetchedResultsController;
+    self.fetchRecipeDetail = aFetchedResultsController;
     NSError *error = nil;
-    if (![self.fetchResultController performFetch:&error]) {
+    if (![self.fetchRecipeDetail performFetch:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    return self.fetchResultController;
 }
-//
+
 - (void )downloadData{
-    [self getFetchRecipeRaw];
-    NSUInteger count = [self.fetchRecipeRaw.fetchedObjects count];
-    if (count==0) {
-        [self.webData downloadRecipeRaw:self.recipeId];
+    [self initFetchRecipeRaw];
+    RecipeRaw *raw = self.fetchRecipeRaw.fetchedObjects.lastObject;
+    if (raw==nil) {
+        NSString *url = [self.webData setUrlString:RECIPERAW address1:self.recipeId];
+        [self downloadAddress:url];
     }
-    [self getFetchResultController];
-    count = self.getFetchResultController.fetchedObjects.count;
-    if (count==0) {
-        [self.webData downloadRecipeDetail:self.recipeName];
+    
+    [self initFetchRecipeDetail];
+    RecipeDetail *detail = self.fetchRecipeDetail.fetchedObjects.lastObject;
+    if (detail==nil) {
+        NSString *url1 = [self.webData setUrlString:RECIPEDETAIL address1:self.recipeName];
+        [self downloadAddress1:url1];
     }
 }
 
 - (NSUInteger )getCount{
-    return self.fetchResultController.fetchedObjects.count;
+    return self.fetchRecipeDetail.fetchedObjects.count;
 }
 
 - (RecipeDetail *)getDetail:(NSUInteger)row{
-    return self.fetchResultController.fetchedObjects[row];
+    return self.fetchRecipeDetail.fetchedObjects[row];
 }
 
 - (NSUInteger )getNeedRawNum{
@@ -137,10 +119,7 @@
 }
 
 - (void)saveRecipeRawToCoreData{
-    if (self.recipeRaw==nil) {
-        return;
-    }
-    for (NSDictionary *dic in self.recipeRaw) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"recipeRaw_id"] intValue]];
         NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"RecipeRaw"];
         request.predicate = [NSPredicate predicateWithFormat:@"recipeRaw_id=%@",theId];
@@ -159,7 +138,7 @@
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data1) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"recipeDetail_id"] intValue]];
         NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"RecipeDetail"];
         request.predicate = [NSPredicate predicateWithFormat:@"recipeDetail_id=%@",theId];
@@ -184,6 +163,33 @@
         }
     }
     [self.manager saveContext];
+}
+
+- (void )controller:(NSFetchedResultsController *)controller
+    didChangeObject:(id)anObject
+        atIndexPath:(NSIndexPath *)indexPath
+      forChangeType:(NSFetchedResultsChangeType)type
+       newIndexPath:(NSIndexPath *)newIndexPath {
+    switch(type) {
+        case NSFetchedResultsChangeInsert:{
+            self.manager.reload = @1;
+            break;
+        }
+        case NSFetchedResultsChangeDelete:{
+            
+            break;
+        }
+        case NSFetchedResultsChangeUpdate: {
+            self.manager.update = @1;
+            break;
+        }
+        case NSFetchedResultsChangeMove:{
+            break;
+        }
+        default:{
+            break;
+        }
+    }
 }
 
 @end

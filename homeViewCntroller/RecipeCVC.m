@@ -13,8 +13,6 @@
 #import "RecipeDetailCVC.h"
 @interface RecipeCVC ()
 
-@property (strong,nonatomic) RecipeModel *viewModel;
-
 @end
 
 @implementation RecipeCVC
@@ -31,34 +29,13 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.leftItem = [self leftItem];
     self.title = @"食谱列表";
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
-                                                         forBarMetrics:UIBarMetricsDefault];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.viewModel downloadData];
-    });
+//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
+//                                                         forBarMetrics:UIBarMetricsDefault];
+    [self.viewModel downloadData];
     [self bindWithReactive];
     [self.collectionView registerClass:[RecipeCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
-
-- (void)bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.viewModel, allData)  subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x.count>0) {
-            [self.viewModel saveDataToCoreData];
-        }
-    }];
-    
-    [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
-        @strongify(self);
-        if (x.intValue==1) {
-            [self.collectionView reloadData];
-        }
-    }];
-}
-
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -85,16 +62,9 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     RecipeCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    Recipe *recipe = [self.viewModel getRecipe:indexPath.row];
-    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:recipe.urlStr];
-    if (image) {
-        cell.image.image = image;
-    }else{
-        [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:recipe.urlStr] options:1 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType SDImageCacheTypeDisk, BOOL finished, NSURL *imageURL) {
-            cell.image.image = image;
-        }];
-    }
+    
+    Recipe *recipe = [self.viewModel getObject:indexPath.row];
+    [self setImageView:cell.image urlStr:recipe.urlStr];
     cell.chName.text = recipe.chName;
     if (recipe.life.floatValue>0) {
         cell.life.label.text = [NSString stringWithFormat:@" +%@",recipe.life];
@@ -123,7 +93,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    Recipe *recipe = [self.viewModel getRecipe:indexPath.row];
+    Recipe *recipe = [self.viewModel getObject:indexPath.row];
     CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
     RecipeDetailCVC *recipeDetail = [[RecipeDetailCVC alloc]initWithCollectionViewLayout:layout recipe:recipe];
     [self.navigationController pushViewController:recipeDetail animated:YES];

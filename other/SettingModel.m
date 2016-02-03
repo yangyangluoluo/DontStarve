@@ -13,38 +13,33 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        [self bindWithReactive];
-        self.state =nil;
+        self.data =nil;
+        self.data1 = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.theUser, state) subscribeNext:^(NSNumber *x) {
-        @strongify(self);
-        if (x) {
-            self.state = x;
-        }
-    }];
-}
-
-- (BOOL )getLoginState{
+- (void )updatePortaitUrlStr{
     NSString *name = [self.theUser getName];
-    if (name==nil) {
-        return NO;
-    }else{
-        return YES;
-    }
+    NSString *filePath = [self.data objectForKey:@"filepath"];
+    NSString *urlStr = [self.webData setUrlString:PORTAITSTATE address1:name address2:filePath];
+    [self downloadAddress1:urlStr];
 }
 
-- (NSString *)getName{
-    return [self.theUser getName];
+- (void )savePortaitUrl{
+    NSString *url = [NSString stringWithFormat:@"%@%@",PREFIX,[self.data objectForKey:@"filepath"]];
+    [self.theUser savePortait:url];
+    [self.theUser changPortaitState];
 }
 
 - (void )loginOut{
     [self.theUser clearUserInformation];
     [self.theUser changState];
+}
+
+- (void )savePortait:(UIImage *)image{
+    NSData *data = UIImageJPEGRepresentation(image, 1.0f);
+    [self savePictureData:data];
 }
 
 @end

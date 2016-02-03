@@ -29,10 +29,26 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"远古列表";
-    self.leftItem = [self leftItem];
     [self bindWithReactive];
     [self.viewModel downloadData];
     [self.collectionView registerClass:[AncientCell class] forCellWithReuseIdentifier:reuseIdentifier];
+}
+
+- (void)bindWithReactive{
+    @weakify(self);
+    [RACObserve(self.viewModel, data) subscribeNext:^(NSArray *x) {
+        @strongify(self);
+        if (x.count>0) {
+            [self.viewModel saveDataToCoreData];
+        }
+    }];
+    
+    [RACObserve(self.viewModel.manager, reload) subscribeNext:^(NSNumber *x) {
+        @strongify(self);
+        if (x) {
+            [self.collectionView reloadData];
+        }
+    }];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {

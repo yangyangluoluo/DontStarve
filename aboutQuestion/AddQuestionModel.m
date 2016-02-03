@@ -17,26 +17,9 @@
 - (id)init{
     self = [super init];
     if (self) {
-        [self bindWithReactive];
-        self.addQuestionState = nil;
+        self.data = nil;
     }
     return self;
-}
-
-- (void)bindWithReactive{
-    @weakify(self)
-    [RACObserve(self.webData, addQuestionState)  subscribeNext:^(NSDictionary *x) {
-        @strongify(self);
-        if (x) {
-            self.addQuestionState = x;
-        }
-    }];
-    [RACObserve(self.theUser, state) subscribeNext:^(NSNumber *x) {
-        @strongify(self);
-        if (x) {
-            self.state = x;
-        }
-    }];
 }
 
 - (void)saveQuetion:(NSString *)describe title:(NSString *)title{
@@ -45,7 +28,8 @@
     [question setObject:name forKey:@"name"];
     [question setObject:title forKey:@"title"];
     [question setObject:describe forKey:@"describe"];
-    [self.webData addQuestion:question];
+    NSString *urlStr = [self.webData setUrlString:ADDQUESTION];
+    [self downloadAddress:urlStr information:question];
 }
 
 @end

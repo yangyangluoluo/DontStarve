@@ -5,7 +5,7 @@
 //  Created by 李建国 on 16/1/5.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
-
+#import "DefineState.h"
 #import "Manager.h"
 
 @implementation Manager
@@ -125,6 +125,79 @@
             abort();
         }
     }
+}
+
+- (void )initFecthResultByName:(NSString *)entityName  attribute:(NSString *)entityAttribute;{
+    if (self.fetchResultController!=nil) {
+        return ;
+    }
+    NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:entityName];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:entityAttribute ascending:NO];
+    NSArray *sortDescriptors = @[sortDescriptor];
+    request.sortDescriptors = sortDescriptors;
+    
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    aFetchedResultsController.delegate = self;
+    
+    self.fetchResultController = aFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![self.fetchResultController performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
+- (BOOL )entityExist:(NSString *)entityName  attribute:(NSString *)entityAttribute entityId:(NSNumber *)entityId{
+    NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:entityAttribute,entityId];
+    NSArray *coreData = [self.managedObjectContext executeFetchRequest:request error:nil];
+    if (coreData.count==ZERO) {
+        return false;
+    }else{
+        return true;
+    }
+}
+
+- (void )controller:(NSFetchedResultsController *)controller
+    didChangeObject:(id)anObject
+        atIndexPath:(NSIndexPath *)indexPath
+      forChangeType:(NSFetchedResultsChangeType)type
+       newIndexPath:(NSIndexPath *)newIndexPath {
+    switch(type) {
+        case NSFetchedResultsChangeInsert:{
+            self.reload = @1;
+            break;
+        }
+        case NSFetchedResultsChangeDelete:{
+            
+            break;
+        }
+        case NSFetchedResultsChangeUpdate: {
+            self.update = @1;
+            break;
+        }
+        case NSFetchedResultsChangeMove:{
+            break;
+        }
+        default:{
+            break;
+        }
+    }
+}
+
+- (void )initFetchResultByRequest:(NSFetchRequest *)request{
+    self.fetchResultController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    self.fetchResultController.delegate = self;
+    NSError *error = nil;
+    if (![self.fetchResultController performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
+- (void )setDeletegate{
+    self.fetchResultController.delegate = self;
 }
 
 @end

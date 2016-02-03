@@ -14,39 +14,29 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        NSString *entityname = @"Refine";
-        NSString *idName = @"refine_id";
-        [self setFectch:entityname sort:idName];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"Refine";
+        self.entyArr = @"refine_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
 - (void )downloadData{
-    NSString *entityname = @"Refine";
-    NSString *idName = @"refine_id";
-    NSUInteger maxId = [self getMaxId:entityname name:idName];
-    [self.webData downloadAllRefine:@(maxId)];
+    Refine *last = self.manager.fetchResultController.fetchedObjects.lastObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.refine_id;
+    }
+    NSString *urlStr = [self.webData setUrlString:ALLREFINE address1:index];
+    [self downloadAddress:urlStr];
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"refine_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Refine"];
-        request.predicate = [NSPredicate predicateWithFormat:@"refine_id=%@",theId];
-        NSArray *coreData = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (coreData.count==0) {
+        NSString *pridect = @"refine_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]){
             Refine *addOneCoreData = [NSEntityDescription insertNewObjectForEntityForName:@"Refine" inManagedObjectContext:self.manager.managedObjectContext];
             addOneCoreData.refine_id = [NSNumber numberWithInt:[[dic objectForKey:@"refine_id"] intValue]];
             addOneCoreData.name = [dic objectForKey:@"name"];

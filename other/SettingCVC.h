@@ -8,6 +8,6 @@
 
 #import "BaseCVC.h"
 
-@interface SettingCVC : BaseCVC
+@interface SettingCVC : BaseCVC<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 @end

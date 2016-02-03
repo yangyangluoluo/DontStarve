@@ -30,11 +30,11 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"工具列表";
-    self.leftItem = [self leftItem];
     [self bindWithReactive];
     [self.viewModel downloadData];
     [self.collectionView registerClass:[ToolCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
+
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;

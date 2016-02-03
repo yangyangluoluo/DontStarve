@@ -14,39 +14,30 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        NSString *entityname = @"Book";
-        NSString *idName = @"book_id";
-        [self setFectch:entityname sort:idName];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"Book";
+        self.entyArr = @"book_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
 - (void )downloadData{
-    NSString *entityname = @"Book";
-    NSString *idName = @"book_id";
-    NSUInteger maxId = [self getMaxId:entityname name:idName];
-    [self.webData downloadAllBook:@(maxId)];
+    
+    Book *last = self.manager.fetchResultController.fetchedObjects.lastObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.book_id;
+    }
+    NSString *urlStr = [self.webData setUrlString:ALLBOOK address1:index];
+    [self downloadAddress:urlStr];
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"book_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Book"];
-        request.predicate = [NSPredicate predicateWithFormat:@"book_id=%@",theId];
-        NSArray *coreData = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (coreData.count==0) {
+        NSString *pridect = @"book_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]) {
             Book *addOneCoreData = [NSEntityDescription insertNewObjectForEntityForName:@"Book" inManagedObjectContext:self.manager.managedObjectContext];
             addOneCoreData.book_id = [NSNumber numberWithInt:[[dic objectForKey:@"book_id"] intValue]];
             addOneCoreData.name = [dic objectForKey:@"name"];

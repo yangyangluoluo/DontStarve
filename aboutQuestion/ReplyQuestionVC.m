@@ -63,7 +63,7 @@
         self.bgView.countWords.text = [NSString stringWithFormat:@"已经输入: %lu个字",(unsigned long)x.length];
     }];
     
-    [RACObserve(self.viewModel, state) subscribeNext:^(NSNumber *x) {
+    [RACObserve(self.viewModel.theUser, state) subscribeNext:^(NSNumber *x) {
         @strongify(self);
         if (x) {
             NSString *name=[self.viewModel.theUser getName];
@@ -73,19 +73,18 @@
         }
     }];
     
-    [RACObserve(self.viewModel, commentQuestion) subscribeNext:^(NSDictionary *x) {
+    [RACObserve(self.viewModel, data) subscribeNext:^(NSDictionary *x) {
         @strongify(self);
         if (x) {
             NSUInteger state = [[x objectForKey:@"state"] intValue];
             [NSThread sleepForTimeInterval:0.5];
             if (state == SUC) {
-                self.HUD.progress = 1.0f;
                 self.state = @(SUC);
                 self.HUD.labelText = @"对接成功,返回...";
             }else{
-                self.HUD.progress = 1.0f;
                 self.HUD.labelText = @"对接失败...";
             }
+            self.HUD.progress = 1.0f;
         }
     }];
 }
@@ -131,7 +130,7 @@
 - (UIBarButtonItem *)rightItem{
     if (!_rightItem) {
         self.rightItem = [[UIBarButtonItem alloc]init];
-        UIImage *image = [UIImage imageNamed:@"save"];
+        UIImage *image = [UIImage imageNamed:@"upload"];
         [self.rightItem setImage:image];
     }
     return _rightItem;
@@ -140,7 +139,7 @@
 - (void)observeKeyboardState{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center  addObserver:self selector:@selector(keyboardDidShow)  name:UIKeyboardDidShowNotification  object:nil];
-    [center addObserver:self selector:@selector(keyboardDidHide)  name:UIKeyboardWillHideNotification object:nil];
+    [center  addObserver:self selector:@selector(keyboardDidHide)  name:UIKeyboardWillHideNotification object:nil];
     _keyboardIsVisible = NO;
 }
 
@@ -179,7 +178,7 @@
 }
 
 - (void)commentQuestionState{
-    NSString *describe = [[self.viewModel commentQuestion] objectForKey:@"descirbe"];
+    NSString *describe = [[self.viewModel data] objectForKey:@"descirbe"];
     UIAlertController * alertCtr = [UIAlertController alertControllerWithTitle:describe message:@"" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"继续添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         

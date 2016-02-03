@@ -5,20 +5,13 @@
 //  Created by 李建国 on 16/1/8.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
-#import "Masonry.h"
-#import "CSStickyHeaderFlowLayout.h"
-#import "Chameleon.h"
-#import "ReactiveCocoa.h"
 #import "AnimalDetailCVC.h"
 #import "Animal+CoreDataProperties.h"
-#import "MyADTransition.h"
 #import "AnimalCell.h"
-#import "UIImageView+WebCache.h"
 #import "AnimalDetailCell.h"
-#define PREFIX  @"http://192.168.1.220/"
+#import "DefineUrl.h"
 @interface AnimalDetailCVC ()
-@property (strong,nonatomic) UIBarButtonItem *leftItem;
-@property (strong,nonatomic) UIBarButtonItem *rightItem;
+
 @property (strong,nonatomic) Animal *animal;
 @property (strong,nonatomic) AnimalCell *headerCell;
 @property (strong,nonatomic) NSArray *titles;
@@ -51,7 +44,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [self leftItem];
     self.view.backgroundColor = FlatWhite;
     self.collectionView.backgroundColor = FlatWhite;
     self.title = self.animal.chName;
@@ -73,29 +65,11 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
-- (UIBarButtonItem *)leftItem{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
-        UIImage *bgImage = [UIImage imageNamed:@"back"];
-        [_leftItem setImage:bgImage];
-        @weakify(self);
-        _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
-            @strongify(self);
-            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1]animated:YES];
-            return [RACSignal empty];
-        }];
-    }
-    return _leftItem;
-}
-
-
-
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
-
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return 12;
@@ -181,18 +155,8 @@ static NSString * const reuseIdentifier = @"Cell";
                                                                     forIndexPath:indexPath];
         CGRect frame = CGRectMake(10, 0, self.view.frame.size.width-20, 100);
         _headerCell.frame = frame;
-        _headerCell.backgroundColor = [UIColor whiteColor];
-        NSString *urlStr = [NSString stringWithFormat:@"%@%@",PREFIX,self.animal.urlStr];
-        UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlStr];
-        if (image) {
-            _headerCell.image.image = image;
-        }else{
-            [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:urlStr] options:1 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            } completed:^(UIImage *image, NSError *error, SDImageCacheType SDImageCacheTypeDisk, BOOL finished, NSURL *imageURL) {
-                _headerCell.image.image = image;
-            }];
-        }
-        
+        _headerCell.backgroundColor = [UIColor whiteColor];        
+        [self setImageView:_headerCell.image urlStr:self.animal.urlStr];
         _headerCell.chName.text = self.animal.chName;
         _headerCell.enName.text = self.animal.enName;
         if (self.animal.type.intValue == 0) {

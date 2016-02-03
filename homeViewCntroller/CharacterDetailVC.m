@@ -6,18 +6,12 @@
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 #import "Chameleon.h"
-#import "ReactiveCocoa.h"
 #import "CharacterDetailVC.h"
-#import "CharacterDetailModel.h"
-#import "MyADTransition.h"
 #import "CharacterDetailView.h"
 #import "UIImageView+WebCache.h"
-
 @interface CharacterDetailVC ()
 
-@property (strong,nonatomic) UIBarButtonItem *leftItem;
-@property (strong,nonatomic) UIBarButtonItem *rightItem;
-@property (strong,nonatomic) CharacterDetailModel *viewModel;
+@property (strong,nonatomic) Characters *character;
 @property (strong,nonatomic) UIScrollView *scroll;
 @property (strong,nonatomic) CharacterDetailView *bgView;
 
@@ -25,10 +19,10 @@
 
 @implementation CharacterDetailVC
 
-- (instancetype)initWithId:(NSNumber *)characterId{
+- (instancetype)initWithId:(Characters *)character{
     self = [super init];
     if (self) {
-        self.viewModel = [[CharacterDetailModel alloc]initWithId:characterId];
+        self.character = character;
     }
     return self;
 }
@@ -38,27 +32,11 @@
     self.view.backgroundColor = FlatWhite;
     self.title = @"人物详情";
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
-    self.navigationItem.leftBarButtonItem = [self leftItem];
     self.scroll = [[UIScrollView alloc]initWithFrame:self.view.frame];
        self.scroll.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*1.1);
     [self.view addSubview:[self scroll]];
     [self.scroll addSubview:[self bgView]];
     [self GetData];
-}
-
-- (UIBarButtonItem *)leftItem{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
-        UIImage *bgImage = [UIImage imageNamed:@"back"];
-        [_leftItem setImage:bgImage];
-        @weakify(self);
-        _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
-            @strongify(self);
-            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1]animated:YES];
-            return [RACSignal empty];
-        }];
-    }
-    return _leftItem;
 }
 
 - (CharacterDetailView *)bgView{
@@ -74,24 +52,23 @@
 }
 
 - (void )GetData{
-    self.bgView.header.name.text = [self.viewModel getName:0];
-    self.bgView.header.nickname.text = [self.viewModel getNickname:0];
-    self.bgView.header.life.label.text = [self.viewModel getLife:0];
-    self.bgView.header.hungry.label.text = [self.viewModel getHungry:0];
-    self.bgView.header.sanity.label.text = [self.viewModel getSanity:0];
-    self.bgView.header.atk.label.text = [self.viewModel getAtk:0];
-    self.bgView.header.motto.text = [self.viewModel getMotto:0];
+    self.bgView.header.name.text = self.character.name;
+    self.bgView.header.nickname.text = self.character.nickname;
+    self.bgView.header.life.label.text = self.character.life;
+    self.bgView.header.hungry.label.text = self.character.hungry;
+    self.bgView.header.sanity.label.text = self.character.intellect;
+    self.bgView.header.atk.label.text = self.character.atk;
+    self.bgView.header.motto.text = self.character.motto;
     
-    self.bgView.unlock.describe.text = [self.viewModel getUnlock:0];
-    self.bgView.ability.describe.text = [self.viewModel getAbility:0];
-    self.bgView.introduce.describe.text = [self.viewModel getIntroduce:0];
+    self.bgView.unlock.describe.text = self.character.unlock;
+    self.bgView.ability.describe.text = self.character.ability;
+    self.bgView.introduce.describe.text = self.character.introduction;
     
-    NSString *urlStr = [self.viewModel getUrlSt:0];
-    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlStr];
+    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:self.character.urlstr];
     if (image) {
         self.bgView.header.image.image = image;
     }else{
-        [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:urlStr] options:1 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:self.character.urlstr] options:1 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         } completed:^(UIImage *image, NSError *error, SDImageCacheType SDImageCacheTypeDisk, BOOL finished, NSURL *imageURL) {
             self.bgView.header.image.image = image;
         }];

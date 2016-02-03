@@ -16,9 +16,6 @@
 - (NSUInteger )getFrinedlyCount;
 - (NSUInteger )getNeutrallyCount;
 - (NSUInteger )getHostilityCount;
-- (NSString *)getChName:(NSUInteger)section row:(NSUInteger)row;
-- (NSString *)getEnName:(NSUInteger)section row:(NSUInteger)row;
-- (NSString *)getImageUrlStr:(NSUInteger)section row:(NSUInteger)row;
 - (Animal *)getAnimal:(NSUInteger)section row:(NSUInteger)row;
 
 

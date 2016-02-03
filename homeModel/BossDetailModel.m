@@ -22,30 +22,36 @@
     self = [super init];
     if (self) {
         self.bossId = bossId;
-        [self getFetchResultController];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"BossTrait";
+        self.entyArr = @"bossTrait_id";
+        [self initFetchResultController];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData2) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
-- (NSUInteger )getCount{
-    return self.fetchResultController.fetchedObjects.count;
+- (void )initFetchResultController{
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"BossTrait"];
+    request.predicate =[NSPredicate predicateWithFormat:@"boss_id=%@",self.bossId];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"bossTrait_id" ascending:YES];
+    NSArray *sortDescriptors = @[sortDescriptor];
+    request.sortDescriptors = sortDescriptors;
+    
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.manager.managedObjectContext sectionNameKeyPath:@"type" cacheName:nil];
+    self.manager.fetchResultController = aFetchedResultsController;
+    [self.manager setDeletegate];
+    
+    NSError *error = nil;
+    if (![self.manager.fetchResultController performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
 }
 
 - (NSUInteger )getType0Count{
-    if ([[self.fetchResultController sections] count]!=0) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchResultController sections] objectAtIndex:0];
+    if ([[self.manager.fetchResultController sections] count]!=0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.manager.fetchResultController sections] objectAtIndex:0];
         return  [sectionInfo numberOfObjects];
     }else{
         return 0;
@@ -53,8 +59,8 @@
     
 }
 - (NSUInteger )getType1Count{
-    if ([[self.fetchResultController sections] count]!=0) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchResultController sections] objectAtIndex:1];
+    if ([[self.manager.fetchResultController sections] count]!=0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.manager.fetchResultController sections] objectAtIndex:1];
         return  [sectionInfo numberOfObjects];
     }else{
         return 0;
@@ -62,53 +68,28 @@
 }
 
 - (NSUInteger )getSectionCount{
-    return self.fetchResultController.sections.count;
+    return self.manager.fetchResultController.sections.count;
 }
 
 - (NSString *)getDescribe:(NSUInteger)section andRow:(NSUInteger)row{
     --section;
     NSIndexPath *index = [NSIndexPath indexPathForRow:row inSection:section];
-    BossTrait *bossTrait = [self.fetchResultController objectAtIndexPath:index];
+    BossTrait *bossTrait = [self.manager.fetchResultController objectAtIndexPath:index];
     return bossTrait.describe;
 }
 
-
-- (NSFetchedResultsController *)getFetchResultController{
-    if (self.fetchResultController!=nil) {
-        return self.fetchResultController;
-    }
-    NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"BossTrait"];
-    request.predicate = [NSPredicate predicateWithFormat:@"boss_id=%@",self.bossId];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"bossTrait_id" ascending:YES];
-    NSArray *sortDescriptors = @[sortDescriptor];
-    request.sortDescriptors = sortDescriptors;
-    
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.manager.managedObjectContext sectionNameKeyPath:@"type" cacheName:nil];
-    aFetchedResultsController.delegate = self;
-    
-    self.fetchResultController = aFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![self.fetchResultController performFetch:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    return self.fetchResultController;
-}
-
 - (void )downloadData{
-    if (self.fetchResultController.fetchedObjects.count == 0) {
-        [self.webData downloadBossTrait:self.bossId];
+    if (self.manager.fetchResultController.fetchedObjects.count == ZERO) {
+        NSString *urlStr = [self.webData setUrlString:BOSSTRAIT address1:self.bossId];
+        [self downloadAddress:urlStr];
     }
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"bossTrait_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"BossTrait"];
-        request.predicate = [NSPredicate predicateWithFormat:@"bossTrait_id=%@",theId];
-        NSArray *bosses = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (bosses.count==0) {
+        NSString *pridect = @"bossTrait_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]) {
             BossTrait *bossTrait = [NSEntityDescription insertNewObjectForEntityForName:@"BossTrait" inManagedObjectContext:self.manager.managedObjectContext];
             bossTrait.bossTrait_id = @([[dic objectForKey:@"bossTrait_id"] intValue]);
             bossTrait.boss_id = @([[dic objectForKey:@"boss_id"] intValue]);
@@ -118,33 +99,5 @@
     }
     [self.manager saveContext];
 }
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-    switch(type) {
-        case NSFetchedResultsChangeInsert:{
-            self.reload = @1;
-            break;
-        }
-        case NSFetchedResultsChangeDelete:{
-            
-            break;
-        }
-        case NSFetchedResultsChangeUpdate: {
-            
-            break;
-        }
-        case NSFetchedResultsChangeMove:{
-            break;
-        }
-        default:{
-            break;
-        }
-    }
-}
-
 
 @end

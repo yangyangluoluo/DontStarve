@@ -13,39 +13,30 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        NSString *entityname = @"Build";
-        NSString *idName = @"build_id";
-        [self setFectch:entityname sort:idName];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"Build";
+        self.entyArr = @"build_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
 - (void )downloadData{
-    NSString *entityname = @"Build";
-    NSString *idName = @"build_id";
-    NSUInteger maxId = [self getMaxId:entityname name:idName];
-    [self.webData downloadAllBuild:@(maxId)];
+    
+    Build *last = self.manager.fetchResultController.fetchedObjects.lastObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.build_id;
+    }
+    NSString *urlStr = [self.webData setUrlString:ALLBUILD address1:index];
+    [self downloadAddress:urlStr];
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"build_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Build"];
-        request.predicate = [NSPredicate predicateWithFormat:@"build_id=%@",theId];
-        NSArray *coreData = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (coreData.count==0) {
+        NSString *pridect = @"build_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]) {
             Build *addOneCoreData = [NSEntityDescription insertNewObjectForEntityForName:@"Build" inManagedObjectContext:self.manager.managedObjectContext];
             addOneCoreData.build_id = [NSNumber numberWithInt:[[dic objectForKey:@"build_id"] intValue]];
             addOneCoreData.name = [dic objectForKey:@"name"];

@@ -5,20 +5,12 @@
 //  Created by 李建国 on 16/1/12.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
-#import "CSStickyHeaderFlowLayout.h"
-#import "UIImageView+WebCache.h"
-#import "Chameleon.h"
-#import "ReactiveCocoa.h"
 #import "BossCVC.h"
-#import "MyADTransition.h"
 #import "BossModel.h"
 #import "BossCell.h"
 #import "Boss+CoreDataProperties.h"
 #import "BossDetailCVC.h"
 @interface BossCVC ()
-
-@property (strong,nonatomic) UIBarButtonItem *leftItem;
-@property (strong,nonatomic) BossModel *viewModel;
 
 @end
 
@@ -36,36 +28,12 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [self leftItem];
-    self.view.backgroundColor = FlatWhite;
-    self.collectionView.backgroundColor = FlatWhite;
+
     self.title = @"BOSS列表";
-    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.viewModel downloadData];
-    });
+    [self.viewModel downloadData];
     [self bindWithReactive];
     [self.collectionView registerClass:[BossCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
-
-- (void)bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.viewModel, allData)  subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x.count>0) {
-            [self.viewModel saveDataToCoreData];
-        }
-    }];
-
-    [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
-        @strongify(self);
-        if (x.intValue==1) {
-            [self.collectionView reloadData];
-        }
-    }];
-}
-
-
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -74,11 +42,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if ([self.viewModel getCount]==0) {
-        return 0;
-    }else{
-        return [self.viewModel getCount];
-    }
+    return [self.viewModel getCount];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -98,40 +62,18 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.backgroundColor = [UIColor whiteColor];
     cell.layer.borderColor = FlatGreenDark.CGColor;
     cell.layer.borderWidth = 1;
-    Boss *boss = [self.viewModel getBoss:indexPath.row];
-    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:boss.urlStr];
-    if (image) {
-        cell.image.image = image;
-    }else{
-        [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:boss.urlStr] options:1 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType SDImageCacheTypeDisk, BOOL finished, NSURL *imageURL) {
-            cell.image.image = image;
-        }];
-    }
+    
+    Boss *boss = [self.viewModel getObject:indexPath.row];
+    [self setImageView:cell.image urlStr:boss.urlStr];
     cell.name.text = boss.chName;
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    Boss *theBoss = [self.viewModel getBoss:indexPath.row];
+    Boss *boss = [self.viewModel getObject:indexPath.row];
     CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
-    BossDetailCVC *bossDetail = [[BossDetailCVC alloc]initWithCollectionViewLayout:layout boss:theBoss];
+    BossDetailCVC *bossDetail = [[BossDetailCVC alloc]initWithCollectionViewLayout:layout boss:boss];
     [self.navigationController pushViewController:bossDetail animated:YES];
-}
-
-- (UIBarButtonItem *)leftItem{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
-        UIImage *bgImage = [UIImage imageNamed:@"back"];
-        [_leftItem setImage:bgImage];
-        @weakify(self);
-        _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
-            @strongify(self);
-            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:0]animated:YES];
-            return [RACSignal empty];
-        }];
-    }
-    return _leftItem;
 }
 
 - (void)dealloc{

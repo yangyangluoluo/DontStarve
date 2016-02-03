@@ -116,6 +116,8 @@
         _portrait.backgroundColor = [UIColor blackColor];
         _portrait.layer.cornerRadius = 20;
         _portrait.layer.masksToBounds = YES;
+        _portrait.layer.borderColor = FlatGreenDark.CGColor;
+        _portrait.layer.borderWidth = 1;
     }
     return _portrait;
 }

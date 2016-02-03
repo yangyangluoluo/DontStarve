@@ -10,9 +10,9 @@
 #import "WebData.h"
 #import <Foundation/Foundation.h>
 #import "CellProtocol.h"
+#import "DefineState.h"
 @interface BaseMateriaModel : NSObject<NSFetchedResultsControllerDelegate,CellProtocol>
 
-#define PREFIX  @"http://192.168.1.220/"
 @property (strong,nonatomic) NSArray *allData;
 @property (strong,nonatomic) NSNumber *reload;
 @property (strong,nonatomic) NSFetchedResultsController *fetchResultController;

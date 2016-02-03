@@ -11,6 +11,7 @@
 #import "CSStickyHeaderFlowLayout.h"
 #import "SettingCVC.h"
 #import "QuestionCVC.h"
+#import "PictureCVC.h"
 @interface AppDelegate ()
 
 @end
@@ -42,8 +43,15 @@
     questionNavi.tabBarItem.title = @"提问";
     questionNavi.tabBarItem.image = [UIImage imageNamed:@"question"];
     
+    CSStickyHeaderFlowLayout *layout4 = [[CSStickyHeaderFlowLayout alloc]init];
+    PictureCVC *picture = [[PictureCVC alloc]initWithCollectionViewLayout:layout4];
+    UINavigationController *pictureNavi= [[UINavigationController alloc]initWithRootViewController:picture];
+    pictureNavi.tabBarItem.title = @"饥荒图片";
+    pictureNavi.tabBarItem.image = [UIImage imageNamed:@"picture"];
+    
+    
 
-    tb.viewControllers = @[homeNavi,questionNavi,setNavi];
+    tb.viewControllers = @[homeNavi,pictureNavi,questionNavi,setNavi];
     self.window.rootViewController=tb;
     return YES;
 }

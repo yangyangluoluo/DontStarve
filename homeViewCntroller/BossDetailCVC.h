@@ -5,10 +5,11 @@
 //  Created by 李建国 on 16/1/13.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
-@class Boss;
+#import "Boss+CoreDataProperties.h"
+#import "BaseCVC.h"
 #import <UIKit/UIKit.h>
 
-@interface BossDetailCVC : UICollectionViewController
+@interface BossDetailCVC : BaseCVC
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout boss:(Boss *)theBoss;
 

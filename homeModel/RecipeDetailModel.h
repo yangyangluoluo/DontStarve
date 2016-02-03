@@ -9,10 +9,10 @@
 #import "RecipeRaw+CoreDataProperties.h"
 #import "BaseModel.h"
 
-@interface RecipeDetailModel : BaseModel
+@interface RecipeDetailModel : BaseModel<NSFetchedResultsControllerDelegate>
 
-@property (strong,nonatomic) NSArray *recipeRaw;
 @property (strong,nonatomic) NSFetchedResultsController *fetchRecipeRaw;
+@property (strong,nonatomic) NSFetchedResultsController *fetchRecipeDetail;
 
 - (instancetype )initWithRecipe:(NSNumber *)recipeId andName:(NSString *)recipeName;
 - (void )saveRecipeRawToCoreData;

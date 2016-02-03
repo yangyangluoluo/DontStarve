@@ -5,27 +5,19 @@
 //  Created by 李建国 on 16/1/8.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
-#import "UIImageView+WebCache.h"
-#import "Chameleon.h"
-#import "ReactiveCocoa.h"
 #import "AnimalCVC.h"
-#import "MyADTransition.h"
-#import "CSStickyHeaderFlowLayout.h"
 #import "AnimalCell.h"
 #import "AnimalModel.h"
 #import "AnimalDetailCVC.h"
+#import "Animal+CoreDataProperties.h"
 #define HEIGHT 35
 @interface AnimalCVC ()
 
-@property (strong,nonatomic) UIBarButtonItem *leftItem;
-@property (strong,nonatomic) UIBarButtonItem *rightItem;
 @property (strong,nonatomic) UISegmentedControl *segment;
 @property (strong,nonatomic) UIScrollView *scrollView;
 @property (strong,nonatomic) UICollectionView *friendly;
 @property (strong,nonatomic) UICollectionView *neutrally;
 @property (strong,nonatomic) UICollectionView *hostility;
-@property (strong,nonatomic) AnimalModel *viewModel;
-
 
 @end
 
@@ -43,9 +35,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [self leftItem];
-    self.view.backgroundColor = FlatWhite;
-    self.collectionView.backgroundColor = FlatWhite;
     self.collectionView = nil;
     self.title = @"动物列表";
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:FlatGreenDark};
@@ -63,14 +52,14 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)bindWithReactive{
     @weakify(self);
-    [RACObserve(self.viewModel, allAnimal)  subscribeNext:^(NSArray *x) {
+    [RACObserve(self.viewModel, data)  subscribeNext:^(NSArray *x) {
         @strongify(self);
         if (x.count>0) {
             [self.viewModel saveDataToCoreData];
         }
     }];
     
-    [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
+    [RACObserve(self.viewModel.manager, reload) subscribeNext:^(NSNumber *x) {
         @strongify(self);
         if (x.intValue==1) {
             [self.friendly reloadData];
@@ -89,11 +78,11 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (self.segment.selectedSegmentIndex == 0) {
-        return [self.viewModel getFrinedlyCount];
+        return [(AnimalModel *)self.viewModel getFrinedlyCount];
     }else if (self.segment.selectedSegmentIndex == 1){
-        return [self.viewModel getNeutrallyCount];
+        return [(AnimalModel *)self.viewModel getNeutrallyCount];
     }else{
-        return [self.viewModel getHostilityCount];
+        return [(AnimalModel *)self.viewModel getHostilityCount];
     }
 }
 
@@ -112,19 +101,11 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AnimalCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    cell.chName.text = [self.viewModel getChName:self.segment.selectedSegmentIndex row:indexPath.row];
-    cell.enName.text = [self.viewModel getEnName:self.segment.selectedSegmentIndex row:indexPath.row];
     
-    NSString *urlStr = [self.viewModel getImageUrlStr:self.segment.selectedSegmentIndex row:indexPath.row];
-    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlStr];
-    if (image) {
-        cell.image.image = image;
-    }else{
-        [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:urlStr] options:1 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType SDImageCacheTypeDisk, BOOL finished, NSURL *imageURL) {
-            cell.image.image = image;
-        }];
-    }
+    Animal *animal = [(AnimalModel *)self.viewModel getAnimal:self.segment.selectedSegmentIndex row:indexPath.row];
+    cell.chName.text = animal.chName;
+    cell.enName.text = animal.enName;
+    [self setImageView:cell.image urlStr:animal.urlStr];
     
     if (self.segment.selectedSegmentIndex == 0) {
         cell.type.text = @"不会攻击";
@@ -141,19 +122,19 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark init
 
-- (UIBarButtonItem *)leftItem{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
+- (UIBarButtonItem *)getLeftItem{
+    if (!self.leftItem) {
+        self.leftItem = [[UIBarButtonItem alloc]init];
         UIImage *bgImage = [UIImage imageNamed:@"back"];
-        [_leftItem setImage:bgImage];
+        [self.leftItem setImage:bgImage];
         @weakify(self);
-        _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
+        self.leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
             [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:0]animated:YES];
             return [RACSignal empty];
         }];
     }
-    return _leftItem;
+    return self.leftItem;
 }
 
 - (UISegmentedControl *)segment{
@@ -260,7 +241,7 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDelegate>
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    Animal *animal = [self.viewModel getAnimal:self.segment.selectedSegmentIndex row:indexPath.row];
+    Animal *animal = [(AnimalModel *)self.viewModel getAnimal:self.segment.selectedSegmentIndex row:indexPath.row];
     CSStickyHeaderFlowLayout *layout = [[CSStickyHeaderFlowLayout alloc]init];
     AnimalDetailCVC *detail = [[AnimalDetailCVC alloc]initWithCollectionViewLayout:layout animal:animal];
     [self.navigationController pushViewController:detail animated:YES];

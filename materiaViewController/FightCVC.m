@@ -11,7 +11,6 @@
 #import "FightModel.h"
 #import "Fight+CoreDataProperties.h"
 #import "MixNeed+CoreDataProperties.h"
-
 @interface FightCVC ()
 
 @end
@@ -31,11 +30,11 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"战斗列表";
-    self.leftItem = [self leftItem];
     [self bindWithReactive];
     [self.viewModel downloadData];
     [self.collectionView registerClass:[FightCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
+
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;

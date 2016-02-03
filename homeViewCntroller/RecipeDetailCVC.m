@@ -15,7 +15,6 @@
 #import "BossDetailSectionHeaderCell.h"
 @interface RecipeDetailCVC ()
 
-@property (strong,nonatomic) RecipeDetailModel *viewModel;
 @property (strong,nonatomic) RecipeDetailHeaderCell *headerCell;
 @property (strong,nonatomic) Recipe *recipe;
 @end
@@ -36,7 +35,6 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"食谱详解";
-    self.leftItem = [self leftItem];
     [self bindWithReactive];
     [self.viewModel downloadData];
     [self.collectionView registerClass:[RecipeDetailHeaderCell class] forSupplementaryViewOfKind:CSStickyHeaderParallaxHeader
@@ -48,21 +46,29 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)bindWithReactive{
     @weakify(self);
-    [RACObserve(self.viewModel,recipeRaw)  subscribeNext:^(NSArray *x) {
+    [RACObserve(self.viewModel,data)  subscribeNext:^(id x) {
         @strongify(self);
-        if (x.count>0) {
-            [self.viewModel saveRecipeRawToCoreData];
+        if (x) {
+            if ([x isKindOfClass:[NSArray class]]) {
+                [(RecipeDetailModel *)self.viewModel saveRecipeRawToCoreData];
+            }else{
+                
+            }
         }
     }];
     
-    [RACObserve(self.viewModel,allData)  subscribeNext:^(NSArray *x) {
+    [RACObserve(self.viewModel,data1)  subscribeNext:^(id x) {
         @strongify(self);
-        if (x.count>0) {
-            [self.viewModel saveDataToCoreData];
+        if (x) {
+            if ([x isKindOfClass:[NSArray class]]) {
+                [self.viewModel saveDataToCoreData];
+            }else{
+                
+            }
         }
     }];
     
-    [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
+    [RACObserve(self.viewModel.manager,reload) subscribeNext:^(NSNumber *x) {
         @strongify(self);
         if (x.intValue==1) {
             [self.collectionView reloadData];
@@ -107,7 +113,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     RecipeDetailCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    RecipeDetail *detail = [self.viewModel getDetail:indexPath.row];
+    RecipeDetail *detail = [(RecipeDetailModel *)self.viewModel getDetail:indexPath.row];
     
     cell.raw1.label.text = detail.raw1;
     cell.raw2.label.text = detail.raw2;
@@ -131,7 +137,6 @@ static NSString * const reuseIdentifier = @"Cell";
             view.image = image;
         }];
     }
-    
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -172,11 +177,11 @@ static NSString * const reuseIdentifier = @"Cell";
         _headerCell.cookTime.label.text = [NSString stringWithFormat:@"%@秒",_recipe.cookTime];
         _headerCell.priority.text = [NSString stringWithFormat:@"优先权: %@",_recipe.priority];
         
-        NSUInteger needNotNum = [self.viewModel getNeedNotRawNum];
+        NSUInteger needNotNum = [(RecipeDetailModel *)self.viewModel getNeedNotRawNum];
         [self.headerCell initNeedNotRawLabel:needNotNum];
         for (NSUInteger index=0; index<needNotNum; index++) {
             ImageLabel *temp = self.headerCell.needNotRawArray[index];
-            RecipeRaw *raw = [self.viewModel getRecipeRaw:1 andRow:index];
+            RecipeRaw *raw = [(RecipeDetailModel *)self.viewModel getRecipeRaw:1 andRow:index];
             temp.label.text = [NSString stringWithFormat:@"<=%@",raw.needNum];
             UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:raw.urlStr];
             if (image) {
@@ -189,11 +194,11 @@ static NSString * const reuseIdentifier = @"Cell";
             }
         }
         
-        NSUInteger needNum = [self.viewModel getNeedRawNum];
+        NSUInteger needNum = [(RecipeDetailModel *)self.viewModel getNeedRawNum];
         [self.headerCell initNeedRawLabel:needNum];
         for (NSUInteger index=0; index<needNum; index++) {
             ImageLabel *temp = self.headerCell.needRawArray[index];
-            RecipeRaw *raw = [self.viewModel getRecipeRaw:0 andRow:index];
+            RecipeRaw *raw = [(RecipeDetailModel *)self.viewModel getRecipeRaw:0 andRow:index];
             temp.label.text = [NSString stringWithFormat:@">=%@",raw.needNum];
             UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:raw.urlStr];
             if (image) {

@@ -10,8 +10,9 @@
 
 @interface SettingModel : BaseModel
 
-@property (strong,nonatomic) NSNumber *state;
-- (BOOL )getLoginState;
+@property (strong,nonatomic) NSNumber *portaitState;
 - (void )loginOut;
-
+- (void )savePortait:(UIImage *)image;
+- (void )updatePortaitUrlStr;
+- (void )savePortaitUrl;
 @end

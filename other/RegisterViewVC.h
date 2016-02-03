@@ -13,9 +13,4 @@
 @property (strong,nonatomic) NSNumber *regiesterState;
 @property (strong,nonatomic) NSString *nickname;
 @property (strong,nonatomic) NSString *password;
-
-- (void)dealloc;
-    
-
-
 @end

@@ -10,8 +10,6 @@
 
 @interface AddQuestionModel : BaseModel
 
-@property (strong,nonatomic) NSDictionary *addQuestionState;
-@property (strong,nonatomic) NSNumber *state;
 - (void)saveQuetion:(NSString *)describe title:(NSString *)title;
 
 @end

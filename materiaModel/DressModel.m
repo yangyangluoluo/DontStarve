@@ -15,40 +15,30 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        NSString *entityname = @"Dress";
-        NSString *idName = @"dress_id";
-        [self setFectch:entityname sort:idName];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"Dress";
+        self.entyArr = @"dress_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
 - (void )downloadData{
-    NSString *entityname = @"Dress";
-    NSString *idName = @"dress_id";
-    NSUInteger maxId = [self getMaxId:entityname name:idName];
-    [self.webData downloadAllDress:@(maxId)];
+    
+    Dress *last = self.manager.fetchResultController.fetchedObjects.lastObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.dress_id;
+    }
+    NSString *urlStr = [self.webData setUrlString:ALLDRESS address1:index];
+    [self downloadAddress:urlStr];
 }
 
-- (void )saveDataToCoreData{
-    
-    for (NSDictionary *dic in self.allData) {
+- (void )saveDataToCoreData{    
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"dress_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Dress"];
-        request.predicate = [NSPredicate predicateWithFormat:@"dress_id=%@",theId];
-        NSArray *coreData = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (coreData.count==0) {
+        NSString *pridect = @"dress_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]){
             Dress *addOneCoreData = [NSEntityDescription insertNewObjectForEntityForName:@"Dress" inManagedObjectContext:self.manager.managedObjectContext];
             addOneCoreData.dress_id = @([[dic objectForKey:@"dress_id"] intValue]);
             addOneCoreData.name = [dic objectForKey:@"name"];

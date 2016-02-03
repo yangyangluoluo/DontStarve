@@ -138,9 +138,7 @@
         _email = [UITextField new];
         _email.textAlignment = NSTextAlignmentLeft;
         _email.placeholder = @"请输入邮箱";
-        _email.text = @"1234@qq.com";
         _email.clearsOnBeginEditing = YES;
-        _email.textColor = [UIColor lightGrayColor];
         _email.font = [UIFont systemFontOfSize:14];
     }
     return _email;
@@ -196,7 +194,6 @@
         _password = [UITextField new];
         _password.textAlignment = NSTextAlignmentLeft;
         _password.placeholder = @"请输入密码";
-        _password.text = @"123";
         _password.clearsOnBeginEditing = YES;
         _password.font = [UIFont systemFontOfSize:14];
         _password.secureTextEntry = YES;
@@ -226,7 +223,6 @@
         _verification = [UITextField new];
         _verification.textAlignment = NSTextAlignmentLeft;
         _verification.placeholder = @"验证密码";
-        _verification.text = @"123";
         _verification.clearsOnBeginEditing = YES;
         _verification.font = [UIFont systemFontOfSize:14];
         _verification.secureTextEntry = YES;

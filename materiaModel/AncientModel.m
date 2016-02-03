@@ -14,39 +14,29 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        NSString *entityname = @"Ancient";
-        NSString *idName = @"ancient_id";
-        [self setFectch:entityname sort:idName];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"Ancient";
+        self.entyArr = @"ancient_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
-- (void )downloadData{
-    NSString *entityname = @"Ancient";
-    NSString *idName = @"ancient_id";
-    NSUInteger maxId = [self getMaxId:entityname name:idName];
-    [self.webData downloadAllAncient:@(maxId)];
+- (void )downloadData{    
+    Ancient *last = self.manager.fetchResultController.fetchedObjects.lastObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.ancient_id;
+    }
+    NSString *urlStr = [self.webData setUrlString:ALLANCIENT address1:index];
+    [self downloadAddress:urlStr];
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"ancient_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Ancient"];
-        request.predicate = [NSPredicate predicateWithFormat:@"ancient_id=%@",theId];
-        NSArray *coreData = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (coreData.count==0) {
+        NSString *pridect = @"ancient_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]) {
             Ancient *addOneCoreData = [NSEntityDescription insertNewObjectForEntityForName:@"Ancient" inManagedObjectContext:self.manager.managedObjectContext];
             addOneCoreData.ancient_id = [NSNumber numberWithInt:[[dic objectForKey:@"ancient_id"] intValue]];
             addOneCoreData.name = [dic objectForKey:@"name"];

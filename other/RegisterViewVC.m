@@ -8,7 +8,6 @@
 #import "CSStickyHeaderFlowLayout.h"
 #import "Chameleon.h"
 #import "ReactiveCocoa.h"
-#import "ADTransitionController.h"
 #import "RegisterView.h"
 #import "RegisterViewVC.h"
 #import "RegisterViewModel.h"
@@ -19,9 +18,7 @@
 
 @interface RegisterViewVC ()
 
-@property (strong,nonatomic) ADTransition *transitionBack;
 @property (strong,nonatomic) RegisterView *bgView;
-@property (strong,nonatomic) UIBarButtonItem *leftItem;
 @property (strong,nonatomic) RACSignal *emailSignal;
 @property (strong,nonatomic) RACSignal *nicknameSignal;
 @property (strong,nonatomic) RACSignal *passwordSignal;
@@ -38,7 +35,6 @@
     self.title = @"注册";
     self.viewModel = [[RegisterViewModel alloc]init];
     self.bgView = [[RegisterView alloc]initWithFrame:self.view.frame];
-    self.navigationItem.leftBarButtonItem = [self leftItem];
     [self bindWithReactive];
     [self.view addSubview:self.bgView];
 }
@@ -49,7 +45,7 @@
     [self setVerificationState];
     [self registerButtonSignal];
     @weakify(self);
-    [RACObserve(self.viewModel, registerState) subscribeNext:^(NSDictionary *x) {
+    [RACObserve(self.viewModel, data) subscribeNext:^(NSDictionary *x) {
         if (x) {
             @strongify(self);
             [self presentLoginSate:x];
@@ -179,7 +175,7 @@
 
 - (void )presentLoginSate:(NSDictionary *)loginState{
     NSUInteger state = [[loginState objectForKey:@"state"] integerValue];
-    if (state==REGISTERSUC) {
+    if (state==SUC) {
         NSNumber *rank = @([[loginState objectForKey:@"rank"] integerValue]);
         NSString *name = [loginState objectForKey:@"name"];
         [self.viewModel saveName:name rank:rank];
@@ -203,21 +199,6 @@
     }
 }
 
-- (UIBarButtonItem *)leftItem{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
-        UIImage *bgImage = [UIImage imageNamed:@"back"];
-        [_leftItem setImage:bgImage];
-        @weakify(self);
-        _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
-            @strongify(self);
-            NSUInteger count = self.navigationController.viewControllers.count-2;
-            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:count]animated:YES];
-            return [RACSignal empty];
-        }];
-    }
-    return _leftItem;
-}
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [self.bgView.password resignFirstResponder];
@@ -231,9 +212,5 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [alertController dismissViewControllerAnimated:YES completion:nil];
     });
-}
-
-- (void)dealloc{
-    NSLog(@"RegisterViewVC dealloc");
 }
 @end

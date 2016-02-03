@@ -14,39 +14,29 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        NSString *entityname = @"Produce";
-        NSString *idName = @"produce_id";
-        [self setFectch:entityname sort:idName];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"Produce";
+        self.entyArr = @"produce_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
 - (void )downloadData{
-    NSString *entityname = @"Produce";
-    NSString *idName = @"produce_id";
-    NSUInteger maxId = [self getMaxId:entityname name:idName];
-    [self.webData downloadAllProduce:@(maxId)];
+    Produce *last = self.manager.fetchResultController.fetchedObjects.lastObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.produce_id;
+    }
+    NSString *urlStr = [self.webData setUrlString:ALLPRODUCE address1:index];
+    [self downloadAddress:urlStr];
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"produce_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Produce"];
-        request.predicate = [NSPredicate predicateWithFormat:@"produce_id=%@",theId];
-        NSArray *coreData = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (coreData.count==0) {
+        NSString *pridect = @"produce_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]){
             Produce *addOneCoreData = [NSEntityDescription insertNewObjectForEntityForName:@"Produce" inManagedObjectContext:self.manager.managedObjectContext];
             addOneCoreData.produce_id = [NSNumber numberWithInt:[[dic objectForKey:@"produce_id"] intValue]];
             addOneCoreData.name = [dic objectForKey:@"name"];

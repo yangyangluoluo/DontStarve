@@ -12,17 +12,19 @@
 #import "SettingHeaderCell.h"
 #import "LoginViewVC.h"
 #import "AgreementVC.h"
-@interface SettingCVC()
+@interface SettingCVC()<MBProgressHUDDelegate>
 
-@property(strong,nonatomic) SettingModel *viewModel;
 @property(strong,nonatomic) SettingHeaderCell *headerCell;
 @property(strong,nonatomic) NSArray *titles;
+@property (strong,nonatomic) MBProgressHUD *HUD;
+@property (strong,nonatomic) UITapGestureRecognizer *tapHUD;
+@property (strong,nonatomic) UIImagePickerController *pick;
+@property (strong,nonatomic) UITapGestureRecognizer *tapGuesture;
+@property (strong,nonatomic) UIImage *image;
 
 @end
 
-
 @implementation SettingCVC
-
 
 static NSString * const reuseIdentifier = @"Cell";
 
@@ -47,8 +49,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)reloadLayout {
     CSStickyHeaderFlowLayout *layout = (id)self.collectionViewLayout;
     if ([layout isKindOfClass:[CSStickyHeaderFlowLayout class]]) {
-        layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width, 120);
-        layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width, 120);
+        layout.parallaxHeaderReferenceSize = CGSizeMake(self.view.frame.size.width, 130);
+        layout.parallaxHeaderMinimumReferenceSize = CGSizeMake(self.view.frame.size.width, 130);
         layout.parallaxHeaderAlwaysOnTop = NO;
         layout.disableStickyHeaders = YES;
     }
@@ -56,7 +58,51 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void )bindWithReactive{
     @weakify(self);
-    [RACObserve(self.viewModel, state) subscribeNext:^(NSNumber *x) {
+    [RACObserve(self.viewModel.theUser, state) subscribeNext:^(NSNumber *x) {
+        @strongify(self);
+        if (x) {
+            [self.collectionView reloadData];
+        }
+    }];
+    
+    [RACObserve(self.viewModel.theUser, portaitState) subscribeNext:^(NSNumber *x) {
+        @strongify(self);
+        if (x) {
+            [self.collectionView reloadData];
+        }
+    }];
+    
+    [RACObserve(self.viewModel, data) subscribeNext:^(NSDictionary *x) {
+        @strongify(self);
+        if (x) {
+            NSUInteger state = [[x objectForKey:@"state"] integerValue];
+            if (state == 1) {
+                [(SettingModel *)self.viewModel updatePortaitUrlStr];
+            }else{
+                NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithCapacity:2];
+                [dic setObject:@0 forKey:@"state"];
+                [dic setObject:@"上传失败" forKey:@"describe"];
+                self.HUD.labelText = @"上传失败";
+                self.HUD.progress = 1.0;
+            }
+        }
+    }];
+    
+    [RACObserve(self.viewModel, data1) subscribeNext:^(NSDictionary *x) {
+        @strongify(self);
+        if (x) {
+            NSNumber *state = [x objectForKey:@"state"];
+            if (state.intValue == SUC) {
+                self.HUD.labelText = @"上传成功";
+                [(SettingModel *)self.viewModel savePortaitUrl];
+            }else{
+                self.HUD.labelText = @"上传失败";
+            }
+            self.HUD.progress = 1.0f;
+        }
+    }];
+    
+    [RACObserve(self.viewModel.theUser, portaitState) subscribeNext:^(NSNumber *x) {
         @strongify(self);
         if (x) {
             [self.collectionView reloadData];
@@ -93,7 +139,8 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.describe.text = self.titles[indexPath.row];
     cell.describe.textColor = FlatGreenDark;
     if (indexPath.row == 2) {
-        if ([self.viewModel getLoginState]==YES) {
+        NSString *name = [self.viewModel.theUser getName];
+        if (name) {
             cell.describe.text = @"退出登录";
             cell.describe.textColor = FlatRedDark;
         }else{
@@ -101,8 +148,6 @@ static NSString * const reuseIdentifier = @"Cell";
             cell.describe.textColor = FlatGreenDark;
         }
     }
-    
-    
     return cell;
 }
 
@@ -112,7 +157,10 @@ static NSString * const reuseIdentifier = @"Cell";
                                                                     forIndexPath:indexPath];
         _headerCell.backgroundColor = FlatWhite;
         _headerCell.name.text = [self.viewModel getName];
-     
+        _headerCell.headerImageView.userInteractionEnabled = YES;
+        [_headerCell.headerImageView addGestureRecognizer:[self tapGuesture]];
+        NSString *url = [self.viewModel.theUser getPortait];
+        [self setImageView:_headerCell.headerImageView urlStr:url];
         return _headerCell;
     }
     return nil;
@@ -130,19 +178,18 @@ static NSString * const reuseIdentifier = @"Cell";
             break;
         }
         case 2:{
-            if ([self.viewModel getLoginState]) {
+            NSString *name = [self.viewModel.theUser getName];
+            if (name) {
                 [self loginOut];
             }else{
                 LoginViewVC *login = [[LoginViewVC alloc]init];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.navigationController pushViewController:login animated:YES];
                 });
             }
             break;
         }
     }
-   
-    
 }
 
 
@@ -162,18 +209,88 @@ static NSString * const reuseIdentifier = @"Cell";
     });
 }
 
+- (UIImagePickerController *)pick{
+    if (!_pick) {
+        _pick = [[UIImagePickerController alloc]init];
+        UIImagePickerControllerSourceType sourcheType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        _pick.sourceType = sourcheType;
+        _pick.delegate = self;
+        _pick.allowsEditing = YES;
+    }
+    return _pick;
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary*)info{
+    _image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    CGSize size = CGSizeMake(80, 80);
+    _image = [self reSizeImage:_image toSize:size];
+    [(SettingModel *)self.viewModel savePortait:_image];
+    [self.view addSubview:[self HUD]];
+    [self.pick dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [self.pick dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (UIImage *)reSizeImage:(UIImage *)image toSize:(CGSize)reSize{
+    
+    UIGraphicsBeginImageContext(CGSizeMake(reSize.width, reSize.height));
+    [image drawInRect:CGRectMake(0, 0, reSize.width, reSize.height)];
+    UIImage *reSizeImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return reSizeImage;
+}
+
+- (UITapGestureRecognizer *)tapGuesture{
+    if (!_tapGuesture) {
+        _tapGuesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setPortait:)];
+        [_tapGuesture setNumberOfTapsRequired:1];
+        [_tapGuesture setNumberOfTouchesRequired:1];
+    }
+    return _tapGuesture;
+}
+
+- (void)setPortait:(UITapGestureRecognizer *)sender{
+    NSString *name = [self.viewModel.theUser getName];
+    if (name) {
+        [self presentViewController:[self pick] animated:YES completion:nil];
+    }
+}
+
+- (MBProgressHUD *)HUD{
+    if (!_HUD) {
+        _HUD = [[MBProgressHUD alloc] initWithFrame:self.view.frame];
+        _HUD.delegate = self;
+        _HUD.labelText = @"头像上传中.....";
+        _HUD.progress = 0.0f;
+        [_HUD showWhileExecuting:@selector(addImageTask) onTarget:self withObject:nil animated:YES];
+    }
+    return _HUD;
+}
+
+- (void)addImageTask {
+    while (_HUD.progress < 1.0f) {
+        [NSThread sleepForTimeInterval:0.05];
+    }
+    [self.HUD show:YES];
+}
+
+- (void)hudWasHidden:(MBProgressHUD *)hud{
+    [self.HUD removeFromSuperview];
+    self.HUD = nil;
+}
+
 - (void)loginOut{
     UIAlertController * alertCtr = [UIAlertController alertControllerWithTitle:@"确定要退出登录" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-         [self.viewModel loginOut];
+         [(SettingModel *)self.viewModel loginOut];
     }];
     UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
     [alertCtr addAction:firstAction];
     [alertCtr addAction:secondAction];
     [self presentViewController:alertCtr animated:YES completion:^{
     }];
-    
 }
-
 
 @end

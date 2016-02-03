@@ -14,40 +14,31 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        NSString *entityname = @"Fight";
-        NSString *idName = @"fight_id";
-        [self setFectch:entityname sort:idName];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"Fight";
+        self.entyArr = @"fight_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
 - (void )downloadData{
-    NSString *entityname = @"Fight";
-    NSString *idName = @"fight_id";
-    NSUInteger maxId = [self getMaxId:entityname name:idName];
-    [self.webData downloadAllFight:@(maxId)];
+    
+    Fight *last = self.manager.fetchResultController.fetchedObjects.lastObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.fight_id;
+    }
+    NSString *urlStr = [self.webData setUrlString:ALLFIGHT address1:index];
+    [self downloadAddress:urlStr];
 }
 
 - (void )saveDataToCoreData{
     
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"fight_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Fight"];
-        request.predicate = [NSPredicate predicateWithFormat:@"fight_id=%@",theId];
-        NSArray *coreData = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (coreData.count==0) {
+        NSString *pridect = @"fight_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]){
             Fight *addOneCoreData = [NSEntityDescription insertNewObjectForEntityForName:@"Fight" inManagedObjectContext:self.manager.managedObjectContext];
             addOneCoreData.fight_id = @([[dic objectForKey:@"fight_id"] intValue]);
             addOneCoreData.name = [dic objectForKey:@"name"];

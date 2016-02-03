@@ -12,8 +12,6 @@
 @interface ReplyQuestionModel : BaseModel
 
 @property (strong,nonatomic) Question *question;
-@property (strong,nonatomic) NSNumber *state;
-@property (strong,nonatomic) NSDictionary *commentQuestion;
 
 - (instancetype)initWithQuestion:(Question *)question;
 - (void) saveQuestionComment:(NSString *)describe;

@@ -5,25 +5,18 @@
 //  Created by 李建国 on 16/1/13.
 //  Copyright © 2016年 李建国. All rights reserved.
 //
-#import "UIImageView+WebCache.h"
-#import "Chameleon.h"
-#import "ReactiveCocoa.h"
-#import "CSStickyHeaderFlowLayout.h"
 #import "BossDetailCVC.h"
-#import "Boss+CoreDataProperties.h"
-#import "MyADTransition.h"
 #import "BossDetailHeadCell.h"
 #import "BossDetailCell.h"
 #import "BossDetailModel.h"
 #import "BossDetailSectionHeaderCell.h"
 @interface BossDetailCVC ()
 
-@property (strong,nonatomic) UIBarButtonItem *leftItem;
 @property (strong,nonatomic) Boss *theBoss;
 @property (strong,nonatomic) BossDetailHeadCell *headerCell;
 @property (strong,nonatomic) NSArray *titles;
 @property (strong,nonatomic) NSArray *describe;
-@property (strong,nonatomic) BossDetailModel *viewModel;
+//@property (strong,nonatomic) BossDetailModel *viewModel;
 @property (strong,nonatomic) NSArray *titleNum;
 
 @end
@@ -35,7 +28,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout boss:(Boss *)theBoss{
     self = [super initWithCollectionViewLayout:layout];
     if (self) {
-        self.viewModel = [[BossDetailModel alloc]initWitdBossId:theBoss.boss_Id];
+        self.viewModel = (BossDetailModel*)[[BossDetailModel alloc]initWitdBossId:theBoss.boss_Id];
         self.theBoss = theBoss;
     }
     return self;
@@ -43,9 +36,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [self leftItem];
-    self.view.backgroundColor = FlatWhite;
-    self.collectionView.backgroundColor = FlatWhite;
     self.title = self.theBoss.chName;
     [self setDataForArray];
     [self bindWithReactive];
@@ -56,23 +46,6 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.collectionView registerClass:[BossDetailHeadCell class] forSupplementaryViewOfKind:CSStickyHeaderParallaxHeader
                    withReuseIdentifier:@"header"];
     [self reloadLayout];
-}
-
-- (void)bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.viewModel, allData)  subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x.count>0) {
-            [self.viewModel saveDataToCoreData];
-        }
-    }];
-    
-    [RACObserve(self.viewModel, reload) subscribeNext:^(NSNumber *x) {
-        @strongify(self);
-        if (x.intValue==1) {
-            [self.collectionView reloadData];
-        }
-    }];
 }
 
 - (void)reloadLayout {
@@ -96,7 +69,7 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1+[self.viewModel getSectionCount];
+    return 1+[(BossDetailModel*)self.viewModel getSectionCount];
 }
 
 
@@ -104,9 +77,9 @@ static NSString * const reuseIdentifier = @"Cell";
     if (section==0) {
         return self.titles.count;
     }else if (section==1){
-        return [self.viewModel getType0Count];
+        return [(BossDetailModel*)self.viewModel getType0Count];
     }else{
-        return [self.viewModel getType1Count];
+        return [(BossDetailModel*)self.viewModel getType1Count];
     }
 }
 
@@ -119,7 +92,7 @@ static NSString * const reuseIdentifier = @"Cell";
         CGFloat height = [self findHeightForText:self.describe[indexPath.row] havingMaximumWidth:width andFont:font];
         return CGSizeMake(self.view.frame.size.width-20, 30+height+height1);
     }else{
-        NSString *temp = [self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
+        NSString *temp = [(BossDetailModel*)self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
         CGFloat height = [self findHeightForText:temp havingMaximumWidth:width andFont:font];
         return CGSizeMake(self.view.frame.size.width-20, 30+height);
     }
@@ -151,11 +124,11 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.describe.text = [self.describe[indexPath.row] stringByReplacingOccurrencesOfString:@"|" withString:@"\n"];
     }else if(indexPath.section==1){
         cell.title.text = [NSString stringWithFormat:@"方 案(%@)",self.titleNum[indexPath.row]];
-        cell.describe.text = [self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
+        cell.describe.text = [(BossDetailModel*)self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
     }
     else{
         cell.title.text = [NSString stringWithFormat:@"小 结(%@)",self.titleNum[indexPath.row]];
-        cell.describe.text = [self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
+        cell.describe.text = [(BossDetailModel*)self.viewModel getDescribe:indexPath.section andRow:indexPath.row];
     }
     return cell;
 }
@@ -169,15 +142,8 @@ static NSString * const reuseIdentifier = @"Cell";
         _headerCell.enName.text = self.theBoss.enName;
         _headerCell.bossType.text = self.theBoss.bossType;
         _headerCell.life.text = [NSString stringWithFormat:@"生命值: %@",self.theBoss.life];
-        UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:self.theBoss.urlStr];
-        if (image) {
-            _headerCell.image.image = image;
-        }else{
-            [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:self.theBoss.urlStr] options:1 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            } completed:^(UIImage *image, NSError *error, SDImageCacheType SDImageCacheTypeDisk, BOOL finished, NSURL *imageURL) {
-                _headerCell.image.image = image;
-            }];
-        }
+        
+        [self setImageView:_headerCell.image urlStr:self.theBoss.urlStr];
         return _headerCell;
     }
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
@@ -194,21 +160,6 @@ static NSString * const reuseIdentifier = @"Cell";
         return cell;
     }
     return nil;
-}
-
-- (UIBarButtonItem *)leftItem{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
-        UIImage *bgImage = [UIImage imageNamed:@"back"];
-        [_leftItem setImage:bgImage];
-        @weakify(self);
-        _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
-            @strongify(self);
-            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1]animated:YES];
-            return [RACSignal empty];
-        }];
-    }
-    return _leftItem;
 }
 
 @end

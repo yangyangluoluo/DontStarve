@@ -12,21 +12,12 @@
 @required
 
 @optional
-- (void) bindWithReactive;
+
+- (void )bindWithReactive;
 - (void )downloadFordown;
 - (void )downloadForUp;
 - (void )downloadData;
 - (NSUInteger)getCount;
 - (void )saveDataToCoreData;
-- (NSString *)getImageUrlStr:(NSUInteger)index;
-- (NSString *)getName:(NSUInteger)index;
-- (NSString *)getNickname:(NSUInteger)index;
-- (NSNumber *)getId:(NSUInteger)index;
-- (NSString *)getHungry:(NSUInteger)index;
-- (NSString *)getLife:(NSUInteger)index;
-- (NSString *)getSanity:(NSUInteger)index;
-- (NSFetchedResultsController *)getFetchResultController;
-
-
 
 @end

@@ -16,7 +16,6 @@
 #import "UIImageView+WebCache.h"
 #import "HomeHeaderCell.h"
 #import "CharactersCVC.h"
-#import "MyADTransition.h"
 #import "AnimalCVC.h"
 #import "PlantCVC.h"
 #import "ConstructionCVC.h"

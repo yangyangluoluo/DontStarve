@@ -13,75 +13,22 @@
 - (instancetype )init{
     self = [super init];
     if (self) {
-        [self getFetchResultController];
-        [self bindWithReactive];
-        self.allData = nil;
+        self.entityname = @"Recipe";
+        self.entyArr = @"recipe_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void )bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allData = x;
-        }
-    }];
-}
-
-- (NSUInteger )getCount{
-    return self.fetchResultController.fetchedObjects.count;
-}
-
-- (Recipe *)getRecipe:(NSUInteger)row{
-    return self.fetchResultController.fetchedObjects[row];
-}
-
-- (NSFetchedResultsController *)getFetchResultController{
-    if (self.fetchResultController!=nil) {
-        return self.fetchResultController;
-    }
-    NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Recipe"];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"recipe_id" ascending:YES];
-    NSArray *sortDescriptors = @[sortDescriptor];
-    request.sortDescriptors = sortDescriptors;
-    
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.manager.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    aFetchedResultsController.delegate = self;
-    
-    self.fetchResultController = aFetchedResultsController;    
-    NSError *error = nil;
-    if (![self.fetchResultController performFetch:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    return self.fetchResultController;
-}
-
 - (void )downloadData{
-    NSFetchRequest *req = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Recipe" inManagedObjectContext:self.manager.managedObjectContext];
-    [req setEntity:entity];
-    [req setResultType:NSDictionaryResultType];
-    
-    NSExpression *keyPathExpression = [NSExpression expressionForKeyPath:@"recipe_id"];
-    NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[keyPathExpression]];
-    NSExpressionDescription *expressionDescription = [[NSExpressionDescription alloc] init];
-    [expressionDescription setName:@"maxId"];
-    [expressionDescription setExpression:maxExpression];
-    [expressionDescription setExpressionResultType:NSInteger32AttributeType];
-    [req setPropertiesToFetch:@[expressionDescription]];
-    
-    NSError *error = nil;
-    NSArray *obj = [self.manager.managedObjectContext executeFetchRequest:req error:&error];
-    NSInteger maxValue = NSNotFound;
-    if(obj == nil){
-        maxValue = 0;
-    }else if([obj count] > 0){
-        maxValue = [obj[0][@"maxId"] integerValue];
+    Recipe *last = self.manager.fetchResultController.fetchedObjects.firstObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.recipe_id;
     }
-    [self.webData downloadAllRecipe:@(maxValue)];
+    NSString *urlStr = [self.webData setUrlString:ALLRECIPE address1:index];
+    [self downloadAddress:urlStr];
 }
 
 - (NSNumber *)getMaxId{
@@ -110,12 +57,10 @@
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allData) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"recipe_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Recipe"];
-        request.predicate = [NSPredicate predicateWithFormat:@"recipe_id=%@",theId];
-        NSArray *coreData = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (coreData.count==0) {
+        NSString *pridect = @"recipe_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]) {
             Recipe *addOneCoreData = [NSEntityDescription insertNewObjectForEntityForName:@"Recipe" inManagedObjectContext:self.manager.managedObjectContext];
             addOneCoreData.recipe_id = [NSNumber numberWithInt:[[dic objectForKey:@"recipe_id"] intValue]];
             addOneCoreData.chName = [dic objectForKey:@"chName"];
@@ -127,6 +72,7 @@
             addOneCoreData.cookTime = @([[dic objectForKey:@"cookTime"] floatValue]);
             addOneCoreData.priority = @([[dic objectForKey:@"priority"] floatValue]);
             addOneCoreData.urlStr = [NSString  stringWithFormat:@"%@%@",PREFIX,[dic objectForKey:@"urlStr"]];
+            addOneCoreData.urlStr = [addOneCoreData.urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
             addOneCoreData.urlStr = [addOneCoreData.urlStr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
         }
     }

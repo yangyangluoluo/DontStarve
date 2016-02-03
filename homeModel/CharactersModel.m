@@ -10,106 +10,33 @@
 #import "CharactersModel.h"
 
 @implementation CharactersModel
+
 - (instancetype)init{
     self = [super init];
     if (self) {
-        [self getFetchResultController];
-        [self bindWithReactive];
-        self.allCharacters = nil;
+        self.entityname = @"Characters";
+        self.entyArr = @"characters_id";
+        [self.manager initFecthResultByName:self.entityname attribute:self.entyArr];
+        self.data = nil;
     }
     return self;
 }
 
-- (void)bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, homeData1) subscribeNext:^(NSArray *x) {
-        @strongify(self);
-        if (x) {
-            self.allCharacters = x;
-        }
-    }];
-}
-
-- (NSUInteger )getCount{
-    return self.fetchResultController.fetchedObjects.count;
-}
-
-- (NSString *)getImageUrlStr:(NSUInteger)index{
-    Characters *character = self.fetchResultController.fetchedObjects[index];
-    NSString *urlStr = character.urlstr;
-    return [NSString stringWithFormat:@"%@%@",PREFIX,urlStr];
-}
-
-- (NSString *)getName:(NSUInteger)index{
-    Characters *chartacter = self.fetchResultController.fetchedObjects[index];
-    return chartacter.name;
-}
-
-- (NSString *)getNickname:(NSUInteger)index{
-    Characters *chartacter = self.fetchResultController.fetchedObjects[index];
-    return chartacter.nickname;
-}
-
-- (NSString *)getLife:(NSUInteger)index{
-    Characters *chartacter = self.fetchResultController.fetchedObjects[index];
-    return [NSString stringWithFormat:@"  %@",chartacter.life];
-}
-
-- (NSString *)getHungry:(NSUInteger)index{
-    Characters *chartacter = self.fetchResultController.fetchedObjects[index];
-    return [NSString stringWithFormat:@"  %@",chartacter.hungry];
-}
-
-- (NSString *)getSanity:(NSUInteger)index{
-    Characters *chartacter = self.fetchResultController.fetchedObjects[index];
-    return [NSString stringWithFormat:@"  %@",chartacter.intellect];
-}
-
-- (NSNumber *)getId:(NSUInteger)index{
-    Characters *chartacter = self.fetchResultController.fetchedObjects[index];
-    return chartacter.characters_id;
-}
-
-
-- (NSFetchedResultsController *)getFetchResultController{
-    if (self.fetchResultController!=nil) {
-        return self.fetchResultController;
-    }
-    NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Characters"];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:@"characters_id" ascending:YES];
-    NSArray *sortDescriptors = @[sortDescriptor];
-    request.sortDescriptors = sortDescriptors;
-    
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:request managedObjectContext:self.manager.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    aFetchedResultsController.delegate = self;
-    
-    self.fetchResultController = aFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![self.fetchResultController performFetch:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    return self.fetchResultController;
-}
-
 - (void)downloadData{
-    NSArray *characters = self.fetchResultController.fetchedObjects;
-    if (characters.count == 0) {
-        [self.webData  downLoadCharactersbyId:[NSNumber numberWithInt:0]];
-    }else{
-        Characters *character = [characters lastObject];
-        [self.webData downLoadCharactersbyId:character.characters_id];
+    Characters *last = self.manager.fetchResultController.fetchedObjects.lastObject;
+    NSNumber *index = @0;
+    if (last!=nil) {
+        index = last.characters_id;
     }
+    NSString *urlStr = [self.webData setUrlString:ALLCHARACTERS address1:index];
+    [self downloadAddress:urlStr];
 }
 
 - (void )saveDataToCoreData{
-    for (NSDictionary *dic in self.allCharacters) {
+    for (NSDictionary *dic in self.data) {
         NSNumber *theId = [NSNumber numberWithInt:[[dic objectForKey:@"characters_id"] intValue]];
-        NSFetchRequest *request = [[NSFetchRequest alloc]initWithEntityName:@"Characters"];
-        request.predicate = [NSPredicate predicateWithFormat:@"characters_id=%@",theId];
-        NSArray *matchInCoreDta = [self.manager.managedObjectContext executeFetchRequest:request error:nil];
-        if (matchInCoreDta.count==0) {
+        NSString *pridect = @"characters_id=%@";
+        if (![self.manager entityExist:self.entityname attribute:pridect entityId:theId]) {
             Characters *character = [NSEntityDescription insertNewObjectForEntityForName:@"Characters" inManagedObjectContext:self.manager.managedObjectContext];
             character.characters_id =  [NSNumber numberWithInt:[[dic objectForKey:@"characters_id"] intValue]];
             character.name = [dic objectForKey:@"name"];
@@ -126,39 +53,11 @@
             NSString *introduce = [dic objectForKey:@"introduction"];
             introduce = [introduce stringByReplacingOccurrencesOfString:@"CCAVSB" withString:@"\n       "];
             character.introduction = introduce;
-            character.urlstr = [dic objectForKey:@"urlstr"];
+            character.urlstr = [NSString  stringWithFormat:@"%@%@",PREFIX,[dic objectForKey:@"urlstr"]];
+            character.urlstr = [character.urlstr stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
         }
     }
     [self.manager saveContext];
 }
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-    switch(type) {
-        case NSFetchedResultsChangeInsert:{
-            self.reload = @1;
-            break;
-        }
-        case NSFetchedResultsChangeDelete:{
-            
-            break;
-        }
-        case NSFetchedResultsChangeUpdate: {
-            
-            break;
-        }
-        case NSFetchedResultsChangeMove:{
-            break;
-        }
-        default:{
-            break;
-        }
-    }
-}
-
-
 
 @end

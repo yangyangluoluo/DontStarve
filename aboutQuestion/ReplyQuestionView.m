@@ -174,7 +174,7 @@
 - (UITextView *)comments{
     if (!_comments) {
         _comments = [[UITextView alloc]init];
-        _comments.backgroundColor = [UIColor randomFlatColor];
+        _comments.backgroundColor = FlatGreenDark;
         _comments.font = [UIFont systemFontOfSize:18];
         _comments.layer.cornerRadius = 10;
         _comments.layer.masksToBounds = YES;

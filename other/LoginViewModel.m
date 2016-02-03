@@ -15,36 +15,17 @@
 - (id)init{
     self = [super init];
     if (self) {
-        [self bindWithReactive];
-        self.loginSate = nil;
+        self.data = nil;
     }
     return self;
-}
-
-- (void) bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, loginState) subscribeNext:^(NSDictionary *x) {
-        @strongify(self);
-        if (x) {
-            self.loginSate = x;
-        }
-    }];
 }
 
 - (void) loginWithName:(NSString *)name password:(NSString *)password{
     NSMutableDictionary *userInformation = [[NSMutableDictionary alloc]init];
     [userInformation setObject:name forKey:@"name"];
     [userInformation setObject:password forKey:@"password"];
-    [self.webData userLogin:userInformation];
-  
-}
-
-- (void)savenickname:(NSString *)nickname password:(NSString *)password{
-
-}
-
-- (void)userLogin{
- 
+    NSString *urlStr = [self.webData setUrlString:LOGIN];
+    [self downloadAddress:urlStr information:userInformation];
 }
 
 @end

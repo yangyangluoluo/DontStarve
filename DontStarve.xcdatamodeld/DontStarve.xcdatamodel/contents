@@ -79,6 +79,16 @@
         <attribute name="unlock" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlstr" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Comment" representedClassName="Comment" syncable="YES">
+        <attribute name="comment_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="dateStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="primary_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tableName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="theDescribe" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Construction" representedClassName="Construction" syncable="YES">
         <attribute name="construction_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="describe" optional="YES" attributeType="String" syncable="YES"/>
@@ -154,6 +164,23 @@
         <relationship name="relationship9" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Dress" inverseName="relationship" inverseEntity="Dress" syncable="YES"/>
         <relationship name="relationship10" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Fight" inverseName="relationship" inverseEntity="Fight" syncable="YES"/>
         <relationship name="relationship11" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Survival" inverseName="relationship" inverseEntity="Survival" syncable="YES"/>
+    </entity>
+    <entity name="Picture" representedClassName="Picture" syncable="YES">
+        <attribute name="commentNum" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="dateStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="picture_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="pictureNum" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="theDescribe" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="relationship" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="PictureUrl" inverseName="relationship" inverseEntity="PictureUrl" syncable="YES"/>
+    </entity>
+    <entity name="PictureUrl" representedClassName="PictureUrl" syncable="YES">
+        <attribute name="picture_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="pictureUrl_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Picture" inverseName="relationship" inverseEntity="Picture" syncable="YES"/>
     </entity>
     <entity name="Plant" representedClassName="Plant" syncable="YES">
         <attribute name="describe" optional="YES" attributeType="String" syncable="YES"/>
@@ -268,6 +295,7 @@
         <element name="BossTrait" positionX="-26165" positionY="-8001" width="128" height="105"/>
         <element name="Build" positionX="-25839" positionY="-8136" width="128" height="148"/>
         <element name="Characters" positionX="-26163" positionY="-8271" width="128" height="223"/>
+        <element name="Comment" positionX="-25947" positionY="-8118" width="128" height="165"/>
         <element name="Construction" positionX="-25677" positionY="-8271" width="128" height="120"/>
         <element name="Dress" positionX="-25938" positionY="-8109" width="128" height="165"/>
         <element name="Fight" positionX="-25929" positionY="-8100" width="128" height="180"/>
@@ -275,9 +303,12 @@
         <element name="FoodRaw" positionX="-25821" positionY="-8055" width="128" height="180"/>
         <element name="Magic" positionX="-25965" positionY="-8136" width="128" height="150"/>
         <element name="MixNeed" positionX="-25317" positionY="-7785" width="128" height="285"/>
+        <element name="Picture" positionX="-25965" positionY="-8136" width="128" height="180"/>
+        <element name="PictureUrl" positionX="-25956" positionY="-8127" width="128" height="105"/>
         <element name="Plant" positionX="-25938" positionY="-7929" width="128" height="120"/>
         <element name="Produce" positionX="-25956" positionY="-8127" width="128" height="148"/>
         <element name="Question" positionX="-25956" positionY="-8127" width="128" height="165"/>
+        <element name="QuestionComment" positionX="-25965" positionY="-8136" width="128" height="150"/>
         <element name="Recipe" positionX="-26064" positionY="-7740" width="117" height="193"/>
         <element name="RecipeDetail" positionX="-25965" positionY="-8136" width="128" height="195"/>
         <element name="RecipeRaw" positionX="-25920" positionY="-7740" width="128" height="118"/>
@@ -285,6 +316,5 @@
         <element name="Science" positionX="-25677" positionY="-7614" width="128" height="148"/>
         <element name="Survival" positionX="-25920" positionY="-8091" width="128" height="180"/>
         <element name="Tools" positionX="-25560" positionY="-7785" width="128" height="165"/>
-        <element name="QuestionComment" positionX="-25965" positionY="-8136" width="128" height="150"/>
     </elements>
 </model>

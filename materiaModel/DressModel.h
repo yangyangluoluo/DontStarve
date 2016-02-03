@@ -6,8 +6,8 @@
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 
-#import "BaseMateriaModel.h"
+#import "BaseModel.h"
 
-@interface DressModel : BaseMateriaModel
+@interface DressModel : BaseModel
 
 @end

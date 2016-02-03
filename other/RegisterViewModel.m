@@ -17,20 +17,9 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
-        [self bindWithReactive];
-        self.registerState = nil;
+        self.data = nil;
     }
     return self;
-}
-
-- (void) bindWithReactive{
-    @weakify(self);
-    [RACObserve(self.webData, registerState) subscribeNext:^(NSDictionary *data) {
-        @strongify(self);
-        if (data) {
-            self.registerState = data;
-        }
-    }];
 }
 
 - (void)registerWithName:(NSString *)name password:(NSString *)password email:(NSString *)email{
@@ -38,7 +27,8 @@
     [userInformation setObject:name forKey:@"name"];
     [userInformation setObject:password forKey:@"password"];
     [userInformation setObject:email forKey:@"email"];
-    [self.webData userRegister:userInformation];
+    NSString *urlStr = [self.webData setUrlString:REGISTER];
+    [self downloadAddress:urlStr information:userInformation];
 }
 
 

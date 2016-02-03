@@ -6,9 +6,10 @@
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 @class Animal;
+#import "BaseCVC.h"
 #import <UIKit/UIKit.h>
 
-@interface AnimalDetailCVC : UICollectionViewController
+@interface AnimalDetailCVC : BaseCVC
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout animal:(Animal *)animal;
 

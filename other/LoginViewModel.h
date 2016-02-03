@@ -11,10 +11,7 @@
 
 @interface LoginViewModel : BaseModel
 
-@property (strong,nonatomic) NSDictionary *loginSate;
-
 - ( id ) init;
-- (void) loginWithName:(NSString *)name password:(NSString *)password;
-- (void) savenickname:(NSString *)nickname password:(NSString *)password;
-- (void) userLogin;
+- (void )loginWithName:(NSString *)name password:(NSString *)password;
+
 @end

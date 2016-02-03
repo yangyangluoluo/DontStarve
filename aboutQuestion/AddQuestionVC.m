@@ -67,7 +67,7 @@
         return [RACSignal empty];
     }];
 
-    [RACObserve(self.viewModel, addQuestionState)  subscribeNext:^(NSDictionary *x) {
+    [RACObserve(self.viewModel, data)  subscribeNext:^(NSDictionary *x) {
         @strongify(self);
         if (x) {
             NSUInteger state = [[x objectForKey:@"state"] intValue];
@@ -82,7 +82,7 @@
         }
     }];
     
-    [RACObserve(self.viewModel, state) subscribeNext:^(NSNumber *x) {
+    [RACObserve(self.viewModel.theUser, state) subscribeNext:^(NSNumber *x) {
         @strongify(self);
         if (x) {
             NSString *name=[self.viewModel.theUser getName];
@@ -112,7 +112,7 @@
 - (UIBarButtonItem *)rightItem{
     if (!_rightItem) {
         self.rightItem = [[UIBarButtonItem alloc]init];
-        UIImage *image = [UIImage imageNamed:@"save"];
+        UIImage *image = [UIImage imageNamed:@"upload"];
         [self.rightItem setImage:image];
     }
     return _rightItem;
@@ -144,6 +144,7 @@
 
 - (void)myProgressTask {
     while (_HUD.progress < 1.0f) {
+        [NSThread sleepForTimeInterval:0.05];
     }
     [NSThread sleepForTimeInterval:0.5];
 }
@@ -160,7 +161,7 @@
 }
 
 - (void)addQuestionState{
-    NSString *describe = [[self.viewModel addQuestionState] objectForKey:@"descirbe"];
+    NSString *describe = [[self.viewModel data] objectForKey:@"descirbe"];
     UIAlertController * alertCtr = [UIAlertController alertControllerWithTitle:describe message:@"" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"继续添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         

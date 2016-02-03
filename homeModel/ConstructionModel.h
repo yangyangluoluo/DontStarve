@@ -7,9 +7,7 @@
 //
 #import "Construction+CoreDataProperties.h"
 #import "BaseModel.h"
-#import "CellProtocol.h"
-@interface ConstructionModel : BaseModel<CellProtocol>
 
-- (Construction *)getConstruction:(NSUInteger )idnex;
+@interface ConstructionModel : BaseModel
 
 @end

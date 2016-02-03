@@ -15,8 +15,6 @@
 @interface LoginViewVC ()
 
 @property (strong,nonatomic) LoginView *bgView;
-@property (strong,nonatomic) UIBarButtonItem *leftItem;
-
 
 @end
 
@@ -33,7 +31,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.leftBarButtonItem = [self leftItem];
     self.title = @"登录";
     self.bgView = [[LoginView alloc]initWithFrame:self.view.frame];
     [self bindWithReactive];
@@ -46,7 +43,7 @@
     [self loginButtonSignal];
     [self setUserRegisterSignal];
     @weakify(self);
-    [[RACObserve(self.viewModel, loginSate)deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(NSDictionary *x) {
+    [[RACObserve(self.viewModel, data)deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(NSDictionary *x) {
         @strongify(self);
         if (x) {
             [self presentLoginSate:x];
@@ -109,9 +106,9 @@
 - (void )presentLoginSate:(NSDictionary *)loginState{
     NSUInteger state = [[loginState objectForKey:@"state"] intValue];
     if (state==LOGINSUC) {
-        NSNumber *rank = @([[loginState objectForKey:@"rank"] integerValue]);
-        NSString *name = [loginState objectForKey:@"name"];
-        [self.viewModel saveName:name rank:rank];
+        [self.viewModel.theUser savePortait:[NSString stringWithFormat:@"%@%@",PREFIX,[loginState objectForKey:@"urlStr"]]];
+        [self.viewModel.theUser saveName:[loginState objectForKey:@"name"]];
+        [self.viewModel.theUser changState];
         NSUInteger count = self.navigationController.viewControllers.count-2;
         [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:count]animated:YES];
     }else{
@@ -130,23 +127,6 @@
         [alertController addAction:cancelAction];
         [self presentViewController:alertController animated:YES completion:nil];
     }
-}
-
-
-- (UIBarButtonItem *)leftItem{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc]init];
-        UIImage *bgImage = [UIImage imageNamed:@"back"];
-        [_leftItem setImage:bgImage];
-        @weakify(self);
-        _leftItem.rac_command = [[RACCommand alloc]initWithSignalBlock:^RACSignal *(id input) {
-            @strongify(self);
-            NSUInteger count = self.navigationController.viewControllers.count-2;
-            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:count]animated:YES];
-            return [RACSignal empty];
-        }];
-    }
-    return _leftItem;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{

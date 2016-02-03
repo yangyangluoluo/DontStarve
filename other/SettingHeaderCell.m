@@ -26,9 +26,11 @@
     [self addSubview:self.bgView];
     
     self.headerImageView = [[UIImageView alloc]init];
-    self.headerImageView.layer.cornerRadius = 30;
+    self.headerImageView.layer.cornerRadius = 40;
     self.headerImageView.layer.masksToBounds = YES;
     self.headerImageView.backgroundColor = FlatGrayDark;
+    self.headerImageView.layer.borderColor = FlatBlackDark.CGColor;
+    self.headerImageView.layer.borderWidth = 1;
     [self addSubview:self.headerImageView];
     
     self.name = [[UILabel alloc]init];
@@ -50,7 +52,7 @@
     [self.headerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(self);
         make.top.mas_equalTo(self).offset(10);
-        make.size.mas_equalTo(CGSizeMake(60, 60));
+        make.size.mas_equalTo(CGSizeMake(80, 80));
     }];
     
     [self.name mas_makeConstraints:^(MASConstraintMaker *make) {

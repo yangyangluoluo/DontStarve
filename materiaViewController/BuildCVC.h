@@ -6,8 +6,8 @@
 //  Copyright © 2016年 李建国. All rights reserved.
 //
 
-#import "BaseMateriaCVC.h"
+#import "BaseCVC.h"
 
-@interface BuildCVC : BaseMateriaCVC
+@interface BuildCVC : BaseCVC
 
 @end

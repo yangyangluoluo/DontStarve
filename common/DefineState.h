@@ -9,6 +9,8 @@
 #ifndef DefineState_h
 #define DefineState_h
 
+#define ZERO 0
+
 #define LOGINSUC  1
 #define LOGINFAIL 0
 
@@ -24,6 +26,14 @@
 
 #define UP  1
 #define DOWN 0
+
+#define PICTURECOMMENT 1
+
+//#define PREFIX  @"http://192.168.1.220/"
+//#define PREFIX  @"http://139.129.48.69/"
+//#define PREFIX  @"http://169.254.213.117/"
+
+
 
 #define UI_IS_IPAD              ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 #define UI_IS_IPHONE            ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)

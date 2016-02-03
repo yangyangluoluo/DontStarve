@@ -19,27 +19,9 @@
     self = [super init];
     if (self) {
         self.question = question;
-        [self bindWithReactive];
-        self.commentQuestion = nil;
+        self.data = nil;
     }
     return self;
-}
-
-- (void)bindWithReactive{
-    @weakify(self)
-    [RACObserve(self.webData, commentQuestion)  subscribeNext:^(NSDictionary *x) {
-        @strongify(self);
-        if (x) {
-            self.commentQuestion = x;
-        }
-    }];
-    
-    [RACObserve(self.theUser, state) subscribeNext:^(NSNumber *x) {
-        @strongify(self);
-        if (x) {
-            self.state = x;
-        }
-    }];
 }
 
 - (void) saveQuestionComment:(NSString *)describe{
@@ -48,17 +30,9 @@
     [comment setObject:name forKey:@"name"];
     [comment setObject:describe forKey:@"describe"];
     [comment setObject:self.question.question_id forKey:@"question_id"];
-    [self.webData commentQuestion:comment];
+    NSString *urlStr = [self.webData setUrlString:COMMENTQUESTION];
+    [self downloadAddress:urlStr information:comment];
 }
-
-
-
-
-
-
-
-
-
 
 
 
