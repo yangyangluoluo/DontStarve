@@ -19,7 +19,7 @@
 					<key>needs-shine</key>
 					<true/>
 					<key>url</key>
-					<string>https://syxxpic.oss-cn-chengdu.aliyuncs.com/default/icon-1024.png</string>
+					<string>https://syxxpic.oss-cn-chengdu.aliyuncs.com/default/icon-40.png</string>
 				</dict>
 				<dict>
 					<key>kind</key>
@@ -27,7 +27,7 @@
 					<key>needs-shine</key>
 					<true/>
 					<key>url</key>
-					<string>https://syxxpic.oss-cn-chengdu.aliyuncs.com/default/icon-1024.png</string>
+					<string>https://syxxpic.oss-cn-chengdu.aliyuncs.com/default/icon-40.png</string>
 				</dict>
 			</array>
 			<key>metadata</key>
