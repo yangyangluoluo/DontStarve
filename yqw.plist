@@ -10,7 +10,7 @@
                <key>kind</key>
                <string>software-package</string>
                <key>url</key>
-               <string><![CDATA[https://syxxpic.oss-cn-chengdu.aliyuncs.com/update/resigned.ipa]]></string>
+               <string><https://syxxpic.oss-cn-chengdu.aliyuncs.com/update/machine.ipa></string>
              </dict>
              <dict>
                <key>kind</key>
@@ -18,7 +18,7 @@
                <key>needs-shine</key>
                <integer>0</integer>
                <key>url</key>
-               <string><![CDATA[https://syxxpic.oss-cn-chengdu.aliyuncs.com/default/icon-1024.png]]></string>
+               <string><https://syxxpic.oss-cn-chengdu.aliyuncs.com/default/icon-40.png></string>
              </dict>
              <dict>
                <key>kind</key>
@@ -26,19 +26,19 @@
                <key>needs-shine</key>
                <true/>
                <key>url</key>
-               <string><![CDATA[https://syxxpic.oss-cn-chengdu.aliyuncs.com/default/icon-1024.png]]></string>
+               <string><https://syxxpic.oss-cn-chengdu.aliyuncs.com/default/icon-40.png></string>
              </dict>
            </array>
            <key>metadata</key>
            <dict>
              <key>bundle-identifier</key>
-             <string>com.wzq.sqwh</string>
+             <string>yqw.machine</string>
              <key>bundle-version</key>
-             <string><![CDATA[1.0.0]]></string>
+             <string><1.0.0></string>
              <key>kind</key>
              <string>software</string>
              <key>title</key>
-             <string><![CDATA[小小]]></string>
+             <string><小小></string>
            </dict>
         </dict>
       </array>
